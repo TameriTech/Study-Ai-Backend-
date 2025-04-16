@@ -1,0 +1,15 @@
+# Exclure le dossier d'environnement virtuel
+env/
+
+# Pycache et fichiers Python compilés
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# VS Code settings
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db
