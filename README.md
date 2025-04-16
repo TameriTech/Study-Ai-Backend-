@@ -1,151 +1,130 @@
-# Study-Ai-Backend-
-Bienvenu dans le Study Ai Backend 
-🔐 Pour accéder à certaines fonctionnalités, configurez les clés API (OpenAI, Google Speech, etc.) dans un fichier .env.
-
-📌 Auteurs & Contribution
-Développé par Tameri Tech
-Contact : contact@tameri-tech.com
-
-
 # 📚 Study AI – Plateforme d'apprentissage intelligente
 
-**Study AI** est une application innovante développée par Tameri Tech visant à transformer l'apprentissage des étudiants en automatisant l'analyse de documents PDF et de vidéos de cours. Grâce à l’intelligence artificielle, l’application génère des fiches de révision et des quiz personnalisés à partir du contenu importé.
+![Python](https://img.shields.io/badge/python-3.12-blue)
+![FastAPI](https://img.shields.io/badge/FastAPI-API-green)
+![Status](https://img.shields.io/badge/status-en%20cours-yellow)
+
+---
+
+## 📑 Table des matières
+
+- [Présentation](#-study-ai--plateforme-dapprentissage-intelligente)
+- [Objectifs](#-objectifs)
+- [Fonctionnalités](#-fonctionnalités-principales)
+- [Technologies](#-technologies-utilisées)
+- [Architecture](#-architecture-du-projet)
+- [Structure](#-structure-du-projet-studyai)
+- [Contraintes](#-contraintes--défis)
+- [Critères de validation](#-critères-de-validation)
+- [Tests](#-tests)
+- [Installation & Lancement](#-lancement-rapide-dev)
+- [Fichier .env](#-exemple-de-fichier-env)
+- [Contribution](#-contribuer)
+- [Contact](#-auteurs--contribution)
+
+---
+
+## 🧠 Présentation
+
+**Study AI** est une application innovante développée par **Tameri Tech** pour transformer l'apprentissage des étudiants. Elle permet d'automatiser l'analyse de contenus pédagogiques (PDF, vidéos) grâce à l'intelligence artificielle, et génère des fiches de révision et des quiz personnalisés.
 
 ---
 
 ## 🚀 Objectifs
 
-- Offrir une solution complète et interactive pour aider les étudiants à réviser efficacement.
-- Générer automatiquement des supports pédagogiques à partir de documents et vidéos.
-- Améliorer la pertinence des contenus via l’intelligence artificielle et les retours utilisateurs.
+- Offrir une solution interactive pour réviser efficacement
+- Générer automatiquement des contenus à partir de documents/vidéos
+- Améliorer la pertinence via l'IA et les retours utilisateurs
 
 ---
 
-## 🧠 Fonctionnalités principales
+## 🧩 Fonctionnalités principales
 
-- 📄 **Importation de documents PDF**  
-  - Extraction de texte et de code source.
-  - Analyse du contenu pédagogique.
-
-- 🎥 **Analyse de vidéos de cours**  
-  - Traitement d’image et reconnaissance vocale.
-  - Extraction de concepts clés.
-
-- 📝 **Génération automatique de contenus**  
-  - Fiches de révision synthétiques.
-  - Quiz personnalisés.
-
-- 🤖 **Intelligence Artificielle & Feedback**  
-  - Amélioration continue des quiz.
-  - Système de retour utilisateur intégré.
-
-- 📊 **Tableau de bord interactif**  
-  - Accès aux fichiers, fiches et quiz.
-  - Visualisation des performances.
+- 📄 **PDF** : Importation, extraction, analyse de contenu
+- 🎥 **Vidéos** : Traitement image, reconnaissance vocale
+- 🖋️ **Génération automatique** : Fiches de révision, quiz personnalisés
+- 🤖 **IA & Feedback** : Amélioration continue, retours utilisateurs
+- 📊 **Dashboard interactif** : Accès aux fichiers, fiches et statistiques
 
 ---
 
 ## 🛠️ Technologies utilisées
 
 | Composant       | Technologies                                                  |
-|-----------------|---------------------------------------------------------------|
+|----------------|---------------------------------------------------------------|
 | Backend         | Python, FastAPI                                               |
-| Frontend        | Kotlin (Java)                                                 |
+| Frontend        | Kotlin (Java) *(optionnel)*                                   |
 | Base de données | PostgreSQL                                                    |
 | PDF             | PDFMiner, Apache Tika                                         |
 | Vidéo & Audio   | OpenCV, Google/Azure Speech-to-Text                           |
-| Intelligence Artificielle | OpenAI API (GPT-4), TensorFlow / PyTorch               |
+| IA              | OpenAI API (GPT-4), TensorFlow / PyTorch                      |
 
 ---
 
-## 📐 Architecture du projet
+## 📊 Architecture du projet
 
-L'application suit une **architecture en couches** modulaire avec séparation claire entre :
-- Modules de traitement (PDF/Vidéo)
-- Moteur de génération
-- Système IA & feedback
-- Interfaces utilisateur
+L'application suit une **architecture modulaire en couches** :
 
-## 📁 Structure de projet StudyAI
+- Routes FastAPI (pdf, vidéos, quiz, feedback, user)
+- Services de traitement (OCR, NLP, IA, audio)
+- Moteur de génération de quiz & fiches
+- Système de feedback
+- Base de données et modèles ORM
+
+---
+
+## 📁 Structure du projet StudyAI
+
+```bash
 studyai/
-├── app/                         # Code de l'application principale
-│   ├── main.py                  # Point d’entrée de l'application FastAPI
-│   ├── config.py                # Configuration de l'app (DB, API keys...)
-│   ├── routers/                 # Routes FastAPI (controllers)
-│   │   ├── pdf_router.py
-│   │   ├── video_router.py
-│   │   ├── quiz_router.py
-│   │   ├── feedback_router.py
-│   │   └── user_router.py
-│   ├── services/                # Logique métier (modules fonctionnels)
-│   │   ├── pdf_service.py
-│   │   ├── video_service.py
-│   │   ├── quiz_generator.py
-│   │   ├── feedback_service.py
-│   │   └── ai_engine.py
-│   ├── models/                  # Modèles de données SQLAlchemy
-│   │   ├── user.py
-│   │   ├── quiz.py
-│   │   ├── feedback.py
-│   │   └── document.py
-│   ├── schemas/                 # Schémas Pydantic (entrées/sorties API)
-│   │   ├── user_schema.py
-│   │   ├── pdf_schema.py
-│   │   ├── quiz_schema.py
-│   │   └── feedback_schema.py
-│   ├── utils/                   # Fonctions utilitaires (OCR, NLP, etc.)
-│   │   ├── ocr_tools.py
-│   │   ├── nlp_tools.py
-│   │   └── speech_to_text.py
-│   └── database/                # Connexion à la BDD, ORM
-│       ├── session.py
-│       └── init_db.py
-│
-├── frontend/                    # (optionnel) Kotlin ou HTML/JS
-│   └── ...
-├── data/                        # Fichiers de test ou exemples PDF/vidéos
-├── tests/                       # Tests unitaires et d’intégration
-│   ├── test_pdf.py
-│   ├── test_video.py
-│   └── test_quiz.py
-├── .env                         # Variables d’environnement
-├── requirements.txt             # Dépendances Python
-├── README.md                    # Présentation du projet
-└── alembic/                     # Migrations de base de données
-
-
-> Diagrammes UML disponibles dans le rapport d’analyse.
+├── app/
+│   ├── main.py
+│   ├── config.py
+│   ├── routers/
+│   ├── services/
+│   ├── models/
+│   ├── schemas/
+│   ├── utils/
+│   └── database/
+├── frontend/
+├── data/
+├── tests/
+├── .env
+├── requirements.txt
+├── README.md
+└── alembic/
+```
 
 ---
 
 ## ⚠️ Contraintes & défis
 
-- Gestion des formats PDF variés (code inclus)
-- Qualité hétérogène des vidéos (bruit, résolution)
-- Temps de traitement pour gros fichiers
-- Interface à la fois intuitive et complète
+- Gestion de PDF variés (avec code, images, etc.)
+- Qualité des vidéos/audio parfois faible
+- Temps de traitement de gros fichiers
+- Interface à la fois intuitive et riche
 
 ---
 
 ## ✅ Critères de validation
 
-| Fonctionnalité      | Critère attendu                                     |
-|---------------------|-----------------------------------------------------|
-| PDF                 | Taux de précision > 95%                             |
-| Vidéo               | Concepts extraits correctement > 90% des cas        |
-| Quiz                | Cohérence et pertinence du contenu généré           |
-| Performances        | Temps de réponse rapide, même avec des fichiers lourds |
-| Feedback utilisateur| Interface accessible et encouragée                  |
+| Fonctionnalité       | Critère attendu                                     |
+|----------------------|------------------------------------------------------|
+| PDF                  | Précision > 95%                                     |
+| Vidéo               | Concepts extraits dans > 90% des cas                 |
+| Quiz                 | Pertinence du contenu généré                       |
+| Performance          | Temps de réponse acceptable (même fichiers lourds)   |
+| Feedback utilisateur | Système intuitif, utilisé activement                |
 
 ---
 
 ## 🧪 Tests
 
-- 🔬 **Tests unitaires** : PDFImporter, VideoAnalyzer, QuizGenerator, FeedbackSystem
-- 🔗 **Tests d’intégration** : flux complet (import → quiz)
-- 🧭 **Tests fonctionnels** : cas d’usage étudiants simulés
-- 📈 **Tests de performance** : scalabilité et temps de réponse
-- 👥 **Tests utilisateurs** : feedback réel pour itération
+- 🔬 **Unitaires** : PDFImporter, VideoAnalyzer, QuizGenerator
+- 🔗 **Intégration** : Chaîne complète (import → quiz)
+- 🔍 **Fonctionnels** : Cas d’usage réels
+- 📊 **Performance** : Scalabilité, charge
+- 👥 **Utilisateurs** : Feedback humain pour ajustement
 
 ---
 
@@ -158,11 +137,47 @@ cd study-ai
 
 # Créer l'environnement virtuel
 python -m venv env
-source env/bin/activate
+source env/Scripts/activate
 
 # Installer les dépendances
 pip install -r requirements.txt
 
 # Lancer l'application
-uvicorn main:app --reload
+uvicorn app.main:app --reload
+```
+
+---
+
+## 🔐 Exemple de fichier `.env`
+
+```env
+OPENAI_API_KEY=sk-xxx
+GOOGLE_SPEECH_API_KEY=xxx
+DATABASE_URL=postgresql://user:password@localhost/studyai
+```
+
+---
+
+## 🤝 Contribuer
+
+Les contributions sont les bienvenues !
+
+- Forkez le repo
+- Créez une branche (`git checkout -b feature/ma-feature`)
+- Commitez vos changements
+- Push (`git push origin feature/ma-feature`)
+- Ouvrez une pull request 🚀
+
+---
+
+## 📢 Auteurs & Contribution
+
+**Développé par :** Tameri Tech  
+**Contact :** [tameri.tech25@gmail.com](mailto:tameri.tech25@gmail.com)
+
+> Diagrammes UML disponibles dans le rapport d’analyse officiel du projet.
+
+---
+
+**✨ Rejoignez la révolution de l'apprentissage intelligent avec Study AI.**
 
