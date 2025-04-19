@@ -1,15 +1,30 @@
-# Exclure le dossier d'environnement virtuel
+venv/
 env/
-
-# Pycache et fichiers Python compilés
 __pycache__/
+.env/
 *.pyc
 *.pyo
-*.pyd
-
-# VS Code settings
-.vscode/
-
-# OS files
-.DS_Store
-Thumbs.db
+*.pyd   
+*.db
+*.sqlite3   
+*.log
+*.csv   
+*.json
+*.xml
+*.xlsx
+*.xls
+*.docx
+*.pptx
+*.pdf
+*.zip
+*.tar.gz
+*.rar
+*.7z
+*.gz
+*.bz2
+*.xz
+*.tgz
+*.egg-info
+*.egg   
+*.whl
+*.dist-info 
