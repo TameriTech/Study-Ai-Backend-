@@ -144,6 +144,13 @@ pip install -r requirements.txt
 
 # Lancer l'application
 uvicorn app.main:app --reload
+
+# Installer la librairie pypdf pour l'extraction des données pdf
+pip install pypdf
+
+# Installer sentence-transformers
+pip install sentence-transformers
+
 ```
 
 ---
