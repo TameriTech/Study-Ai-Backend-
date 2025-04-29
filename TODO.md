@@ -1,30 +1,99 @@
-# ✅ To-do List – StudyAI Backend
-
-## 🧩 Fonctionnalités Backend
-
-- [x] Création de la structure modulaire du projet
-- [x] Implémentation du `pdf_router`
-- [x] Création du schéma `PDFUpload`
-- [ ] Extraction et nettoyage du texte des PDF
-- [ ] Intégration d'une analyse de concepts (NLP)
-- [ ] Préparation des données pour le module quiz
-- [ ] Routage pour l'analyse vidéo (upload, transcriptions)
-- [ ] Ajout d'une base de données PostgreSQL
+Here's a reorganized and comprehensive TODO list for your StudyAI backend project, structured by core functionality with technical specifics:
 
 ---
 
-## 📄 Documentation
+# 🚀 **StudyAI Backend Roadmap**
 
-- [x] Création du fichier `README.md`
-- [ ] Création d'une documentation markdown de l'API
-- [ ] Ajout de schémas de flux / diagrammes
+## 🔐 **1. Authentication & User Management**
+- [ ] Implement JWT authentication/ standby
+- [x] User registration/login endpoints
+- [ ] Password hashing (bcrypt) /standby
+- [x] User profile management (CRUD)
 
----
+## 📂 **2. File Processing Pipeline**
+### **PDF Processing**
+- [x] PDF text extraction (PyMuPDF)
+- [x] Handle scanned PDFs (Tesseract OCR)
+- [ ] Table extraction (camelot/tabula)
 
-## ⚙️ Outils et Configuration
+### **Image Processing**
+- [x] Text extraction (Pytesseract)
+- [x] Math equation detection (LaTeX output)
+- [ ] Diagram interpretation
 
-- [ ] Configuration CI/CD avec GitHub Actions
-- [ ] Création du fichier `.env` pour les variables d'environnement
-- [ ] Ajout de tests automatisés (pytest)
-- [ ] Script d’import de données d’exemple
+### **Video Processing**
+- [x] Frame extraction (FFmpeg)
+- [x] Audio transcription (Whisper)
+- [x] Slide detection (OpenCV)
 
+## 🧠 **3. AI Processing Core**
+### **Text Transformation**
+- [x] Summary generation (Ollama)
+- [x] Simplification (Ollama)
+- [x] Key concept extraction
+- [x] Prerequisite identification
+
+### **Quiz Generation**
+- [ ] Multiple-choice questions
+- [ ] True/False questions
+- [ ] Fill-in-the-blank
+- [ ] Adaptive difficulty scaling
+
+### **Vocabulary Builder**
+- [x] Term-definition extraction
+
+## 💬 **4. Chatbot Integration**
+- [ ] Context-aware Q&A
+- [ ] Lecture material comprehension
+- [ ] Mistake explanation
+- [ ] Study plan advisor
+
+## 📊 **5. Feedback System**
+- [ ] Quiz performance analytics
+- [ ] Knowledge gap identification
+- [ ] Personalized recommendations
+- [ ] Difficulty adjustment
+
+## 🛠 **6. Infrastructure**
+- [x] PostgreSQL schema optimization
+- [ ] Vector embeddings for search
+- [ ] Async processing queues
+- [ ] Rate limiting
+
+## 🧪 **7. Testing**
+- [ ] File processing unit tests
+- [ ] AI output validation
+- [ ] Load testing
+- [ ] Edge case handling
+
+## 📄 **8. Documentation**
+- [x] API reference (Swagger/Redoc)
+- [x] Architecture diagrams
+- [x] Model training data
+- [ ] Deployment guide
+
+## 🔄 **Workflow**
+```mermaid
+graph TD
+    A[File Upload] --> B{Type?}
+    B -->|PDF| C[PyMuPDF]
+    B -->|Image| D[Pytesseract]
+    B -->|Video| E[FFmpeg+Whisper]
+    C/D/E --> F[Text Processing]
+    F --> G[Ollama Summary]
+    F --> H[Ollama Simplification]
+    G --> I[Quiz Generator]
+    H --> I
+    F --> J[Vocabulary Builder]
+    I --> K[Feedback System]
+```
+
+**Key Libraries:**
+- `PyMuPDF` - PDF text extraction
+- `Pytesseract` - OCR for images
+- `FFmpeg` - Video frame extraction
+- `Whisper` - Audio transcription
+- `Ollama` - All text generation tasks
+- `SentenceTransformers` - Vector embeddings
+
+Would you like me to prioritize these tasks or elaborate on any specific section?

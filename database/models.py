@@ -1,96 +1,147 @@
 from database.db import Base
-from sqlalchemy import Integer, Column, String, Date
+from sqlalchemy import Integer, Column, String, Date, Numeric
 from sqlalchemy import Column, Integer, String, Date, DateTime, ForeignKey, Enum, JSON
 from sqlalchemy.orm import relationship
 from datetime import datetime
 import enum
+import numpy as np
+import json
 
 # Enum for document types
 class DocumentTypeEnum(str, enum.Enum):
     pdf = "pdf"
+    image = "image"
     video = "video"
 
 # Enum for quiz types
 class QuizTypeEnum(str, enum.Enum):
     qcm = "qcm"
     texte = "texte"
+    true_or_false = "true_or_false"
+
+# Enum for course levels
+class CourseLevelEnum(str, enum.Enum):
+    beginner = "beginner"
+    intermediate = "intermediate"
+    advanced = "advanced"
 
 class User(Base):
     __tablename__ = "Users"
 
     id = Column(Integer, primary_key=True, index=True)
     fullName = Column(String, index=True)
-    email = Column(String, unique=True, index=True)  # Make email unique
-    password = Column(String, index=True)  # Store hashed password
-    # dateOfBirth = Column(Date, index=True) Use Date type
-    best_subjects = Column(String, index=True)
-    learning_objectives = Column(String, index=True)
-    class_level = Column(String, index=True)
-    academic_level = Column(String, index=True)
-    statistic = Column(Integer, index=True)
+    email = Column(String, unique=True, index=True)
+    password = Column(String)
+    best_subjects = Column(String)
+    learning_objectives = Column(String)
+    class_level = Column(String)
+    academic_level = Column(String)
+    statistic = Column(Integer)
     created_at = Column(DateTime, default=datetime.utcnow)
+    
+    # Relationships
+    documents = relationship("Document", back_populates="user")
 
 class Document(Base):
-    __tablename__ = "document"
+    __tablename__ = "Documents"
 
     id_document = Column(Integer, primary_key=True, index=True)
     title = Column(String, nullable=False)
-    type_document = Column(Enum(DocumentTypeEnum), nullable=False)
+    type_document = Column(String)
     original_filename = Column(String, nullable=False)
     storage_path = Column(String, nullable=False)
+    original_text = Column(String)
     uploaded_at = Column(DateTime, default=datetime.utcnow)
-
+    user_id = Column(Integer, ForeignKey('Users.id'), nullable=False)
+    
+    # Relationships
+    user = relationship("User", back_populates="documents")
     segments = relationship("Segment", back_populates="document")
+    courses = relationship("Course", back_populates="document")
+
+class Course(Base):
+    __tablename__ = "Courses"
+    
+    id_course = Column(Integer, primary_key=True, index=True)
+    course_name = Column(String(255), nullable=False)
+    original_text = Column(String)
+    simplified_text = Column(String)
+    summary_text = Column(String)
+    level = Column(Enum(CourseLevelEnum), nullable=False)
+    estimated_completion_time = Column(String(50))
+    summary_modules = Column(JSON)
+    simplified_modules = Column(JSON)
+    simplified_current_page = Column(Integer, default=1)
+    summary_current_page = Column(Integer, default=1)
+    simplified_module_pages = Column(Integer, default=0)
+    summary_module_pages = Column(Integer, default=0)
+    simplified_module_statistic = Column(Numeric(10, 2), default=0)  # 10 digits total, 2 after decimal
+    summary_modules_statistic = Column(Numeric(10, 2), default=0)
+    document_id = Column(Integer, ForeignKey('Documents.id_document'), nullable=False)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    
+    # Relationships
+    document = relationship("Document", back_populates="courses")
+    quizzes = relationship("Quiz", back_populates="course")
+    vocabularies = relationship("Vocabulary", back_populates="course")
 
 class Segment(Base):
-    __tablename__ = "segment"
+    __tablename__ = "Segments"
 
     id_segment = Column(Integer, primary_key=True, index=True)
-    id_document = Column(Integer, ForeignKey("document.id_document"), nullable=False)
+    document_id = Column(Integer, ForeignKey('Documents.id_document'), nullable=False)
     raw_text = Column(String, nullable=False)
-    summary_text = Column(String)
-    simplified_text = Column(String)
-    embedding_vector = Column(String)  # Adjust type if using specific vector types
+    embedding_vector = Column(String)
     created_at = Column(DateTime, default=datetime.utcnow)
 
+    # Relationships
     document = relationship("Document", back_populates="segments")
-    quizzes = relationship("Quiz", back_populates="segment")
-    vocabularies = relationship("Vocabulary", back_populates="segment")
+
+    def set_embedding(self, vector: np.ndarray):
+        """Serialize numpy array to JSON string for storage"""
+        self.embedding_vector = json.dumps(vector.tolist())
+    
+    def get_embedding(self) -> np.ndarray:
+        """Deserialize JSON string back to numpy array"""
+        return np.array(json.loads(self.embedding_vector)) if self.embedding_vector else None
 
 class Quiz(Base):
-    __tablename__ = "quiz"
+    __tablename__ = "Quizzes"
 
     id_quiz = Column(Integer, primary_key=True, index=True)
-    id_segment = Column(Integer, ForeignKey("segment.id_segment"), nullable=False)
+    course_id = Column(Integer, ForeignKey('Courses.id_course'), nullable=False)
     instruction = Column(String, nullable=False)
     question = Column(String, nullable=False)
     correct_answer = Column(String, nullable=False)
-    choices = Column(JSON, nullable=False)  # Ensure your database supports JSON
+    choices = Column(JSON, nullable=False)
     quiz_type = Column(Enum(QuizTypeEnum), nullable=False)
     level_of_difficulty = Column(Enum(QuizTypeEnum), nullable=False)
     number_of_questions = Column(Integer, index=True)
     created_at = Column(DateTime, default=datetime.utcnow)
-
-    segment = relationship("Segment", back_populates="quizzes")
+    
+    # Relationships
+    course = relationship("Course", back_populates="quizzes")
     feedbacks = relationship("Feedback", back_populates="quiz")
 
 class Vocabulary(Base):
-    __tablename__ = "vocabulary"
+    __tablename__ = "Vocabularies"
 
     id_term = Column(Integer, primary_key=True, index=True)
-    id_segment = Column(Integer, ForeignKey("segment.id_segment"), nullable=False)
-    term = Column(String, nullable=False)
-    definition = Column(String, nullable=False)
-
-    segment = relationship("Segment", back_populates="vocabularies")
+    course_id = Column(Integer, ForeignKey('Courses.id_course'), nullable=False)
+    words = Column(JSON)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    
+    # Relationships
+    course = relationship("Course", back_populates="vocabularies")
 
 class Feedback(Base):
-    __tablename__ = "feedback"
+    __tablename__ = "Feedbacks"
 
     id_feedback = Column(Integer, primary_key=True, index=True)
-    id_quiz = Column(Integer, ForeignKey("quiz.id_quiz"), nullable=False)
+    quiz_id = Column(Integer, ForeignKey('Quizzes.id_quiz'), nullable=False)
     rating = Column(Integer, nullable=False)
     comment = Column(String)
     created_at = Column(DateTime, default=datetime.utcnow)
 
+    # Relationships
     quiz = relationship("Quiz", back_populates="feedbacks")

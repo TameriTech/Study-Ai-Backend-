@@ -1,11 +1,16 @@
 import requests
+from dotenv import load_dotenv
+import os
 
-OLLAMA_API_URL = "http://localhost:11434/api/generate"
+# Load environment variables from .env file
+load_dotenv()
+
+OLLAMA_API_URL = os.getenv("OLLAMA_API_URL")
 
 def summarize_with_ollama(text: str, model: str = "mistral"):
     try:
         response = requests.post(
-            "http://localhost:11434/api/generate",
+            OLLAMA_API_URL,
             json={
                 "model": model,
                 "prompt": f"Summarize the following video content and generate 5 questions from it:\n\n{text}",

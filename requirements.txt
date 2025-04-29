@@ -18,3 +18,6 @@ requests
 moviepy==1.0.3
 openai-whisper
 python-dotenv
+sentence-transformers>=2.2.2
+numpy==1.26.0
+python-multipart==0.0.6

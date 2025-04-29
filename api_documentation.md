@@ -128,4 +128,3 @@ Certaines routes nécessiteront une authentification par token JWT : login, gest
 ---
 
 > 🧬 Cette documentation est amenée à évoluer en fonction des nouvelles fonctionnalités ajoutées à StudyAI.
-

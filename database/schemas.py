@@ -1,5 +1,8 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from datetime import date
+from datetime import datetime
+from typing import Dict, Optional, List, Any
+from enum import Enum
 
 class UserBase(BaseModel):
     fullName: str
@@ -30,3 +33,139 @@ class User(UserBase):
         # orm_mode = True # pydantic version < 2.x
         from_attribute = True # pydantic version > 2.x
 
+# Enums (already defined in SQLAlchemy, repeating here for Pydantic)
+class DocumentTypeEnum(str, Enum):
+    pdf = "pdf"
+    image = "image"
+    video = "video"
+
+class QuizTypeEnum(str, Enum):
+    qcm = "qcm"
+    texte = "texte"
+    true_or_false = "true_or_false"
+
+class CourseLevelEnum(str, Enum):
+    beginner = "beginner"
+    intermediate = "intermediate"
+    advanced = "advanced"
+
+# Course related schemas
+class CourseBase(BaseModel):
+    course_name: str
+    original_text: Optional[str] = None
+    simplified_text: Optional[str] = None
+    summary_text: Optional[str] = None
+    level: CourseLevelEnum
+    estimated_completion_time: Optional[str] = None
+    summary_modules: Optional[List[Dict[str, Any]]] = Field(default_factory=list)
+    simplified_modules: Optional[List[Dict[str, Any]]] = Field(default_factory=list)
+    simplified_module_pages: Optional[int] = 0
+    summary_module_pages: Optional[int] = 0
+    summary_current_page: Optional[int] = 1
+    simplified_current_page: Optional[int] = 1 
+    simplified_module_statistic: Optional[float] = 0.0  # Changed to float since it was Float in SQLAlchemy
+    summary_modules_statistic: Optional[float] = 0.0  # Changed to float
+    document_id: int
+
+class CourseCreate(CourseBase):
+    pass
+
+class Course(CourseBase):
+    id_course: int
+    created_at: datetime
+    quizzes: List['Quiz'] = []
+    vocabularies: List['Vocabulary'] = []
+    
+    class Config:
+        from_attributes = True
+
+class CourseSearchResult(Course):
+    pass  # Inherits all fields from Course
+
+class CourseSearchResponse(BaseModel):
+    results: List[CourseSearchResult]
+    pagination: dict = Field(
+        example={
+            "total": 15,
+            "returned": 10,
+            "skip": 0,
+            "limit": 10
+        }
+    )
+
+# Quiz related schemas
+class QuizBase(BaseModel):
+    course_id: int
+    instruction: str
+    question: str
+    correct_answer: str
+    choices: dict
+    quiz_type: QuizTypeEnum
+    level_of_difficulty: QuizTypeEnum  # Note: This should probably be a different enum
+    number_of_questions: int
+
+class QuizCreate(QuizBase):
+    pass
+
+class Quiz(QuizBase):
+    id: int
+    created_at: datetime
+    feedbacks: List['Feedback'] = []
+    
+    class Config:
+        from_attributes = True
+
+# Vocabulary related schemas
+class VocabularyBase(BaseModel):
+    course_id: int
+    words: Optional[List[Dict[str, Any]]] = Field(default_factory=list)
+
+class VocabularyCreate(VocabularyBase):
+    pass
+
+class Vocabulary(VocabularyBase):
+    id_term: int
+    created_at: datetime
+    
+    class Config:
+        from_attributes = True
+        
+class VocabularyWords(BaseModel):
+    words: List[Dict[str, Any]]
+    
+    class Config:
+        from_attributes = True
+
+class VocabularyCreate(BaseModel):
+    course_id: int = Field(..., example=1)
+    words: Optional[List[Dict[str, Any]]] = Field(default_factory=list)
+
+class VocabularySearchResult(BaseModel):
+    term: str
+    definition: str
+    
+class VocabularySearchResponse(BaseModel):
+    results: List[Dict[str, Any]]
+    pagination: Dict[str, int] = Field(
+        example={"total": 15, "returned": 10, "skip": 0}
+    )
+
+# Feedback related schemas
+class FeedbackBase(BaseModel):
+    quiz_id: int
+    rating: int
+    comment: Optional[str] = None
+
+class FeedbackCreate(FeedbackBase):
+    pass
+
+class Feedback(FeedbackBase):
+    id: int
+    created_at: datetime
+    
+    class Config:
+        from_attributes = True
+
+# Update the forward references after all classes are defined
+Course.model_rebuild()
+Quiz.model_rebuild()
