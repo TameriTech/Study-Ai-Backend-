@@ -209,7 +209,7 @@ Les contributions sont les bienvenues !
 
 **✨ Rejoignez la révolution de l'apprentissage intelligent avec Study AI.**
 
-================================================================
+============================================================================
 
 USER
 ──────
