@@ -292,8 +292,6 @@ USER
 
 
 ===========================================================================
-===========================================================================
-===========================================================================
 
 Here's a clear and professional documentation for the `users_services` module based on your provided code. This can be added to your `api_documentation.md` or kept separately under a **Services Documentation** section.
 
@@ -385,9 +383,10 @@ def delete_user(db: Session, user_id: int)
 
 ---
 
-=======================================================================================================================================================================================
-=======================================================================================================================================================================================
-=======================================================================================================================================================================================
+
+
+===========================================================================
+
 Here's the comprehensive documentation Documents module following your established style:
 
 ---
@@ -519,9 +518,10 @@ Uniform error responses with:
 
 ---
 
-=======================================================================================================================================================================================
-=======================================================================================================================================================================================
-=======================================================================================================================================================================================
+
+
+===========================================================================
+
 Here's the comprehensive documentation for your `course_service.py` module:
 
 ---
@@ -668,9 +668,8 @@ search_courses(db, "algebr", fuzzy_match=True)
 
 ---
 
-=======================================================================================================================================================================================
-=======================================================================================================================================================================================
-=======================================================================================================================================================================================
+===========================================================================
+
 Here's the documentation for your `segment_service.py` module:
 
 ---
@@ -768,9 +767,8 @@ Would you like me to:
 1. Document uploaded → 2. Course created → 3. Modules generated →  
 4. User interacts → 5. Progress updated → 6. Searchable content
 
-=======================================================================================================================================================================================
-=======================================================================================================================================================================================
-=======================================================================================================================================================================================
+===========================================================================
+
 Here's the comprehensive documentation for your Vocabulary API endpoints:
 
 ---
@@ -923,10 +921,7 @@ curl http://localhost:8000/api/vocabularies/5/search?keyword=variable
 ```
 
 
-=======================================================================================================================================================================================
-=======================================================================================================================================================================================
-=======================================================================================================================================================================================
-=======================================================================================================================================================================================
+===========================================================================
 
 Here's the comprehensive API documentation for your StudyAI backend routes:
 
@@ -1080,15 +1075,9 @@ Standard error responses:
 
 ---
 
-This documentation covers all current endpoints with:
-1. Clear parameter descriptions
-2. Example requests/responses
-3. Technical implementation details
-4. Error handling specifications
 
-=======================================================================================================================================================================================
-=======================================================================================================================================================================================
-=======================================================================================================================================================================================
+
+===========================================================================
 
 Here's the comprehensive documentation for your StudyAI schema definitions:
 
@@ -1285,82 +1274,6 @@ course_data = {
 }
 CourseCreate(**course_data)
 ```
-=======================================================================================================================================================================================
-=======================================================================================================================================================================================
-=======================================================================================================================================================================================
 
 
-For large project this is the appropriate structure
-study-ai-backend/
-│
-├── api/                          # API endpoints
-│   ├── __init__.py
-│   ├── courses.py                # Course management routes
-│   ├── documents.py              # File upload processing
-│   ├── quiz.py                   # Quiz generation routes
-│   ├── users.py                  # Authentication & user management
-│   ├── vocabulary.py             # Vocabulary endpoints
-│   └── feedback.py               # Quiz feedback system
-│
-├── core/                         # Application core
-│   ├── config.py                 # App configuration
-│   ├── security.py               # Auth utilities
-│   └── models.py                 # SQLAlchemy models
-│
-├── services/                     # Business logic
-│   ├── ai_processing/            # AI-related services
-│   │   ├── content_processor.py  # Text processing
-│   │   ├── quiz_generator.py     # Quiz creation
-│   │   └── vocabulary_builder.py # Term extraction
-│   │
-│   ├── course_service.py         # Course management
-│   ├── document_service.py       # File processing
-│   ├── feedback_service.py       # Feedback analysis
-│   └── user_service.py           # User operations
-│
-├── schemas/                      # Pydantic models
-│   ├── __init__.py
-│   ├── courses.py                # Course schemas
-│   ├── documents.py              # File schemas
-│   ├── users.py                  # User schemas
-│   ├── quiz.py                   # Quiz schemas
-│   └── vocabulary.py             # Vocabulary schemas
-│
-├── utils/                        # Utilities
-│   ├── file_handlers/            # File processing
-│   │   ├── pdf_handler.py        # PDF-specific
-│   │   ├── image_handler.py      # Image processing
-│   │   └── video_handler.py      # Video processing
-│   │
-│   ├── ai_utils/                 # AI helpers
-│   │   ├── ollama_client.py      # LLM interactions
-│   │   └── embeddings.py         # Vector generation
-│   │
-│   ├── database.py               # DB utilities
-│   └── helpers.py                # General utilities
-│
-├── tests/                        # Testing
-│   ├── unit/                     # Unit tests
-│   └── integration/              # Integration tests
-│
-├── static/                       # Static files
-│   └── docs/                     # API documentation
-│
-├── temp_files/                   # Temporary storage
-│   ├── uploads/                  # User uploads
-│   └── processed/                # Processed files
-│
-├── main.py                       # App entry point
-├── requirements.txt              # Dependencies
-├── .env                          # Environment variables
-└── README.md                     # Project documentation
-
-
-# Connect to PostgreSQL (will prompt for password)
-psql -U postgres -h localhost -p 5432
-
-# When connected, run:
-CREATE EXTENSION IF NOT EXISTS pg_trgm;
-
-# Verify installation
-\dx pg_trgm
+===========================================================================
