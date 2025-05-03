@@ -8,11 +8,10 @@ from database import db
 from database import models
 from database.models import Course, Document
 from typing import Optional
-import json
 from typing import List, Dict, Optional
 
 from utils.general_utils import parse_modules
-from utils.ollama_utils import generate_from_ollama
+from utils.ollama_utils import text_generate_from_ollama
 
 
 def create_course(
@@ -22,7 +21,6 @@ def create_course(
         original_text: Optional[str] = None,
         simplified_text: Optional[str] = None,
         summary_text: Optional[str] = None,
-        level: str = "beginner",
     ) -> Course:
 
     # Parse modules if provided
@@ -32,7 +30,7 @@ def create_course(
     {simplified_text}
     ---
     """
-    simplified_modules_text = generate_from_ollama(simplified_modules_prompt)
+    simplified_modules_text = text_generate_from_ollama(simplified_modules_prompt)
 
     summary_modules_prompt = f"""
     I have this course notes I want you to structure it in modules which each module will have a topic and body for example we chave am introduction as topic and a body of the introduction and finally let it be in a way I can play it in an array so that each module represent an element in the array:
@@ -40,7 +38,7 @@ def create_course(
     {summary_text}
     ---
     """
-    summary_modules_text = generate_from_ollama(summary_modules_prompt)
+    summary_modules_text = text_generate_from_ollama(summary_modules_prompt)
     
     estimated_completion_time_prompt = f"""
     Without saying anything esle just give the hours needed to revise this text the response should be less then 12 chareacters:
@@ -48,7 +46,7 @@ def create_course(
     {simplified_text}
     ---
     """
-    estimated_completion_time = generate_from_ollama(estimated_completion_time_prompt)
+    estimated_completion_time = text_generate_from_ollama(estimated_completion_time_prompt)
 
     summary_modules = parse_modules(summary_modules_text) if summary_modules_text else None
     simplified_modules = parse_modules(simplified_modules_text) if simplified_modules_text else None
@@ -65,8 +63,9 @@ def create_course(
         original_text=original_text,
         simplified_text=simplified_text,
         summary_text=summary_text,
-        level=level,
+        level_of_difficulty="medium",
         estimated_completion_time=estimated_completion_time,
+        quiz_instruction="Quiz instruction",
         summary_modules=summary_modules,
         simplified_modules=simplified_modules,
         simplified_module_pages=simplified_module_pages,

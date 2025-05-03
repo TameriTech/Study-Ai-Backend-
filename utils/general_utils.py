@@ -27,6 +27,32 @@ ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
 
+
+def extract_and_parse_questions(text):
+    """
+    Extracts JSON data between square brackets, fixes keys (adds quotes), and parses it.
+    """
+    # Find content between [ and ]
+    match = re.search(r'\[.*\]', text, re.DOTALL)
+    if not match:
+        raise ValueError("No JSON array found between square brackets")
+    
+    json_str = match.group(0)
+    
+    # Fix JSON by adding quotes around property names
+    json_str_fixed = re.sub(
+        r'(\s*)(\w+)(\s*:\s*)',  # Matches keys like "question:"
+        lambda m: f'{m.group(1)}"{m.group(2)}"{m.group(3)}',  # Adds quotes
+        json_str
+    )
+    
+    try:
+        questions = json.loads(json_str_fixed)
+    except json.JSONDecodeError as e:
+        raise ValueError(f"Invalid JSON format: {e}")
+    
+    return questions
+
 def parse_modules(module_text: str) -> List[Dict[str, str]]:
     modules = []
     # Split by module headers

@@ -32,7 +32,7 @@ async def search_vocabulary_word(
     db: Session = Depends(get_db)
 ):
     try:
-        words = search_word_in_course(course_id, keyword, db)
+        words = search_word_in_course(db=db, course_id=course_id, search_term=keyword)
         return {"words": words}
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Search error: {str(e)}")

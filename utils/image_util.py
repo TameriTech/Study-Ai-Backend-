@@ -8,12 +8,12 @@ import pytesseract
 from database.models import Document
 from services.course_service import create_course
 from services.segment_service import process_segments
-from utils.ollama_utils import generate_from_ollama
+from utils.ollama_utils import text_generate_from_ollama
 from fastapi import UploadFile, HTTPException
 from PIL import Image
 import pytesseract
 import io
-from utils.ollama_utils import generate_from_ollama
+
 
 os.makedirs("temp_files/images", exist_ok=True)
 
@@ -45,7 +45,7 @@ async def extract_and_save_image(db: Session, file: UploadFile, user_id: int) ->
     ---
     Summarize the text above for revision purpose.
     """
-    summary_text = generate_from_ollama(summary_prompt)
+    summary_text = text_generate_from_ollama(summary_prompt)
 
     simplify_prompt = f"""
     Here is a text from a PDF document:
@@ -54,7 +54,7 @@ async def extract_and_save_image(db: Session, file: UploadFile, user_id: int) ->
     ---
     Simplify the text above for purpose of better undersatanding.
     """
-    simplified_text = generate_from_ollama(simplify_prompt)
+    simplified_text = text_generate_from_ollama(simplify_prompt)
     
     # Create document record in database
     db_document = Document(
@@ -71,7 +71,7 @@ async def extract_and_save_image(db: Session, file: UploadFile, user_id: int) ->
     db.refresh(db_document)
 
     # Process text into segments with embeddings
-    create_course(db, db_document.id_document,file.filename, text, simplified_text, summary_text, "beginner",)
+    create_course(db, db_document.id_document,file.filename, text, simplified_text, summary_text)
     process_segments(db, db_document.id_document, text)
 
     return {

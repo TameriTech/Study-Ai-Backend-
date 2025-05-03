@@ -4,8 +4,9 @@ from sqlalchemy.orm import Session
 from datetime import datetime
 from typing import List, Dict, Any
 from fastapi import status
-from database import models, schemas
+from database import schemas
 from database.db import get_db
+from database import models
 from utils.general_utils import parse_vocabulary_response
 from utils.ollama_utils import generate_from_ollama
 
@@ -20,17 +21,21 @@ def create_vocabulary_entry(course_id: int, db: Session) -> schemas.Vocabulary:
         raise HTTPException(status_code=404, detail="Course not found")
 
     vocabulary_prompt = f"""
-    Extract terms and definitions from this text:
-    {course.original_text}
-    
+    Extract terms and definitions from this text: 
+    ---
+     {course.original_text}
+    ---
     Return ONLY a JSON array formatted like this:
-    [
+    "words": [
         {{"term": "word1", "definition": "definition1"}},
         {{"term": "word2", "definition": "definition2"}}
     ]
+    Make sur to provide the respond in the json format above.
     """
     
     response = generate_from_ollama(vocabulary_prompt)
+    print(f"text:\n{course.original_text}")
+
     print(f"Raw response:\n{response}")
 
     try:

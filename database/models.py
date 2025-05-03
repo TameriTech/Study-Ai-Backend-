@@ -14,16 +14,15 @@ class DocumentTypeEnum(str, enum.Enum):
     video = "video"
 
 # Enum for quiz types
-class QuizTypeEnum(str, enum.Enum):
-    qcm = "qcm"
-    texte = "texte"
+class QuizEnumType(str, enum.Enum):
+    mcq = "mcq"
+    text = "text"
     true_or_false = "true_or_false"
 
-# Enum for course levels
-class CourseLevelEnum(str, enum.Enum):
-    beginner = "beginner"
-    intermediate = "intermediate"
-    advanced = "advanced"
+class QuizDifficultyLevelEnum(str, enum.Enum):
+    easy = "easy"
+    medium = "medium"
+    hard = "hard"
 
 class User(Base):
     __tablename__ = "Users"
@@ -67,8 +66,9 @@ class Course(Base):
     original_text = Column(String)
     simplified_text = Column(String)
     summary_text = Column(String)
-    level = Column(Enum(CourseLevelEnum), nullable=False)
+    level_of_difficulty = Column(Enum(QuizDifficultyLevelEnum), nullable=True)
     estimated_completion_time = Column(String(50))
+    quiz_instruction = Column(String, nullable=True)
     summary_modules = Column(JSON)
     simplified_modules = Column(JSON)
     simplified_current_page = Column(Integer, default=1)
@@ -84,6 +84,8 @@ class Course(Base):
     document = relationship("Document", back_populates="courses")
     quizzes = relationship("Quiz", back_populates="course")
     vocabularies = relationship("Vocabulary", back_populates="course")
+    feedbacks = relationship("Feedback", back_populates="course")
+
 
 class Segment(Base):
     __tablename__ = "Segments"
@@ -110,18 +112,17 @@ class Quiz(Base):
 
     id_quiz = Column(Integer, primary_key=True, index=True)
     course_id = Column(Integer, ForeignKey('Courses.id_course'), nullable=False)
-    instruction = Column(String, nullable=False)
     question = Column(String, nullable=False)
     correct_answer = Column(String, nullable=False)
+    user_answer = Column(String, nullable=True)  # Initially nullable until user answers
     choices = Column(JSON, nullable=False)
-    quiz_type = Column(Enum(QuizTypeEnum), nullable=False)
-    level_of_difficulty = Column(Enum(QuizTypeEnum), nullable=False)
+    quiz_type = Column(Enum(QuizEnumType), nullable=False)
+    level_of_difficulty = Column(Enum(QuizDifficultyLevelEnum), nullable=False)
     number_of_questions = Column(Integer, index=True)
     created_at = Column(DateTime, default=datetime.utcnow)
     
     # Relationships
     course = relationship("Course", back_populates="quizzes")
-    feedbacks = relationship("Feedback", back_populates="quiz")
 
 class Vocabulary(Base):
     __tablename__ = "Vocabularies"
@@ -138,10 +139,10 @@ class Feedback(Base):
     __tablename__ = "Feedbacks"
 
     id_feedback = Column(Integer, primary_key=True, index=True)
-    quiz_id = Column(Integer, ForeignKey('Quizzes.id_quiz'), nullable=False)
+    course_id = Column(Integer, ForeignKey('Courses.id_course'), nullable=False)  # updated from quiz_id
     rating = Column(Integer, nullable=False)
     comment = Column(String)
     created_at = Column(DateTime, default=datetime.utcnow)
 
     # Relationships
-    quiz = relationship("Quiz", back_populates="feedbacks")
+    course = relationship("Course", back_populates="feedbacks")

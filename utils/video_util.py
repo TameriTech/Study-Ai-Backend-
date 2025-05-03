@@ -10,7 +10,7 @@ import pytesseract
 from PIL import Image
 import tempfile
 
-from utils.ollama_utils import generate_from_ollama
+from utils.ollama_utils import text_generate_from_ollama
 
 os.makedirs("temp_files/videos", exist_ok=True)
 
@@ -69,7 +69,7 @@ async def extract_and_save_video(db: Session, file: UploadFile, user_id: int, fr
     ---
     Summarize the text above for revision purpose.
     """
-    summary_text = generate_from_ollama(summary_prompt)
+    summary_text = text_generate_from_ollama(summary_prompt)
 
     simplify_prompt = f"""
     Here is a text from a PDF document:
@@ -78,7 +78,7 @@ async def extract_and_save_video(db: Session, file: UploadFile, user_id: int, fr
     ---
     Simplify the text above for purpose of better undersatanding.
     """
-    simplified_text = generate_from_ollama(simplify_prompt)
+    simplified_text = text_generate_from_ollama(simplify_prompt)
     
     # Create document record in database
     db_document = Document(
@@ -95,7 +95,7 @@ async def extract_and_save_video(db: Session, file: UploadFile, user_id: int, fr
     db.refresh(db_document)
 
     # Process text into segments with embeddings
-    create_course(db, db_document.id_document,file.filename, all_text, simplified_text, summary_text, "beginner")
+    create_course(db, db_document.id_document,file.filename, all_text, simplified_text, summary_text)
     process_segments(db, db_document.id_document, all_text)
 
     return {

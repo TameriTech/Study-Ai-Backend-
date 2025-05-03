@@ -7,25 +7,26 @@ load_dotenv()
 
 OLLAMA_API_URL = os.getenv("OLLAMA_API_URL")
 
-def summarize_with_ollama(text: str, model: str = "mistral"):
-    try:
-        response = requests.post(
-            OLLAMA_API_URL,
-            json={
-                "model": model,
-                "prompt": f"Summarize the following video content and generate 5 questions from it:\n\n{text}",
-                "stream": False,
-            },
-        )
-        response.raise_for_status()
-        return response.json().get("response", "No response from Ollama")
-    except Exception as e:
-        raise Exception(f"Ollama summarization failed: {str(e)}")
-    
+OLLAMA_MODEL = os.getenv("OLLAMA_MODEL")
 
-def generate_from_ollama(prompt: str, model: str = "llama2") -> str:
+OLLAMA_TEXT_MODEL = os.getenv("OLLAMA_TEXT_MODEL")
+
+
+def generate_from_ollama(prompt: str) -> str:
     response = requests.post(OLLAMA_API_URL, json={
-        "model": model,
+        "model": OLLAMA_MODEL,
+        "prompt": prompt,
+        "stream": False
+    })
+
+    if response.status_code != 200:
+        raise Exception("Failed to get response from Ollama")
+
+    return response.json()["response"]
+
+def text_generate_from_ollama(prompt: str) -> str:
+    response = requests.post(OLLAMA_API_URL, json={
+        "model": OLLAMA_TEXT_MODEL,
         "prompt": prompt,
         "stream": False
     })

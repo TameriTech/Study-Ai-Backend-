@@ -3,8 +3,8 @@ from sentence_transformers import SentenceTransformer
 from datetime import datetime
 from database import db
 from database.models import Segment
-
 import json
+
 
 # Initialize embedding model (small but effective)
 model = SentenceTransformer('all-MiniLM-L6-v2')

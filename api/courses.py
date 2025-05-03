@@ -1,8 +1,9 @@
 from fastapi import APIRouter, Depends, HTTPException, Query
 from typing import Any, List, Dict, Optional
 from sqlalchemy.orm import Session
-from database import models, schemas
+from database import schemas
 from database.db import get_db
+from database import models
 from services.course_service import (
     get_course_from_db,
     get_simplified_modules,

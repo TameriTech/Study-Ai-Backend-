@@ -4,6 +4,23 @@ from datetime import datetime
 from typing import Dict, Optional, List, Any
 from enum import Enum
 
+# Enums (already defined in SQLAlchemy, repeating here for Pydantic)
+class DocumentTypeEnum(str, Enum):
+    pdf = "pdf"
+    image = "image"
+    video = "video"
+
+class QuizEnumType(str, Enum):
+    mcq = "mcq"
+    text = "text"
+    true_or_false = "true_or_false"
+
+class QuizDifficultyLevelEnum(str, Enum):
+    easy = "easy"
+    medium = "medium"
+    hard = "hard"
+
+
 class UserBase(BaseModel):
     fullName: str
     email: str
@@ -33,29 +50,14 @@ class User(UserBase):
         # orm_mode = True # pydantic version < 2.x
         from_attribute = True # pydantic version > 2.x
 
-# Enums (already defined in SQLAlchemy, repeating here for Pydantic)
-class DocumentTypeEnum(str, Enum):
-    pdf = "pdf"
-    image = "image"
-    video = "video"
-
-class QuizTypeEnum(str, Enum):
-    qcm = "qcm"
-    texte = "texte"
-    true_or_false = "true_or_false"
-
-class CourseLevelEnum(str, Enum):
-    beginner = "beginner"
-    intermediate = "intermediate"
-    advanced = "advanced"
-
 # Course related schemas
 class CourseBase(BaseModel):
     course_name: str
     original_text: Optional[str] = None
     simplified_text: Optional[str] = None
     summary_text: Optional[str] = None
-    level: CourseLevelEnum
+    level_of_difficulty: QuizDifficultyLevelEnum
+    quiz_instruction: str
     estimated_completion_time: Optional[str] = None
     summary_modules: Optional[List[Dict[str, Any]]] = Field(default_factory=list)
     simplified_modules: Optional[List[Dict[str, Any]]] = Field(default_factory=list)
@@ -93,27 +95,32 @@ class CourseSearchResponse(BaseModel):
         }
     )
 
-# Quiz related schemas
 class QuizBase(BaseModel):
     course_id: int
-    instruction: str
     question: str
     correct_answer: str
-    choices: dict
-    quiz_type: QuizTypeEnum
-    level_of_difficulty: QuizTypeEnum  # Note: This should probably be a different enum
+    user_answer: str
+    choices: Dict[Any, Any]
+    quiz_type: QuizEnumType  # Now uses correct enum
+    level_of_difficulty: QuizDifficultyLevelEnum  # Separate enum for difficulty
     number_of_questions: int
 
 class QuizCreate(QuizBase):
-    pass
+    pass  # No course_id here anymore
 
 class Quiz(QuizBase):
-    id: int
+    id_quiz: int
+    course_id: int  # Still included in response model
     created_at: datetime
-    feedbacks: List['Feedback'] = []
     
     class Config:
         from_attributes = True
+
+class QuizUserAnswerUpdate(BaseModel):
+    user_answer: str
+
+class QuizCreate(QuizBase):
+    quiz_instruction: Optional[str] = None  # New optional field
 
 # Vocabulary related schemas
 class VocabularyBase(BaseModel):
@@ -152,7 +159,7 @@ class VocabularySearchResponse(BaseModel):
 
 # Feedback related schemas
 class FeedbackBase(BaseModel):
-    quiz_id: int
+    course_id: int
     rating: int
     comment: Optional[str] = None
 
@@ -160,7 +167,7 @@ class FeedbackCreate(FeedbackBase):
     pass
 
 class Feedback(FeedbackBase):
-    id: int
+    id_feedback: int
     created_at: datetime
     
     class Config:

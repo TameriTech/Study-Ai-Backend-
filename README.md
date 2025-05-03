@@ -211,85 +211,8 @@ Les contributions sont les bienvenues !
 
 ===========================================================================
 
-USER
-──────
-• id
-• fullName
-• email
-• password
-• best_subjects
-• learning_objectives
-• class_level
-• academic_level
-• statistic
-• created_at
-│
-└─── 1:* ───► DOCUMENT
-              ──────
-              • id
-              • title
-              • type_document
-              • original_filename
-              • storage_path
-              • original_text
-              • uploaded_at
-              • user_id
-              │
-              ├─── 1:* ───► COURSE
-              │            ──────
-              │            • id
-              │            • course_name
-              │            • original_text
-              │            • simplified_text
-              │            • summary_text
-              │            • level
-              │            • estimated_completion_time
-              │            • summary_module
-              │            • simplified_modules
-              │            • simplified_module_pages
-              │            • summary_modules_pages
-              │            • simplified_current_page
-              │            • summary_current_page
-              │            • simplified_module_statistic
-              │            • summary_modules_statistic
-              │            • document_id
-              │            • created_at
-              │            │
-              │            ├─── 1:* ───► QUIZ
-              │            │            ──────
-              │            │            • id
-              │            │            • instruction
-              │            │            • question
-              │            │            • correct_answer
-              │            │            • choices
-              │            │            • quiz_type
-              │            │            • level_of_difficulty
-              │            │            • number_of_questions
-              │            │            • created_at
-              │            │            • course_id
-              │            │            │
-              │            │            └─── 1:1 ───► FEEDBACK
-              │            │                         ──────
-              │            │                         • id
-              │            │                         • rating
-              │            │                         • comment
-              │            │                         • created_at
-              │            │                         • quiz_id
-              │            │
-              │            └─── 1:1 ───► VOCABULARY
-              │                          ──────
-              │                          • id
-              │                          • words [{term:"", definition:""}]
-              │                          • course_id
-              │
-              └─── 1:* ───► SEGMENT
-                          ──────
-                          • id
-                          • raw_text
-                          • embedding_vector
-                          • created_at
-                          • document_id
-
+![studyAI_DB](https://github.com/user-attachments/assets/891edbc1-22ce-4f69-90e0-437a14dce81c)
+![q](https://github.com/user-attachments/assets/418391b4-52a6-49ca-b36f-1fa03057cd79)
 
 ===========================================================================
 
@@ -1277,3 +1200,330 @@ CourseCreate(**course_data)
 
 
 ===========================================================================
+
+
+Great — let’s walk through how to implement **custom Ollama behavior using a `Modelfile`**, step by step. You’re going to:
+
+---
+
+### ✅ Step 1: Create a Custom Model with a `Modelfile`
+
+You’ll **store the `Modelfile` anywhere** on your machine where you can run terminal commands. Ideally, keep it in your project directory under a folder like `ollama-models/`.
+
+---
+
+### 📁 Directory structure example:
+
+```
+your-project/
+├── app/
+│   ├── main.py
+│   └── ...
+├── ollama-models/
+│   └── Modelfile
+├── .env
+└── requirements.txt
+```
+
+---
+
+### ✅ Step 2: Write the `Modelfile`
+
+Create a new file named `Modelfile` in the `ollama-models/` directory with this content:
+
+```Dockerfile
+FROM llama2
+
+SYSTEM """
+You are a JSON-only assistant.
+
+You must return all answers strictly as valid JSON, based on the exact structure provided in the prompt.
+
+NEVER include markdown, extra text, or explanations. Only raw JSON is allowed in your output.
+
+If anything is unclear, guess but keep the format. Never break JSON structure.
+"""
+```
+
+---
+
+### ✅ Step 3: Build the Custom Model
+
+In your terminal, **navigate to the folder** with the `Modelfile`, then run:
+
+```bash
+cd ollama-models
+ollama create json-llama2 -f Modelfile
+```
+
+If successful, you’ll see something like:
+
+```
+✔ created json-llama2 from llama2
+```
+
+---
+
+### ✅ Step 4: Update `.env` to use the new model
+
+Open your `.env` and change the model to:
+
+```
+OLLAMA_MODEL=json-llama2
+```
+
+This tells your app to use the custom model you just created.
+
+---
+
+### ✅ Step 5: Restart your app
+
+Make sure to restart your FastAPI app or any dev server (like `uvicorn`) so it picks up the `.env` changes.
+
+---
+
+### 🔁 Result: Now Ollama will default to JSON output
+
+Because of the `SYSTEM` instruction in your custom model, **even bad prompts** are more likely to return clean JSON. You can still reinforce this in your prompt as needed.
+
+---
+
+Would you like a ready-made shell script that automates model creation, so you can reuse it across projects?
+
+
+===========================================================================
+
+
+Here's a comprehensive documentation for your GitHub README that explains how to set up and use your OCR processing system:
+
+# OCR Document Processing System
+
+This system allows you to extract text from images and videos using Tesseract OCR and FFmpeg, then process the text for summarization and simplification using Ollama.
+
+## Features
+
+- Extract text from images (JPG, PNG, etc.)
+- Extract text from video frames (MP4, MOV, AVI, MKV)
+- Generate summaries of extracted text
+- Create simplified versions of complex text
+- Store processed documents with metadata
+- Segment text for further processing
+
+## Prerequisites
+
+Before using this system, you need to install:
+
+1. **Tesseract OCR** (v5.0+ recommended)
+   - Download from: https://github.com/UB-Mannheim/tesseract/wiki
+   - Default install path: `C:\Program Files\Tesseract-OCR`
+
+2. **FFmpeg** (for video processing)
+   - Download from: https://ffmpeg.org/download.html
+   - Default install path: `C:\ffmpeg\bin`
+
+3. **Python** (v3.8+ recommended)
+
+## Installation
+
+1. Add the following paths to your system environment variables:
+   ```
+   C:\Program Files\Tesseract-OCR
+   C:\ffmpeg\bin
+   ```
+
+2. Install Python dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+## API Endpoints
+
+### Process Image
+
+- **Endpoint**: `/process/image`
+- **Method**: POST
+- **Parameters**:
+  - `file`: Image file (JPG, PNG, etc.)
+  - `user_id`: ID of the uploading user
+
+**Response**:
+```json
+{
+  "document_id": 123,
+  "user_id": 1,
+  "filename": "example.jpg",
+  "storage_path": "temp_files/images/20240502_1430_example.jpg",
+  "extracted_text": "Sample extracted text...",
+  "message": "Image processed successfully..."
+}
+```
+
+### Process Video
+
+- **Endpoint**: `/process/video`
+- **Method**: POST
+- **Parameters**:
+  - `file`: Video file (MP4, MOV, AVI, MKV)
+  - `user_id`: ID of the uploading user
+  - `frames_per_second`: (Optional) Frames to process per second (default: 1)
+
+**Response**:
+```json
+{
+  "document_id": 124,
+  "user_id": 1,
+  "filename": "example.mp4",
+  "storage_path": "temp_files/videos/20240502_1430_example.mp4",
+  "extracted_text": "Sample text from video frames...",
+  "message": "Video processed successfully..."
+}
+```
+
+## How It Works
+
+### Image Processing
+1. User uploads an image file
+2. System saves the image to temporary storage
+3. Tesseract OCR extracts text from the image
+4. Text is processed to generate:
+   - A summary version
+   - A simplified version
+5. Results are stored in the database
+
+### Video Processing
+1. User uploads a video file
+2. System saves the video to temporary storage
+3. FFmpeg extracts frames at specified interval
+4. Tesseract OCR processes each frame for text
+5. Combined text is processed to generate:
+   - A summary version
+   - A simplified version
+6. Results are stored in the database
+
+## Configuration
+
+### Environment Variables
+Ensure these paths are set in your system environment:
+- `TESSERACT_CMD`: Path to Tesseract executable (default: `C:\Program Files\Tesseract-OCR\tesseract.exe`)
+- `FFMPEG_PATH`: Path to FFmpeg binaries (default: `C:\ffmpeg\bin`)
+
+### Storage Locations
+- Images: `./temp_files/images/`
+- Videos: `./temp_files/videos/`
+
+## Troubleshooting
+
+**OCR Failures:**
+- Ensure Tesseract is properly installed
+- Verify the environment path includes Tesseract
+- Check image quality (OCR works best with clear, high-contrast text)
+
+**FFmpeg Errors:**
+- Verify FFmpeg installation
+- Check the FFmpeg path in environment variables
+- Ensure the video file is not corrupted
+
+## Dependencies
+
+- FastAPI
+- SQLAlchemy
+- Pytesseract
+- Pillow (PIL)
+- FFmpeg-python
+- Python-multipart (for file uploads)
+
+## License
+
+[Specify your license here]
+
+---
+
+This documentation provides users with clear instructions on setting up and using your system. You may want to add:
+1. Screenshots of example outputs
+2. More detailed installation instructions for different OSes
+3. Example curl commands for API testing
+4. Information about the database schema
+5. Configuration options for text processing
+
+
+
+USER
+──────
+• id (Integer, PK)
+• fullName (String)
+• email (String, unique)
+• password (String)
+• best_subjects (String)
+• learning_objectives (String)
+• class_level (String)
+• academic_level (String)
+• statistic (Integer)
+• created_at (DateTime)
+│
+└─── 1:* ───► DOCUMENT
+              ──────
+              • id_document (Integer, PK)
+              • title (String)
+              • type_document (String)
+              • original_filename (String)
+              • storage_path (String)
+              • original_text (String)
+              • uploaded_at (DateTime)
+              • user_id (Integer, FK→Users.id)
+              │
+              ├─── 1:* ───► COURSE
+              │            ──────
+              │            • id_course (Integer, PK)
+              │            • course_name (String)
+              │            • original_text (String)
+              │            • simplified_text (String)
+              │            • summary_text (String)
+              │            • level_of_difficulty (Enum)
+              │            • estimated_completion_time (String)
+              │            • quiz_instruction (String)
+              │            • summary_modules (JSON)
+              │            • simplified_modules (JSON)
+              │            • simplified_module_pages (Integer)
+              │            • summary_module_pages (Integer)
+              │            • simplified_current_page (Integer)
+              │            • summary_current_page (Integer)
+              │            • simplified_module_statistic (Numeric)
+              │            • summary_modules_statistic (Numeric)
+              │            • document_id (Integer, FK→Documents.id_document)
+              │            • created_at (DateTime)
+              │            │
+              │            ├─── 1:* ───► QUIZ
+              │            │            ──────
+              │            │            • id_quiz (Integer, PK)
+              │            │            • course_id (Integer, FK→Courses.id_course)
+              │            │            • question (String)
+              │            │            • correct_answer (String)
+              │            │            • user_answer (String)
+              │            │            • choices (JSON)
+              │            │            • quiz_type (Enum)
+              │            │            • level_of_difficulty (Enum)
+              │            │            • number_of_questions (Integer)
+              │            │            • created_at (DateTime)
+              │            │
+              │            ├─── 1:* ───► VOCABULARY
+              │            │            ──────
+              │            │            • id_term (Integer, PK)
+              │            │            • course_id (Integer, FK→Courses.id_course)
+              │            │            • words (JSON)
+              │            │            • created_at (DateTime)
+              │            │
+              │            └─── 1:* ───► FEEDBACK
+              │                         ──────
+              │                         • id_feedback (Integer, PK)
+              │                         • course_id (Integer, FK→Courses.id_course)
+              │                         • rating (Integer)
+              │                         • comment (String)
+              │                         • created_at (DateTime)
+              │
+              └─── 1:* ───► SEGMENT
+                          ──────
+                          • id_segment (Integer, PK)
+                          • document_id (Integer, FK→Documents.id_document)
+                          • raw_text (String)
+                          • embedding_vector (String)
+                          • created_at (DateTime)
