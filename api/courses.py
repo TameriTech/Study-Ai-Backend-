@@ -76,25 +76,25 @@ def search_courses_endpoint(
         detail=f"Search failed: {str(e)}"
         )
 
-@router.get("/api/courses-doc/{document_id}/simplified-modules", tags=["Course"])
-def get_simplified_modules_by_document_id(
-    document_id: int,
-    db: Session = Depends(get_db),
-):
-    modules = get_simplified_modules(db, document_id)
-    if modules:
-        return modules
-    raise HTTPException(status_code=404, detail="Modules not found for this document")
+# @router.get("/api/courses-doc/{document_id}/simplified-modules", tags=["Course"])
+# def get_simplified_modules_by_document_id(
+#     document_id: int,
+#     db: Session = Depends(get_db),
+# ):
+#     modules = get_simplified_modules(db, document_id)
+#     if modules:
+#         return modules
+#     raise HTTPException(status_code=404, detail="Modules not found for this document")
 
-@router.get("/api/courses-doc/{document_id}/summary-modules/", tags=["Course"])
-def get_summary_modules_by_document_id(
-    document_id: int,
-    db: Session = Depends(get_db),
-):
-    modules = get_summary_modules(db, document_id)
-    if modules:
-        return modules
-    raise HTTPException(status_code=404, detail="Modules not found for this document")
+# @router.get("/api/courses-doc/{document_id}/summary-modules/", tags=["Course"])
+# def get_summary_modules_by_document_id(
+#     document_id: int,
+#     db: Session = Depends(get_db),
+# ):
+#     modules = get_summary_modules(db, document_id)
+#     if modules:
+#         return modules
+#     raise HTTPException(status_code=404, detail="Modules not found for this document")
 
 @router.get("/api/user/{user_id}/courses", response_model=List[schemas.Course], tags=["Course"])
 def get_user_courses(

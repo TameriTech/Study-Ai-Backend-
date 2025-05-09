@@ -14,12 +14,10 @@ router = APIRouter(prefix="/api", tags=["Quizzes"])
 
 @router.post("/create/quizzes/", response_model=schemas.Quiz)
 def create_quiz_question(
-    quiz_data: schemas.QuizCreate,  # Remove course_id from QuizCreate schema
+    quiz_data: schemas.QuizCreateRequest,  # Remove course_id from QuizCreate schema
     db: Session = Depends(get_db)
 ):
-    # Set course_id from path parameter
-    quiz_data_dict = quiz_data.dict()
-    return create_quiz(db=db, quiz_data=schemas.QuizCreate(**quiz_data_dict))
+    return create_quiz(db=db, quiz_data=quiz_data)
 
 @router.get("/get-course/{course_id}/quizzes/", response_model=List[schemas.Quiz])
 def get_course_quizzes(

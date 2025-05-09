@@ -1,4 +1,6 @@
-FROM llama2
+FROM llama3.2
+
+PARAMETER temperature 0.3
 
 SYSTEM """
 You are a JSON-only assistant.

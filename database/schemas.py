@@ -105,9 +105,6 @@ class QuizBase(BaseModel):
     level_of_difficulty: QuizDifficultyLevelEnum  # Separate enum for difficulty
     number_of_questions: int
 
-class QuizCreate(QuizBase):
-    pass  # No course_id here anymore
-
 class Quiz(QuizBase):
     id_quiz: int
     course_id: int  # Still included in response model
@@ -119,8 +116,16 @@ class Quiz(QuizBase):
 class QuizUserAnswerUpdate(BaseModel):
     user_answer: str
 
+class QuizCreateRequest(BaseModel):
+    """Schema for quiz creation request (what the client sends)"""
+    course_id: int
+    quiz_type: QuizEnumType
+    level_of_difficulty: QuizDifficultyLevelEnum
+    number_of_questions: int
+    quiz_instruction: Optional[str] = None
+
 class QuizCreate(QuizBase):
-    quiz_instruction: Optional[str] = None  # New optional field
+    pass  # No course_id here anymore
 
 # Vocabulary related schemas
 class VocabularyBase(BaseModel):

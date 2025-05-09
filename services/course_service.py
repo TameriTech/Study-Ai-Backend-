@@ -1,4 +1,5 @@
 from datetime import datetime
+import json
 import re
 from fastapi import HTTPException, status
 from requests import Session
@@ -11,9 +12,21 @@ from typing import Optional
 from typing import List, Dict, Optional
 
 from utils.general_utils import parse_modules
-from utils.ollama_utils import text_generate_from_ollama
+from utils.ollama_utils import generate_from_ollama, text_generate_from_ollama
 
-
+def validate_and_parse_json(json_str: str) -> Optional[List[Dict]]:
+    """Helper function to validate and parse JSON strings"""
+    if not json_str or not json_str.strip():
+        return None
+    
+    try:
+        parsed = json.loads(json_str)
+        if not isinstance(parsed, list):  # Ensure it's a list as expected
+            return None
+        return parsed
+    except json.JSONDecodeError:
+        return None
+    
 def create_course(
         db, 
         document_id: int,
@@ -25,35 +38,47 @@ def create_course(
 
     # Parse modules if provided
     simplified_modules_prompt = f"""
-    I have this course notes I want you to structure it in modules which each module will have a topic and body for example we chave am introduction as topic and a body of the introduction and finally let it be in a way I can play it in an array so that each module represent an element in the array:
+    You must return a simplified structured course modules strictly as a JSON array of objects, each object with "topic" and "body" keys.
+
+    Example:
+    [
+    {{"topic": "topic 1", "body": "body 1"}},
+    ]
+
+    Course content:
     ---
     {simplified_text}
     ---
+    Return only JSON.
     """
     simplified_modules_text = text_generate_from_ollama(simplified_modules_prompt)
 
     summary_modules_prompt = f"""
-    I have this course notes I want you to structure it in modules which each module will have a topic and body for example we chave am introduction as topic and a body of the introduction and finally let it be in a way I can play it in an array so that each module represent an element in the array:
+    Course content:
     ---
-    {summary_text}
+    {original_text}
     ---
+    From the above course content you must return a summarized structured course modules strictly as a JSON array of objects, each object with "topic" and "body" keys.
+    Example:
+    [
+    {{"topic": "topic 1", "body": "body 1"}},
+    ]
+    Return only JSON.
     """
     summary_modules_text = text_generate_from_ollama(summary_modules_prompt)
-    
-    estimated_completion_time_prompt = f"""
-    Without saying anything esle just give the hours needed to revise this text the response should be less then 12 chareacters:
-    ---
-    {simplified_text}
-    ---
-    """
-    estimated_completion_time = text_generate_from_ollama(estimated_completion_time_prompt)
 
-    summary_modules = parse_modules(summary_modules_text) if summary_modules_text else None
-    simplified_modules = parse_modules(simplified_modules_text) if simplified_modules_text else None
-    
+    simplified_modules = validate_and_parse_json(simplified_modules_text) or []
+    summary_modules = validate_and_parse_json(summary_modules_text) or []
     # Calculate module pages
-    simplified_module_pages = len(simplified_modules) if simplified_modules else 0
-    summary_module_pages = len(summary_modules) if summary_modules else 0
+    num_simplified_modules = len(simplified_modules)
+    num_summary_modules = len(summary_modules)
+    
+    # Example calculation - adjust as needed
+    estimated_completion_time = f"{max(num_simplified_modules, num_summary_modules) * 10} minutes"
+
+    # Calculate module pages (example calculation)
+    simplified_module_pages = num_simplified_modules
+    summary_module_pages = num_summary_modules
 
 
 
@@ -66,9 +91,9 @@ def create_course(
         level_of_difficulty="medium",
         estimated_completion_time=estimated_completion_time,
         quiz_instruction="Quiz instruction",
-        summary_modules=summary_modules,
         simplified_modules=simplified_modules,
         simplified_module_pages=simplified_module_pages,
+        summary_modules=summary_modules,
         summary_module_pages=summary_module_pages,
         created_at=datetime.utcnow()
     )

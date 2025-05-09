@@ -8,38 +8,44 @@ from database import schemas
 from database.db import get_db
 from database import models
 from utils.general_utils import parse_vocabulary_response
-from utils.ollama_utils import generate_from_ollama
+from utils.ollama_utils import text_generate_from_ollama
 
 import re
 import json
 from typing import List, Dict
 
 def create_vocabulary_entry(course_id: int, db: Session) -> schemas.Vocabulary:
-    """Create vocabulary entry with simplified parsing"""
     course = db.query(models.Course).filter(models.Course.id_course == course_id).first()
     if not course:
         raise HTTPException(status_code=404, detail="Course not found")
 
+    # Improved prompt with strict JSON formatting
     vocabulary_prompt = f"""
-    Extract terms and definitions from this text: 
+    Extract important terms and their definitions from this course text:
     ---
-     {course.original_text}
+    {course.original_text}
     ---
-    Return ONLY a JSON array formatted like this:
-    "words": [
-        {{"term": "word1", "definition": "definition1"}},
-        {{"term": "word2", "definition": "definition2"}}
-    ]
-    Make sur to provide the respond in the json format above.
+    Return ONLY a valid JSON array with this exact structure:
+    {{
+        "words": [
+            {{
+                "term": "exact term",
+                "definition": "clear definition"
+            }}
+        ]
+    }}
+    Do not include any additional text, explanations, or markdown formatting.
+    The response must be parseable by json.loads().
     """
     
-    response = generate_from_ollama(vocabulary_prompt)
-    print(f"text:\n{course.original_text}")
-
-    print(f"Raw response:\n{response}")
-
     try:
-        words_list = parse_vocabulary_response(response)
+        response = text_generate_from_ollama(vocabulary_prompt)
+        print(f"Ollama response:\n{response}")
+        
+        # Directly parse the JSON (assuming Ollama returns proper JSON)
+        result = json.loads(response)
+        words_list = result["words"]
+        
         db_vocabulary = models.Vocabulary(
             course_id=course_id,
             words=words_list,
@@ -49,11 +55,22 @@ def create_vocabulary_entry(course_id: int, db: Session) -> schemas.Vocabulary:
         db.commit()
         return db_vocabulary
         
-    except ValueError as e:
-        raise HTTPException(status_code=400, detail=str(e))
+    except json.JSONDecodeError as e:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Invalid JSON response from AI: {str(e)}"
+        )
+    except KeyError:
+        raise HTTPException(
+            status_code=400,
+            detail="AI response missing required 'words' field"
+        )
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Server error: {str(e)}")
-
+        raise HTTPException(
+            status_code=500,
+            detail=f"Server error: {str(e)}"
+        )
+    
 def get_vocabulary_words_by_course(course_id: int, db: Session) -> List[Dict[str, Any]]:
     vocabulary = db.query(models.Vocabulary).filter(
         models.Vocabulary.course_id == course_id
