@@ -34,16 +34,11 @@ jobs:
             echo "Connexion au serveur VPS..."
             cd /root/tameri/projects/study/dev/code
             echo "Changement de répertoire effectué : $(pwd)"
-            if [ ! -d "venv" ]; then
-              python3 -m venv venv
-              source venv/bin/activate
-              pip install --upgrade pip
-              pip install -r requirements.txt
-            else
-              source venv/bin/activate
-              pip install --upgrade pip
-              pip install -r requirements.txt
-            fi
-            echo "Redémarrage du service Study..."
+            source venv/bin/activate || (python3 -m venv venv && source venv/bin/activate)
+            pip install --upgrade pip
+            pip install -r requirements.txt
+            pip uninstall fitz PyMuPDF -y
+            pip install PyMuPDF pytesseract
+            echo "Redémarrage du service study..."
             sudo systemctl restart study.service
             echo "Déploiement terminé."
