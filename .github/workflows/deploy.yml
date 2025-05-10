@@ -15,7 +15,7 @@ jobs:
       - name: Rsync files to VPS
         uses: burnett01/rsync-deployments@4.1
         with:
-          switches: "-avzr --delete"
+          switches: "-avzr --delete --exclude=.env --exclude=venv"
           path: "./"
           remote_path: "/root/tameri/projects/study/dev/code/"
           remote_host: ${{ secrets.VPS_HOST }}
@@ -34,10 +34,16 @@ jobs:
             echo "Connexion au serveur VPS..."
             cd /root/tameri/projects/study/dev/code
             echo "Changement de répertoire effectué : $(pwd)"
-            echo "Mise à jour de pip..."
-            pip install --upgrade pip
-            echo "Installation des dépendances..."
-            pip install -r requirements.txt
-            echo "Redémarrage du service study..."
-            sudo systemctl restart study
+            if [ ! -d "venv" ]; then
+              python3 -m venv venv
+              source venv/bin/activate
+              pip install --upgrade pip
+              pip install -r requirements.txt
+            else
+              source venv/bin/activate
+              pip install --upgrade pip
+              pip install -r requirements.txt
+            fi
+            echo "Redémarrage du service Study..."
+            sudo systemctl restart study.service
             echo "Déploiement terminé."
