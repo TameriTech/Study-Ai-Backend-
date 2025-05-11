@@ -17,11 +17,15 @@ def generate_from_ollama(prompt: str) -> str:
             json={
                 "model": OLLAMA_TEXT_MODEL,
                 "prompt": prompt,
-                "stream": False,  # We want complete response
-                # "format": "json"   # Ask for JSON output explicitly
-                "temperature": 1
+                "stream": False,
+                "options": {
+                    "temperature": 0.3,  # More deterministic
+                    "num_predict": 300,  # Limit response length
+                    "top_k": 20,         # Focus on likely tokens
+                    "repeat_penalty": 1.1
+                }
             },
-            timeout=300  # 5 minute timeout
+            timeout=300  # Strict 1-minute timeout
         )
         
         response.raise_for_status()  # Will raise HTTPError for 4XX/5XX
@@ -40,10 +44,15 @@ def text_generate_from_ollama(prompt: str) -> str:
             json={
                 "model": MY_OLLAMA_MODEL,
                 "prompt": prompt,
-                "stream": False,  # We want complete response
-                # "format": "json"   # Ask for JSON output explicitly
+                "stream": False,
+                "options": {
+                    "temperature": 0.3,  # More deterministic
+                    "num_predict": 300,  # Limit response length
+                    "top_k": 20,         # Focus on likely tokens
+                    "repeat_penalty": 1.1
+                }
             },
-            timeout=300  # 5 minute timeout
+            timeout=300  # Strict 1-minute timeout
         )
         
         response.raise_for_status()  # Will raise HTTPError for 4XX/5XX

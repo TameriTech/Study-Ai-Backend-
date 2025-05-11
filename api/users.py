@@ -4,7 +4,7 @@ from database import schemas
 from database.db import get_db
 import services.users_services as users_services
 from utils.general_utils import create_access_token
-from database.schemas import LoginRequest, TokenResponse
+from database.schemas import LoginRequest, TokenResponse, UserBase
 
 router = APIRouter(prefix="/api", tags=["User"])
 
@@ -17,8 +17,14 @@ def login_user(request: LoginRequest, db: Session = Depends(get_db)):
     user = users_services.authenticate_user(db, request.email, request.password)
     if not user:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid credentials")
+
     access_token = create_access_token(data={"sub": user.email})
-    return {"access_token": access_token, "token_type": "bearer"}
+
+    return {
+        "access_token": access_token,
+        "token_type": "bearer",
+        "user": user  # SQLAlchemy model will be auto-converted by Pydantic if compatible
+    }
 
 @router.get("/get-users", response_model=list[schemas.User]) 
 def get_all_users(db: Session = Depends(get_db)):
