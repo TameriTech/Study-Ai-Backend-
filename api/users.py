@@ -1,12 +1,77 @@
 from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
 from database import schemas
 from database.db import get_db
 import services.users_services as users_services
 from utils.general_utils import create_access_token
-from database.schemas import LoginRequest, TokenResponse, UserBase
+from database.schemas import FacebookToken, LoginRequest, SocialLoginResponse, TokenResponse, UserBase
+from fastapi.security import OAuth2PasswordBearer
+from services.google_auth import verify_google_token, get_or_create_user
+from database.schemas import GoogleToken
+from database.db import get_db
+from database.schemas import FacebookToken, SocialLoginResponse
+from services.facebook_auth import FacebookAuthService
+from utils.general_utils import create_access_token
+import os
 
-router = APIRouter(prefix="/api", tags=["User"])
+router = APIRouter(prefix="/api", tags=["Auth + User"])
+# Initialize Facebook service
+facebook_auth = FacebookAuthService(
+    app_id=os.getenv("FACEBOOK_APP_ID", "1189867122416318"),
+    app_secret=os.getenv("FACEBOOK_APP_SECRET", "2008ebf170d834894e424d5e38bf1c74")
+)
+
+@router.post("/login/facebook", response_model=SocialLoginResponse)
+async def login_with_facebook(
+    fb_token: FacebookToken, 
+    db: Session = Depends(get_db)
+):
+    try:
+        # Verify token and get user info
+        fb_user = await facebook_auth.verify_facebook_token(fb_token.access_token)
+        
+        # Get or create local user
+        user = facebook_auth.get_or_create_user(db, fb_user)
+        
+        # Create JWT token
+        access_token = create_access_token(data={"sub": user.email})
+        
+        return {
+            "access_token": access_token,
+            "token_type": "bearer",
+            "user": user,
+            "provider": "facebook"
+        }
+        
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="Internal server error")
+    
+@router.post("/login/google", response_model=schemas.TokenResponse)
+async def login_with_google(google_token: schemas.GoogleToken, db: Session = Depends(get_db)):
+    try:
+        google_user = await verify_google_token(google_token.id_token)
+        user = get_or_create_user(db, google_user)
+        access_token = create_access_token(data={"sub": user.email})
+        
+        return JSONResponse({
+            "access_token": access_token,
+            "token_type": "bearer",
+            "user": {
+                "id": user.id,
+                "email": user.email,
+                "fullName": user.fullName
+                # Include other required user fields
+            }
+        })
+    except Exception as e:
+        raise HTTPException(
+            status_code=400,
+            detail=str(e),
+            headers={"Content-Type": "application/json"}
+        )
 
 @router.post("/register", response_model=schemas.User)
 def register_new_user(user: schemas.UserCreate, db: Session = Depends(get_db)):

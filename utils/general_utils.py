@@ -94,7 +94,6 @@ def parse_modules(module_text: str) -> List[Dict[str, str]]:
         # Add the last topic if exists
         if current_topic:
             module['topics'].append(current_topic)
-        
         modules.append(module)
     
     return modules

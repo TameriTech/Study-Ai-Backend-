@@ -25,7 +25,7 @@ def generate_from_ollama(prompt: str) -> str:
                     "repeat_penalty": 1.1
                 }
             },
-            timeout=300  # Strict 1-minute timeout
+            timeout=9000  # Strict 1-minute timeout
         )
         
         response.raise_for_status()  # Will raise HTTPError for 4XX/5XX
@@ -52,7 +52,7 @@ def text_generate_from_ollama(prompt: str) -> str:
                     "repeat_penalty": 1.1
                 }
             },
-            timeout=300  # Strict 1-minute timeout
+            timeout=9000  # Strict 1-minute timeout
         )
         
         response.raise_for_status()  # Will raise HTTPError for 4XX/5XX

@@ -1445,7 +1445,238 @@ This documentation provides users with clear instructions on setting up and usin
 4. Information about the database schema
 5. Configuration options for text processing
 
+===========================================================================
 
+Here's a comprehensive documentation for your GitHub README that covers both Google and Facebook authentication setup, ngrok configuration, and code explanation:
+
+---
+
+# OAuth Authentication Setup Guide
+
+## Table of Contents
+1. [Google OAuth Setup](#google-oauth-setup)
+2. [Facebook Developer Setup](#facebook-developer-setup)
+3. [Ngrok Configuration](#ngrok-configuration)
+4. [Server Setup](#server-setup)
+5. [Code Implementation](#code-implementation)
+6. [Usage](#usage)
+
+---
+
+## Google OAuth Setup
+
+### 1. Create Google Cloud Project
+1. Go to [Google Cloud Console](https://console.cloud.google.com/)
+2. Click "Create Project"
+3. Name your project (e.g., "MyAuthApp")
+4. Click "Create"
+
+### 2. Enable OAuth API
+1. Navigate to "APIs & Services" → "Library"
+2. Search for "Google People API" and enable it
+3. Search for "Google+ API" and enable it
+
+### 3. Create OAuth Credentials
+1. Go to "APIs & Services" → "Credentials"
+2. Click "Create Credentials" → "OAuth client ID"
+3. Select "Web application"
+4. Add authorized JavaScript origins:
+   - `http://localhost:8000`
+   - `https://your-ngrok-url.ngrok-free.app`
+5. Add authorized redirect URIs:
+   - `http://localhost:8000/api/auth/google/callback`
+   - `https://your-ngrok-url.ngrok-free.app/api/auth/google/callback`
+6. Click "Create"
+7. Note your:
+   - **Client ID**
+   - **Client Secret**
+
+### 4. Configure Consent Screen
+1. Go to "OAuth consent screen"
+2. Select "External" user type
+3. Fill in required app information
+4. Add test users (your email)
+5. Save and submit for verification (if going public)
+
+---
+
+## Facebook Developer Setup
+
+### 1. Create Developer Account
+1. Go to [Facebook Developers](https://developers.facebook.com/)
+2. Click "Get Started" and register as a developer
+
+### 2. Create New App
+1. Go to "My Apps" → "Create App"
+2. Select "Consumer" → "Next"
+3. Enter display name (e.g., "MyAuthApp")
+4. Create app ID
+
+### 3. Configure Basic Settings
+1. Go to "Settings" → "Basic"
+2. Add contact email
+3. Under "App Domains" add:
+   - `localhost`
+   - `your-ngrok-url.ngrok-free.app`
+
+### 4. Add Facebook Login Product
+1. Go to "Products" → "Add Product"
+2. Select "Facebook Login"
+3. Configure settings:
+   - Valid OAuth Redirect URIs:
+     - `https://your-ngrok-url.ngrok-free.app/api/auth/facebook/callback`
+   - Enable "Client OAuth Login"
+   - Enable "Web OAuth Login"
+
+### 5. Get App Credentials
+1. Note your:
+   - **App ID**
+   - **App Secret** (under "Settings" → "Basic")
+
+---
+
+## Ngrok Configuration
+
+### 1. Install Ngrok
+```bash
+npm install -g ngrok  # Using npm
+# OR
+brew install ngrok    # macOS
+choco install ngrok   # Windows
+```
+
+### 2. Start Ngrok Tunnel
+```bash
+ngrok http 8000
+```
+This will provide:
+- Forwarding URL (e.g., `https://abc123.ngrok-free.app`)
+- Web Interface (http://127.0.0.1:4041) for monitoring
+
+### 3. Update All Configurations
+Replace in all previous steps:
+- `your-ngrok-url.ngrok-free.app` with your actual ngrok URL
+
+---
+
+## Server Setup
+
+### 1. Environment Variables
+Create `.env` file:
+```env
+# Google
+GOOGLE_CLIENT_ID=your_google_client_id
+GOOGLE_CLIENT_SECRET=your_google_secret
+
+# Facebook
+FACEBOOK_APP_ID=your_facebook_app_id
+FACEBOOK_APP_SECRET=your_facebook_secret
+
+# General
+SECRET_KEY=your_secret_key_for_jwt
+ALGORITHM=HS256
+ACCESS_TOKEN_EXPIRE_MINUTES=30
+```
+
+### 2. Start Development Server
+```bash
+# Install dependencies
+pip install fastapi uvicorn python-dotenv requests passlib python-jose[cryptography]
+
+# Run server
+uvicorn main:app --reload --host 0.0.0.0 --port 8000
+```
+
+---
+
+## Code Implementation
+
+### 1. Backend Structure
+```
+│   /google_auth.py       # Google auth routes
+│   /facebook_auth.py     # Facebook auth routes
+```
+
+### 2. Google Auth (google.py)
+```python
+from fastapi import APIRouter, Depends, HTTPException
+from fastapi.security import OAuth2PasswordBearer
+from .schemas import GoogleToken, TokenResponse
+
+router = APIRouter(prefix="/api", tags=["Google Auth"])
+
+@router.post("/login/google", response_model=TokenResponse)
+async def google_login(google_token: GoogleToken):
+    """
+    Authenticates user with Google OAuth token
+    1. Verifies token with Google API
+    2. Creates/retrieves local user
+    3. Returns JWT token
+    """
+    # Implementation...
+```
+
+### 3. Facebook Auth (facebook.py)
+```python
+from fastapi import APIRouter, Depends, HTTPException
+from .schemas import FacebookToken, TokenResponse
+
+router = APIRouter(prefix="/api")
+
+@router.post("/login/facebook", response_model=TokenResponse)
+async def facebook_login(fb_token: FacebookToken):
+    """
+    Authenticates user with Facebook token
+    1. Verifies token with Facebook Graph API
+    2. Creates/retrieves local user
+    3. Returns JWT token
+    """
+    # Implementation...
+```
+
+### 4. Frontend Implementation
+Key components in `static/auth.html`:
+```javascript
+// Google Login
+function handleGoogleSignIn(response) {
+    // Sends credential to /auth/google/login
+}
+
+// Facebook Login
+FB.login(function(response) {
+    // Sends accessToken to /auth/facebook/login
+}, {scope: 'public_profile,email'});
+```
+
+---
+
+## Usage
+
+### 1. Development
+1. Start backend server
+2. Start ngrok tunnel
+3. Access via: `https://your-ngrok-url.ngrok-free.app/static/auth.html`
+
+### 2. Production
+1. Replace ngrok URLs with your domain
+2. Set up HTTPS certificates
+3. Submit OAuth apps for verification
+
+### 3. Testing
+- Use test users in both platforms
+- Monitor requests in ngrok web interface (http://localhost:4041)
+
+---
+
+## Security Notes
+- Never commit `.env` to version control
+- Regenerate secrets if compromised
+- Limit OAuth scopes to minimum required
+- Implement CSRF protection for production
+
+For complete code examples, see the repository's source files. Each authentication method includes detailed error handling and validation.
+
+===========================================================================
 
 USER
 ──────

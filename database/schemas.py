@@ -50,6 +50,15 @@ class TokenResponse(BaseModel):
     token_type: str = "bearer"
     user: User
 
+class GoogleToken(BaseModel):
+    id_token: str
+
+class FacebookToken(BaseModel):
+    access_token: str
+
+class SocialLoginResponse(TokenResponse):
+    provider: str = Field(..., description="Authentication provider (google or facebook)")
+
 # Course related schemas
 class CourseBase(BaseModel):
     course_name: str

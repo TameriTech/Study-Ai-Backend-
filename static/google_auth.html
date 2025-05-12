@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login with Google</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f5f5f5;
+        }
+        .login-container {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 300px;
+        }
+        h1 {
+            margin-bottom: 1.5rem;
+            color: #333;
+        }
+        #googleSignInButton {
+            margin: 1rem 0;
+        }
+        .status {
+            margin-top: 1rem;
+            color: #666;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h1>Welcome</h1>
+        <p>Sign in with your Google account</p>
+        
+        <!-- Google Sign-In Button will be rendered here -->
+        <div id="googleSignInButton"></div>
+        
+        <div class="status" id="statusMessage"></div>
+
+        <div class="status" id="userID"></div>
+        <div class="status" id="userName"></div>
+        <div class="status" id="userEmail"></div>
+        <div class="status" id="usertoken"></div>
+
+
+
+    </div>
+
+    <script>
+        // Your backend API base URL
+        const API_BASE_URL = 'https://study.tameri.tech';
+        // https://study.tameri.tech/
+        // Load the Google API client library
+        function loadGoogleAPI() {
+            const script = document.createElement('script');
+            script.src = 'https://accounts.google.com/gsi/client';
+            script.async = true;
+            script.defer = true;
+            script.onload = initializeGoogleSignIn;
+            document.body.appendChild(script);
+        }
+
+        // Initialize Google Sign-In
+        function initializeGoogleSignIn() {
+            window.google.accounts.id.initialize({
+                client_id: '32030241148-thk4vl05a8h8c47sho8glfun4353il4c.apps.googleusercontent.com',
+                callback: handleGoogleSignIn
+            });
+            
+            window.google.accounts.id.renderButton(
+                document.getElementById('googleSignInButton'),
+                { theme: 'outline', size: 'large' } // Customization options
+            );
+            
+            // Optional: Display the One Tap dialog
+            window.google.accounts.id.prompt();
+        }
+
+        // Handle the sign-in response
+        async function handleGoogleSignIn(response) {
+            const statusElement = document.getElementById('statusMessage');
+            const userID = document.getElementById('userID');
+            const userName = document.getElementById('userName');
+            const userEmail = document.getElementById('userEmail');
+            const usertoken = document.getElementById('usertoken');
+
+            statusElement.textContent = "Signing in...";
+            statusElement.style.color = "#333";
+            
+            const { credential } = response;
+            
+            try {
+                const res = await fetch(`${API_BASE_URL}/api/login/google`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ id_token: credential })
+                });
+                
+                if (!res.ok) {
+                    const errorData = await res.json();
+                    throw new Error(errorData.detail || 'Login failed');
+                }
+                
+                const data = await res.json();
+                
+                // Store the access token and user data
+                localStorage.setItem('access_token', data.access_token);
+                localStorage.setItem('user', JSON.stringify(data.user));
+                
+                statusElement.textContent = "Login successful! Redirecting...";
+                statusElement.style.color = "green";
+
+                userID.textContent = "id: " + data.user.id;
+                userName.textContent = "Full Name: " + data.user.fullName;
+                userEmail.textContent = "Email: " + data.user.email;
+                usertoken.textContent = "access token: " + data.access_token.substring(0, 30) + '...';
+
+
+                console.log("data object", data)
+                
+                // Redirect to dashboard or home page after 1 second
+                
+                
+            } catch (error) {
+                console.error('Login failed:', error);
+                statusElement.textContent = error.message || "Login failed. Please try again.";
+                statusElement.style.color = "red";
+            }
+        }
+
+        // Load the Google API when the page loads
+        document.addEventListener('DOMContentLoaded', loadGoogleAPI);
+    </script>
+</body>
+</html>

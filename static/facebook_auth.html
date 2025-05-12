@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Facebook Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f5f5f5;
+        }
+        .login-container {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 300px;
+        }
+        #facebookLoginBtn {
+            background-color: #1877F2;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            margin: 10px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        #facebookLoginBtn:hover {
+            background-color: #166FE5;
+        }
+        .status {
+            margin-top: 1rem;
+            padding: 10px;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        .success {
+            background-color: #e6f7ee;
+            color: #1d9d6b;
+        }
+        .error {
+            background-color: #fee;
+            color: #ff4d4f;
+        }
+        .fb-icon {
+            width: 20px;
+            height: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h1>Welcome</h1>
+        <p>Sign in to continue</p>
+        
+        <button id="facebookLoginBtn">
+            <svg class="fb-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path fill="white" d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H8v-3h2V9.5C10 7.57 11.57 6 13.5 6H16v3h-2c-.55 0-1 .45-1 1v2h3v3h-3v6.95c5.05-.5 9-4.76 9-9.95z"/>
+            </svg>
+            Continue with Facebook
+        </button>
+        
+        <div id="statusMessage" class="status"></div>
+        
+        <div class="user-info" style="margin-top: 20px; text-align: left; display: none;">
+            <h3>User Info:</h3>
+            <p><strong>ID:</strong> <span id="userID"></span></p>
+            <p><strong>Name:</strong> <span id="userName"></span></p>
+            <p><strong>Email:</strong> <span id="userEmail"></span></p>
+            <p><strong>Token:</strong> <span id="userToken" style="word-break: break-all;"></span></p>
+        </div>
+    </div>
+
+    <!-- Facebook SDK -->
+    <script>
+        // Configuration - Replace with your ngrok URL
+        const BACKEND_URL = 'https://study.tameri.tech';
+        const FB_APP_ID = '1189867122416318';
+        
+        // Initialize Facebook SDK
+        window.fbAsyncInit = function() {
+            FB.init({
+                appId: FB_APP_ID,
+                cookie: true,
+                xfbml: true,
+                version: 'v12.0',
+                status: true,
+                oauth: true
+            });
+            
+            // Check login status on load
+            FB.getLoginStatus(function(response) {
+                if (response.status === 'connected') {
+                    handleLoginSuccess(response.authResponse);
+                }
+            });
+        };
+
+        // Load SDK asynchronously
+        (function(d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) return;
+            js = d.createElement(s); js.id = id;
+            js.src = "https://connect.facebook.net/en_US/sdk.js";
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+
+        // Handle login button click
+        document.getElementById('facebookLoginBtn').addEventListener('click', function() {
+            const statusElement = document.getElementById('statusMessage');
+            statusElement.textContent = "Connecting to Facebook...";
+            statusElement.className = "status";
+            
+            FB.login(function(response) {
+                if (response.authResponse) {
+                    handleLoginSuccess(response.authResponse);
+                } else {
+                    statusElement.textContent = "Facebook login was cancelled.";
+                    statusElement.className = "status error";
+                    console.error('Login cancelled:', response);
+                }
+            }, {
+                scope: 'public_profile,email',
+                return_scopes: true,
+                auth_type: 'rerequest'
+            });
+        });
+
+        // Handle successful login
+        async function handleLoginSuccess(authResponse) {
+            const statusElement = document.getElementById('statusMessage');
+            statusElement.textContent = "Authenticating with server...";
+            statusElement.className = "status";
+            
+            try {
+                // Send token to backend
+                const response = await fetch(`${BACKEND_URL}/api/login/facebook`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'ngrok-skip-browser-warning': 'true' // Bypass ngrok warning
+                    },
+                    body: JSON.stringify({
+                        access_token: authResponse.accessToken
+                    })
+                });
+
+                if (!response.ok) {
+                    const error = await response.json();
+                    throw new Error(error.detail || 'Authentication failed');
+                }
+
+                const data = await response.json();
+                
+                // Display success
+                statusElement.textContent = "Login successful!";
+                statusElement.className = "status success";
+                
+                // Store tokens
+                localStorage.setItem('fb_access_token', authResponse.accessToken);
+                localStorage.setItem('user_data', JSON.stringify(data.user));
+                
+                // Display user info
+                document.querySelector('.user-info').style.display = 'block';
+                document.getElementById('userID').textContent = data.user.id;
+                document.getElementById('userName').textContent = data.user.fullName;
+                document.getElementById('userEmail').textContent = data.user.email;
+                document.getElementById('userToken').textContent = authResponse.accessToken.substring(0, 30) + '...';
+                
+                // Optional: Redirect after delay
+                // setTimeout(() => {
+                //     window.location.href = `${BACKEND_URL}/dashboard`;
+                // }, 1500);
+                
+            } catch (error) {
+                console.error('Authentication error:', error);
+                statusElement.textContent = `Error: ${error.message}`;
+                statusElement.className = "status error";
+                
+                // Logout from Facebook if backend auth failed
+                FB.logout();
+            }
+        }
+    </script>
+</body>
+</html>
