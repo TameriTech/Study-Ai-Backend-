@@ -18,8 +18,8 @@ import os
 router = APIRouter(prefix="/api")
 # Initialize Facebook service
 facebook_auth = FacebookAuthService(
-    app_id=os.getenv("FACEBOOK_APP_ID", "1189867122416318"),
-    app_secret=os.getenv("FACEBOOK_APP_SECRET", "2008ebf170d834894e424d5e38bf1c74")
+    app_id=os.getenv("FACEBOOK_APP_ID"),
+    app_secret=os.getenv("FACEBOOK_APP_SECRET")
 )
 
 @router.post("/register", response_model=schemas.User, tags=["Auth"])
@@ -90,7 +90,6 @@ async def login_with_google(google_token: schemas.GoogleToken, db: Session = Dep
             detail=str(e),
             headers={"Content-Type": "application/json"}
         )
-
 
 @router.get("/get-users", response_model=list[schemas.User], tags=["User"]) 
 def get_all_users(db: Session = Depends(get_db)):

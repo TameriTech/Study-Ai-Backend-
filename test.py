@@ -1,12 +1,11 @@
-import json
-from utils.open_router import ask_openrouter
+from utils.gemini_api import generate_gemini_response
 
 # Sample quiz configuration
 quiz_data = {
-    "level_of_difficulty": "beginner",
-    "quiz_type": "multiple choice",
-    "number_of_questions": 3,
-    "quiz_instruction": "Include only questions based on reporting requirements and deadlines."
+    "level_of_difficulty": "easy",
+    "quiz_type": "text",
+    "number_of_questions": 10,
+    "quiz_instruction": "short questions"
 }
 
 # Full original text
@@ -110,7 +109,7 @@ automating the BOIR filing process.
 """
 }
 
-# System prompt: JSON-only response enforcement
+# Step 4: Prompts
 system_prompt = """
 You are a JSON-only assistant.
 
@@ -121,7 +120,6 @@ NEVER include markdown, extra text, or explanations. Only raw JSON is allowed in
 If anything is unclear, guess but keep the format. Never break JSON structure.
 """
 
-# User prompt: instruct the model to generate a quiz
 user_prompt = f"""
 from this text I quiz with this criteria:
 level of difficulty: {quiz_data["level_of_difficulty"]}
@@ -136,6 +134,7 @@ because it will be use to rate the quiz.
 Return ONLY a JSON array formatted like this:
 Questions: [
   {{
+    "question number": 1
     "question": "questions",
     "choices": {{"A": "answer A", "B": "answer B", "C": "answer C", "D": "answer D"}},
     "correct_answer": "correct letter from choices e.g C"
@@ -143,8 +142,12 @@ Questions: [
 ]
 Remember "choice is a dictionary".
 """
-response = ask_openrouter(user_prompt, model="nousresearch/deephermes-3-mistral-24b-preview:free", system_prompt=system_prompt)
-# Extract the content from the message
-message_content = response['choices'][0]['message']['content']
 
-print(message_content)
+
+# Call the function
+response = generate_gemini_response(
+    prompt=user_prompt,
+    response_type="text",
+    system_prompt="You are a JSON-only assistant. Only output valid JSON"
+)
+print(response)

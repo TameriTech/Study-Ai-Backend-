@@ -1,14 +1,11 @@
 import requests
 import json
-from dotenv import load_dotenv
 import os
-
-# Load environment variables from .env file
-load_dotenv()
 
 OPEN_ROUTER_API_URL = os.getenv("OPEN_ROUTER_API_URL")
 OPEN_ROUTER_MODEL = os.getenv("OPEN_ROUTER_MODEL")  # Default model if not set
 OPEN_ROUTER_API_KEY = os.getenv("OPEN_ROUTER_API_KEY")
+
 def ask_openrouter(prompt, system_prompt=None):
     url = OPEN_ROUTER_API_URL
     headers = {
@@ -16,6 +13,7 @@ def ask_openrouter(prompt, system_prompt=None):
         "Content-Type": "application/json",
     }
 
+    # print("url:", OPEN_ROUTER_API_URL, "  ",  "auth:", OPEN_ROUTER_API_KEY)
     # Prepare messages for API request
     messages = []
     

@@ -40,6 +40,19 @@ class UserUpdate(BaseModel):
     academic_level: Optional[str] = None
     statistic: Optional[int] = None
 
+class ResetPasswordRequest(BaseModel):
+    email: str
+    new_password: str
+    old_password: str
+
+class ForgotPasswordRequest(BaseModel):
+    email: str
+
+class ForgotPasswordReset(BaseModel):
+    email: str
+    new_password: str
+    token: str  # Token sent to email for verification
+
 class UserCreate(UserBase):
     pass
 

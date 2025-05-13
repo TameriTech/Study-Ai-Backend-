@@ -13,7 +13,8 @@ from fastapi import UploadFile, HTTPException
 from PIL import Image
 import pytesseract
 import io
-from utils.open_router import ask_openrouter  # Import the ask_openrouter function
+from utils.gemini_api import generate_gemini_response
+# from utils.open_router import ask_openrouter  # Import the ask_openrouter function
 
 
 os.makedirs("temp_files/images", exist_ok=True)
@@ -42,7 +43,7 @@ async def extract_and_save_image(db: Session, file: UploadFile, user_id: int) ->
     summary_prompt = f"""
     Here is a text from a PDF document:
     ---
-    {text}
+    {text[:100]}
     ---
     Summarize the text above for revision purpose.
     """
@@ -50,7 +51,7 @@ async def extract_and_save_image(db: Session, file: UploadFile, user_id: int) ->
     simplify_prompt = f"""
     Here is a text from a PDF document:
     ---
-    {text}
+    {text[:100]}
     ---
     Simplify the text above for purpose of better undersatanding.
     """
@@ -58,12 +59,23 @@ async def extract_and_save_image(db: Session, file: UploadFile, user_id: int) ->
     # summary_text = generate_from_ollama(summary_prompt)
     # simplified_text = generate_from_ollama(simplify_prompt)
 
-    summary_content = ask_openrouter(summary_prompt, system_prompt="You are a TEXT summarization assistant.")
-    simplified_content = ask_openrouter(simplify_prompt, system_prompt="You are a TEXT simplification assistant.")
+    # summary_content = ask_openrouter(summary_prompt, system_prompt="You are a TEXT summarization assistant.")
+    # simplified_content = ask_openrouter(simplify_prompt, system_prompt="You are a TEXT simplification assistant.")
 
-    summary_text = summary_content['choices'][0]['message']['content']
-    simplified_text = simplified_content['choices'][0]['message']['content']
+    # summary_text = summary_content['choices'][0]['message']['content']
+    # simplified_text = simplified_content['choices'][0]['message']['content']
 
+     # Generate summaries using Gemini
+    summary_text = generate_gemini_response(
+        prompt=summary_prompt,
+        response_type="text",
+        system_prompt="You are a TEXT summarization assistant."
+    )
+    simplified_text = generate_gemini_response(
+        prompt=simplify_prompt,
+        response_type="text",
+        system_prompt="You are a TEXT simplification assistant."
+    )
     # print(f"Summary content:\n{summary_text}")
     # print(f"\nSimplified content:\n{simplified_text}")
 

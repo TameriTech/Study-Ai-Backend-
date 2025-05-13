@@ -5,9 +5,10 @@ from typing import List
 from database.models import Quiz as QuizModel, Course
 from database.schemas import QuizCreate, Quiz
 from utils.general_utils import extract_and_parse_questions
-from utils.open_router import ask_openrouter  # Import the ask_openrouter function
+# from utils.open_router import ask_openrouter  # Import the ask_openrouter function
 import json
 import re
+from utils.gemini_api import generate_gemini_response
 
 
 def create_quiz(db: Session, quiz_data: QuizCreate) -> Quiz:
@@ -50,14 +51,20 @@ Remember "choice is a dictionary".
 """
     
     # Get the response from OpenRouter
-    response = ask_openrouter(quiz_prompt, system_prompt="You are a JSON-only assistant.")
-    
+    # response = ask_openrouter(quiz_prompt, system_prompt="You are a JSON-only assistant.")
+    # Call the function
+    response = generate_gemini_response(
+        prompt=quiz_prompt,
+        response_type="json",
+        system_prompt="You are a JSON-only assistant. Only output valid JSON"
+    )
     # Extract and print the raw response for debugging
-    # print(f"Raw response of questions:\n{response}")
+    print(f"Raw response of questions:\n{response}")
     
     # Parse the questions from the response
     questions = extract_and_parse_questions(response)  # Assuming you already have a function to parse it
-    
+    print(f"Prse response of questions:\n{questions}")
+
     # If no valid questions are found, raise an error
     if not questions:
         raise HTTPException(

@@ -12,8 +12,8 @@ from database.models import User
 
 
 # Google OAuth Configuration
-GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID", "32030241148-thk4vl05a8h8c47sho8glfun4353il4c.apps.googleusercontent.com")
-GOOGLE_CLIENT_SECRET = os.getenv("GOOGLE_CLIENT_SECRET", "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")
+GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID")
+GOOGLE_CLIENT_SECRET = os.getenv("GOOGLE_CLIENT_SECRET")
 
 async def verify_google_token(token: str) -> dict:
     try:

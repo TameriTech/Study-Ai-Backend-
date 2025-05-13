@@ -11,8 +11,10 @@ from database.models import Course, Document
 from typing import Optional
 from typing import List, Dict, Optional
 from utils.open_router import ask_openrouter  # Import the ask_openrouter function
-from utils.general_utils import parse_modules
-from utils.ollama_utils import generate_from_ollama, text_generate_from_ollama
+# from utils.general_utils import parse_modules
+# from utils.ollama_utils import generate_from_ollama, text_generate_from_ollama
+from utils.gemini_api import generate_gemini_response
+
 
 def validate_and_parse_json(json_str: str) -> Optional[List[Dict]]:
     """Helper function to validate and parse JSON strings"""
@@ -69,14 +71,22 @@ def create_course(
     # simplified_modules_text = text_generate_from_ollama(simplified_modules_prompt)
     # summary_modules_text = text_generate_from_ollama(summary_modules_prompt)
 
-    simplified_response = ask_openrouter(simplified_modules_prompt, system_prompt="You are a JSON-only assistant.")
-    simplified_modules_text = simplified_response['choices'][0]['message']['content']
+    # simplified_response = ask_openrouter(simplified_modules_prompt, system_prompt="You are a JSON-only assistant.")
+    # simplified_modules_text = simplified_response['choices'][0]['message']['content']
 
-    summary_response = ask_openrouter(summary_modules_prompt, system_prompt="You are a JSON-only assistant.")
-    summary_modules_text = summary_response['choices'][0]['message']['content']
+    # summary_response = ask_openrouter(summary_modules_prompt, system_prompt="You are a JSON-only assistant.")
+    # summary_modules_text = summary_response['choices'][0]['message']['content']
 
-    print(f"summary_modules_text content:\n{summary_modules_text}")
-    print(f"simplified_modules_text content:\n{simplified_modules_text}")
+    simplified_modules_text = generate_gemini_response(
+        prompt=simplified_modules_prompt,
+        response_type="json",
+        system_prompt="You are a JSON-only assistant. Only output valid JSON"
+    )
+    summary_modules_text = generate_gemini_response(
+        prompt=simplified_modules_prompt,
+        response_type="json",
+        system_prompt="You are a JSON-only assistant. Only output valid JSON"
+    )
     # Parse the module results
     simplified_modules = validate_and_parse_json(simplified_modules_text) or []
     summary_modules = validate_and_parse_json(summary_modules_text) or []

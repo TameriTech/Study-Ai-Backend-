@@ -1678,6 +1678,156 @@ For complete code examples, see the repository's source files. Each authenticati
 
 ===========================================================================
 
+Great — here's a complete, clear, and production-ready **README documentation** section you can copy into your GitHub repo. It explains your Gemini API integration using the `gemini-2.5-flash-preview-04-17` model with flexible prompt handling.
+
+---
+
+## 🧠 Gemini API Integration
+
+This project integrates with Google’s **Gemini 2.5 Flash** model (`gemini-2.5-flash-preview-04-17`) using the official `google-generativeai` SDK. The integration is designed to support various prompt types, including text and structured JSON generation (e.g., quizzes, summaries, glossaries).
+
+---
+
+### 🚀 Features
+
+* Easy integration with **Google Gemini API**
+* Supports:
+
+  * Free-tier compatible model: `gemini-2.5-flash-preview-04-17`
+  * Structured JSON and plain text responses
+  * System prompts and flexible generation behavior
+* Graceful fallback when quota is exceeded (optional)
+* Ready for CLI, web app, or API backend use
+
+---
+
+### 📦 Installation
+
+Install the required Google Generative AI SDK:
+
+```bash
+pip install google-generativeai
+```
+
+---
+
+### 🔐 API Key Setup
+
+1. Get your API key from [Google AI Studio](https://makersuite.google.com/app)
+2. Export it in your environment:
+
+```bash
+.env/ GOOGLE_API_KEY="your-api-key-here"
+```
+
+Or set it inline in code as a fallback (not recommended for production):
+
+```python
+os.environ["GOOGLE_API_KEY"] = "your-api-key-here"
+```
+
+---
+
+### 🧩 Function: `generate_gemini_response`
+
+```python
+from utils.gemini_api import generate_gemini_response
+
+response = generate_gemini_response(
+    prompt="Write a short summary of the text...",
+    model_name="gemini-2.5-flash-preview-04-17",  # Free-tier model
+    response_type="json",  # or "text"
+    system_prompt="You are a JSON-only assistant. Respond only with valid JSON."
+)
+
+print(response)
+```
+
+---
+
+### 🔧 Function Definition
+
+```python
+def generate_gemini_response(
+    prompt: str,
+    model_name: str = "gemini-2.5-flash-preview-04-17",
+    response_type: str = "text",  # "text" or "json"
+    system_prompt: str = None
+) -> str:
+    """
+    Generate a response from the Gemini model.
+
+    Args:
+        prompt (str): User prompt.
+        model_name (str): Gemini model to use.
+        response_type (str): "text" or "json".
+        system_prompt (str): Optional system-level instruction.
+
+    Returns:
+        str: Raw text or JSON response.
+    """
+    import google.generativeai as genai
+    import google.api_core.exceptions as gexc
+
+    try:
+        model = genai.GenerativeModel(model_name=model_name)
+        chat = model.start_chat(history=[])
+        if system_prompt:
+            chat.send_message(system_prompt)
+
+        gen_config = {"response_mime_type": "application/json"} if response_type == "json" else {}
+        response = chat.send_message(prompt, generation_config=gen_config)
+        return response.text
+
+    except gexc.ResourceExhausted as e:
+        print(f"[ERROR] Quota exhausted for {model_name}.")
+        raise e
+```
+
+---
+
+### ✅ Example Use Cases
+
+#### 1. Generate JSON-based Quiz
+
+```python
+prompt = "Create a 3-question multiple choice quiz on BOI reporting..."
+system_prompt = "You are a JSON-only assistant. Only output valid JSON."
+response = generate_gemini_response(prompt, response_type="json", system_prompt=system_prompt)
+```
+
+#### 2. Summarize Content
+
+```python
+prompt = "Summarize the following text for beginners: ..."
+response = generate_gemini_response(prompt, response_type="text")
+```
+
+---
+
+### 📌 Notes
+
+* This uses the **Gemini 2.5 Flash Preview model**, which is:
+
+  * Fast and efficient
+  * Free-tier friendly
+  * Suitable for text generation, structured data output, and reasoning tasks
+* Avoid using `gemini-2.5-pro-preview-05-06` unless your Google Cloud project has **billing enabled**
+
+---
+
+### 📚 References
+
+* [Google Gemini API Documentation](https://ai.google.dev/)
+* [Rate Limits & Quotas](https://ai.google.dev/gemini-api/docs/rate-limits)
+* [MakerSuite Console](https://makersuite.google.com/app)
+
+---
+
+Would you like this turned into a `README.md` file directly? I can generate the full markdown source if you want to drop it in your repo.
+
+===========================================================================
+
 USER
 ──────
 • id (Integer, PK)

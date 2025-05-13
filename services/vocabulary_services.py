@@ -13,7 +13,7 @@ from utils.open_router import ask_openrouter  # Import the ask_openrouter functi
 import re
 import json
 from typing import List, Dict
-
+from utils.gemini_api import generate_gemini_response
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
 from datetime import datetime
@@ -53,9 +53,15 @@ def create_vocabulary_entry(course_id: int, db: Session) -> schemas.Vocabulary:
             vocabulary_prompt,
             system_prompt="You are a JSON-only assistant."
         )
+        print(f"RAW RESPONSE >>>{raw_response}<<<")
 
         # Step 4: Extract and clean response text
-        response = raw_response['choices'][0]['message']['content'].strip()
+        # response = raw_response['choices'][0]['message']['content'].strip()
+        response = generate_gemini_response(
+        prompt=vocabulary_prompt,
+        response_type="json",
+        system_prompt="You are a JSON-only assistant. Only output valid JSON"
+    )
 
         # Optional debug log
         # print(f"RAW RESPONSE >>>{response}<<<")

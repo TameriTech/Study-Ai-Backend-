@@ -64,3 +64,4 @@ def delete_user(db: Session, user_id:int):
         db.delete(user_queryset)
         db.commit()
     return user_queryset
+
