@@ -28,30 +28,45 @@ ACCESS_TOKEN_EXPIRE_MINUTES = 30
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
 
 
-def extract_and_parse_questions(text):
+import re
+import json
+
+def extract_and_parse_questions(response):
     """
-    Extracts JSON data between square brackets, fixes keys (adds quotes), and parses it.
+    Extracts and parses the 'Questions' JSON array from the model's response content.
+    Accepts either a raw string or full OpenRouter response object.
     """
-    # Find content between [ and ]
-    match = re.search(r'\[.*\]', text, re.DOTALL)
+    # Step 1: Handle full response object (dict)
+    if isinstance(response, dict):
+        try:
+            response = response["choices"][0]["message"]["content"]
+        except (KeyError, IndexError):
+            raise ValueError("Invalid model response format")
+
+    # Step 2: Ensure response is a string
+    if not isinstance(response, str):
+        raise TypeError("Expected response to be a string")
+
+    # Step 3: Try direct JSON load if response is pure JSON
+    try:
+        full_data = json.loads(response)
+        if isinstance(full_data, dict) and "Questions" in full_data:
+            return full_data["Questions"]
+    except json.JSONDecodeError:
+        pass  # Fallback to regex parsing
+
+    # Step 4: Use regex to extract just the array if needed
+    match = re.search(r'\[\s*{.*?}\s*]', response, re.DOTALL)
     if not match:
         raise ValueError("No JSON array found between square brackets")
-    
+
     json_str = match.group(0)
-    
-    # Fix JSON by adding quotes around property names
-    json_str_fixed = re.sub(
-        r'(\s*)(\w+)(\s*:\s*)',  # Matches keys like "question:"
-        lambda m: f'{m.group(1)}"{m.group(2)}"{m.group(3)}',  # Adds quotes
-        json_str
-    )
-    
+
     try:
-        questions = json.loads(json_str_fixed)
+        return json.loads(json_str)
     except json.JSONDecodeError as e:
-        raise ValueError(f"Invalid JSON format: {e}")
-    
-    return questions
+        raise ValueError(f"Invalid JSON format in extracted array: {e}")
+
 
 def parse_modules(module_text: str) -> List[Dict[str, str]]:
     modules = []

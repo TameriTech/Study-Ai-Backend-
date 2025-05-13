@@ -10,7 +10,7 @@ from database import models
 from database.models import Course, Document
 from typing import Optional
 from typing import List, Dict, Optional
-
+from utils.open_router import ask_openrouter  # Import the ask_openrouter function
 from utils.general_utils import parse_modules
 from utils.ollama_utils import generate_from_ollama, text_generate_from_ollama
 
@@ -36,13 +36,13 @@ def create_course(
         summary_text: Optional[str] = None,
     ) -> Course:
 
-    # Parse modules if provided
+    # Prompt for simplified modules
     simplified_modules_prompt = f"""
     You must return a simplified structured course modules strictly as a JSON array of objects, each object with "topic" and "body" keys.
 
     Example:
     [
-    {{"topic": "topic 1", "body": "body 1"}},
+    {{"topic": "topic 1", "body": "body 1"}}
     ]
 
     Course content:
@@ -51,37 +51,47 @@ def create_course(
     ---
     Return only JSON.
     """
-    simplified_modules_text = text_generate_from_ollama(simplified_modules_prompt)
 
+    # Prompt for summary modules
     summary_modules_prompt = f"""
     Course content:
     ---
     {original_text}
     ---
     From the above course content you must return a summarized structured course modules strictly as a JSON array of objects, each object with "topic" and "body" keys.
+
     Example:
     [
-    {{"topic": "topic 1", "body": "body 1"}},
+    {{"topic": "topic 1", "body": "body 1"}}
     ]
     Return only JSON.
     """
-    summary_modules_text = text_generate_from_ollama(summary_modules_prompt)
+    # simplified_modules_text = text_generate_from_ollama(simplified_modules_prompt)
+    # summary_modules_text = text_generate_from_ollama(summary_modules_prompt)
 
+    simplified_response = ask_openrouter(simplified_modules_prompt, system_prompt="You are a JSON-only assistant.")
+    simplified_modules_text = simplified_response['choices'][0]['message']['content']
+
+    summary_response = ask_openrouter(summary_modules_prompt, system_prompt="You are a JSON-only assistant.")
+    summary_modules_text = summary_response['choices'][0]['message']['content']
+
+    print(f"summary_modules_text content:\n{summary_modules_text}")
+    print(f"simplified_modules_text content:\n{simplified_modules_text}")
+    # Parse the module results
     simplified_modules = validate_and_parse_json(simplified_modules_text) or []
     summary_modules = validate_and_parse_json(summary_modules_text) or []
-    # Calculate module pages
+    print(f"summary_modules content:\n{summary_modules}")
+    print(f"simplified_modules content:\n{simplified_modules}")
+
+    # Estimated time (10 mins per module for estimation)
     num_simplified_modules = len(simplified_modules)
     num_summary_modules = len(summary_modules)
-    
-    # Example calculation - adjust as needed
     estimated_completion_time = f"{max(num_simplified_modules, num_summary_modules) * 10} minutes"
 
-    # Calculate module pages (example calculation)
     simplified_module_pages = num_simplified_modules
     summary_module_pages = num_summary_modules
 
-
-
+    # Create course
     course = Course(
         document_id=document_id,
         course_name=course_name,
@@ -101,8 +111,6 @@ def create_course(
     db.commit()
     db.refresh(course)
     return course
-
-
 
 def get_simplified_modules(db: Session, document_id: int) -> Optional[List[Dict]]:
     course = db.query(Course).filter(Course.document_id == document_id).first()

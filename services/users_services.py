@@ -1,6 +1,6 @@
 from database.models import User
 from sqlalchemy.orm import Session
-from database.schemas import UserCreate
+from database.schemas import UserCreate, UserUpdate
 from utils.general_utils import hash_password
 from utils.general_utils import verify_password
 from fastapi import HTTPException, status
@@ -44,14 +44,19 @@ def get_users(db: Session):
 def get_user(db: Session, user_id:int):
     return db.query(User).filter(User.id == user_id).first()
 
-def update_user(db:Session, user: UserCreate, user_id:int):
+def update_user(db: Session, user_data: UserUpdate, user_id: int):
     user_queryset = db.query(User).filter(User.id == user_id).first()
-    if user_queryset: 
-        for key,value in user.model_dump().items():
+    if user_queryset:
+        update_data = user_data.dict(exclude_unset=True)
+        for key, value in update_data.items():
+            # Skip updating if value is an empty string
+            if value == "":
+                continue
             setattr(user_queryset, key, value)
         db.commit()
         db.refresh(user_queryset)
     return user_queryset
+
 
 def delete_user(db: Session, user_id:int):
     user_queryset = db.query(User).filter(User.id == user_id).first()

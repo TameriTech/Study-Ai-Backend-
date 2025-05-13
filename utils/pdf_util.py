@@ -6,7 +6,8 @@ from sqlalchemy.orm import Session
 from database.models import Document
 from services.course_service import create_course
 from services.segment_service import process_segments
-from utils.ollama_utils import generate_from_ollama, text_generate_from_ollama
+# from utils.ollama_utils import generate_from_ollama, text_generate_from_ollama
+from utils.open_router import ask_openrouter  # Import the ask_openrouter function
 
 # Ensure the temp_files/pdf directory exists
 os.makedirs("temp_files/pdf", exist_ok=True)
@@ -43,8 +44,7 @@ async def extract_and_save_pdf(db: Session, file: UploadFile, user_id: int) -> d
     ---
     Summarize the text above for revision purpose.
     """
-    summary_text = generate_from_ollama(summary_prompt)
-
+   
     simplify_prompt = f"""
     Here is a text from a PDF document:
     ---
@@ -52,8 +52,19 @@ async def extract_and_save_pdf(db: Session, file: UploadFile, user_id: int) -> d
     ---
     Simplify the text above for purpose of better undersatanding.
     """
-    simplified_text = generate_from_ollama(simplify_prompt)
-    
+
+    # summary_text = generate_from_ollama(summary_prompt)
+    # simplified_text = generate_from_ollama(simplify_prompt)
+
+    summary_content = ask_openrouter(summary_prompt, system_prompt="You are a TEXT summarization assistant.")
+    simplified_content = ask_openrouter(simplify_prompt, system_prompt="You are a TEXT simplification assistant.")
+
+    summary_text = summary_content['choices'][0]['message']['content']
+    simplified_text = simplified_content['choices'][0]['message']['content']
+
+    # print(f"Summary content:\n{summary_text}")
+    # print(f"\nSimplified content:\n{simplified_text}")
+
     # Create document record in database
     db_document = Document(
         title=file.filename,

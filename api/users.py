@@ -104,10 +104,10 @@ def get_user_by_id(id: int, db: Session = Depends(get_db)):
     raise HTTPException(status_code=404, detail="Invalid user id provided!")
 
 @router.put("/user/update/{id}", response_model=schemas.User, tags=["User"])
-def update_user(user: schemas.UserCreate, id:int, db: Session = Depends(get_db)):
+def update_user(id: int, user: schemas.UserUpdate, db: Session = Depends(get_db)):
     db_update = users_services.update_user(db, user, id)
     if not db_update:
-        raise HTTPException(status_code=404, detail="Book not found!")
+        raise HTTPException(status_code=404, detail="User not found!")
     return db_update
 
 @router.delete("/delete/user/{id}", response_model=schemas.User, tags=["User"])

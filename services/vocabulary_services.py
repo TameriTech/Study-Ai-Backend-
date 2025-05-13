@@ -9,67 +9,104 @@ from database.db import get_db
 from database import models
 from utils.general_utils import parse_vocabulary_response
 from utils.ollama_utils import text_generate_from_ollama
-
+from utils.open_router import ask_openrouter  # Import the ask_openrouter function
 import re
 import json
 from typing import List, Dict
 
+from fastapi import HTTPException
+from sqlalchemy.orm import Session
+from datetime import datetime
+import json
+import re
+
 def create_vocabulary_entry(course_id: int, db: Session) -> schemas.Vocabulary:
+    # Step 1: Check if course exists
     course = db.query(models.Course).filter(models.Course.id_course == course_id).first()
     if not course:
         raise HTTPException(status_code=404, detail="Course not found")
 
-    # Improved prompt with strict JSON formatting
+    # Step 2: Create a clean and strict prompt
     vocabulary_prompt = f"""
     Extract important terms and their definitions from this course text:
     ---
     {course.original_text}
     ---
-    Return ONLY a valid JSON array with this exact structure:
+    Return ONLY a valid JSON object with this exact structure:
     {{
         "words": [
             {{
                 "term": "exact term",
-                "definition": "clear definition"
+                "definition": "clear and clean definition"
             }}
         ]
     }}
-    Do not include any additional text, explanations, or markdown formatting.
-    The response must be parseable by json.loads().
+    IMPORTANT:
+    - Do NOT include any markdown, bullet points, or explanatory text.
+    - Do NOT include unescaped double quotes (") or characters like `?` in Big O examples. Use `O(n^2)` instead of `O(n?)`, and avoid malformed examples like `O(2")`.
+    - Your entire output must be valid JSON, starting with {{ and parsable using json.loads().
     """
-    
+
     try:
-        response = text_generate_from_ollama(vocabulary_prompt)
-        print(f"Ollama response:\n{response}")
-        
-        # Directly parse the JSON (assuming Ollama returns proper JSON)
-        result = json.loads(response)
+        # Step 3: Get AI response
+        raw_response = ask_openrouter(
+            vocabulary_prompt,
+            system_prompt="You are a JSON-only assistant."
+        )
+
+        # Step 4: Extract and clean response text
+        response = raw_response['choices'][0]['message']['content'].strip()
+
+        # Optional debug log
+        # print(f"RAW RESPONSE >>>{response}<<<")
+
+        # Step 5: Parse JSON safely
+        try:
+            result = json.loads(response)
+        except json.JSONDecodeError as e:
+            raise HTTPException(
+                status_code=400,
+                detail=f"Invalid JSON response from AI: {str(e)}"
+            )
+
+        # Step 6: Validate the structure
+        if not isinstance(result, dict) or "words" not in result or not isinstance(result["words"], list):
+            raise HTTPException(
+                status_code=400,
+                detail="AI response missing required 'words' list or invalid structure."
+            )
+
         words_list = result["words"]
-        
+
+        # Optional: Sanitize each word (skip if your model is well-trained)
+        for word in words_list:
+            if not word.get("term") or not word.get("definition"):
+                raise HTTPException(
+                    status_code=400,
+                    detail="Each word must include 'term' and 'definition'."
+                )
+
+        # Step 7: Save to DB
         db_vocabulary = models.Vocabulary(
             course_id=course_id,
-            words=words_list,
+            words=words_list,  # Ensure this field in your DB is of type JSON
             created_at=datetime.utcnow()
         )
         db.add(db_vocabulary)
         db.commit()
+        db.refresh(db_vocabulary)
+
         return db_vocabulary
-        
-    except json.JSONDecodeError as e:
-        raise HTTPException(
-            status_code=400,
-            detail=f"Invalid JSON response from AI: {str(e)}"
-        )
-    except KeyError:
-        raise HTTPException(
-            status_code=400,
-            detail="AI response missing required 'words' field"
-        )
+
+    except HTTPException as http_ex:
+        raise http_ex  # Pass through known errors
+
     except Exception as e:
         raise HTTPException(
             status_code=500,
             detail=f"Server error: {str(e)}"
         )
+
     
 def get_vocabulary_words_by_course(course_id: int, db: Session) -> List[Dict[str, Any]]:
     vocabulary = db.query(models.Vocabulary).filter(

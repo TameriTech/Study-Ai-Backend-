@@ -31,6 +31,15 @@ class UserBase(BaseModel):
     statistic: int
     # dateOfBirth: date
  
+class UserUpdate(BaseModel):
+    fullName: Optional[str] = None
+    email: Optional[str] = None
+    class_level: Optional[str] = None
+    best_subjects: Optional[str] = None
+    learning_objectives: Optional[str] = None
+    academic_level: Optional[str] = None
+    statistic: Optional[int] = None
+
 class UserCreate(UserBase):
     pass
 
