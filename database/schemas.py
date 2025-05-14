@@ -41,10 +41,8 @@ class UserUpdate(BaseModel):
     statistic: Optional[int] = None
 
 # In your schemas.py
-class EmailUpdateRequest(BaseModel):
+class PasswordResetRequest(BaseModel):
     email: str
-    password: str
-    new_email: str
 
 class UserCreate(UserBase):
     pass

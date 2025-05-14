@@ -1,5 +1,6 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Body, Depends, HTTPException, status
 from fastapi.responses import JSONResponse
+from requests import request
 from sqlalchemy.orm import Session
 from database import schemas
 from database.db import get_db
@@ -8,12 +9,13 @@ from utils.general_utils import create_access_token
 from database.schemas import FacebookToken, LoginRequest, SocialLoginResponse, TokenResponse, UserBase
 from fastapi.security import OAuth2PasswordBearer
 from services.google_auth import verify_google_token, get_or_create_user
-from database.schemas import GoogleToken
+from database.schemas import GoogleToken, PasswordResetRequest
 from database.db import get_db
 from database.schemas import FacebookToken, SocialLoginResponse
 from services.facebook_auth import FacebookAuthService
 from utils.general_utils import create_access_token
 import os
+from utils.email import send_email  # you'll need to implement this
 
 router = APIRouter(prefix="/api")
 # Initialize Facebook service
@@ -23,8 +25,8 @@ facebook_auth = FacebookAuthService(
 )
 
 @router.post("/register", response_model=schemas.User, tags=["Auth"])
-def register_new_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
-    return users_services.create_user(db, user)
+async def register_new_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
+    return await users_services.create_user(db, user)
 
 @router.post("/login", response_model=TokenResponse, tags=["Auth"])
 def login_user(request: LoginRequest, db: Session = Depends(get_db)):
@@ -115,3 +117,19 @@ def delete_user(id:int, db: Session = Depends(get_db)):
     if delete_entry:
         return delete_entry
     raise HTTPException(status_code=404, detail="User not found!")
+
+@router.post("/reset-password", tags=["User"])
+async def reset_password(request: schemas.PasswordResetRequest, db: Session = Depends(get_db)):
+    return await users_services.reset_and_email_password(db, request.email)
+
+@router.post("/send-email", tags=["User"])
+async def test_email(email: str = Body(..., embed=True)):
+    """Test endpoint for email sending"""
+    test_result = await send_email(
+        recipient=email,
+        subject="Test Email",
+        body="This is a test email from the server",
+        button_url="https://yourapp.com/dashboard",
+        button_text="Start Learning"
+    )
+    return {"success": test_result}

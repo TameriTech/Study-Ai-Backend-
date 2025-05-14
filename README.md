@@ -1828,6 +1828,158 @@ Would you like this turned into a `README.md` file directly? I can generate the 
 
 ===========================================================================
 
+Here's a comprehensive documentation for your email/password reset system that you can add to your GitHub repository:
+
+---
+
+# Email & Password Reset System
+
+This documentation explains the architecture and setup for the email/password reset functionality in the application.
+
+## Table of Contents
+1. [System Architecture](#system-architecture)
+2. [Setup Instructions](#setup-instructions)
+3. [Configuration](#configuration)
+4. [File Structure](#file-structure)
+5. [How It Works](#how-it-works)
+6. [Troubleshooting](#troubleshooting)
+
+## System Architecture
+
+The system is divided into three main components:
+
+```
+📦backend
+├── 📂config          # Configuration files
+│   └── email_config.py
+├── 📂utils           # Utility functions
+│   └── email.py
+├── 📂services        # Business logic
+│   └── user_service.py
+├── 📂api             # API endpoints
+│   └── user_router.py
+└── .env              # Environment variables
+```
+
+## Setup Instructions
+
+### 1. Prerequisites
+- Python 3.8+
+- Required packages:
+  ```bash
+  pip install pydantic-settings python-dotenv fastapi
+  ```
+
+### 2. Gmail Setup (for SMTP)
+1. Enable 2-Step Verification in your Google Account
+2. Create an App Password:
+   - Go to [Google App Passwords](https://myaccount.google.com/apppasswords)
+   - Select "Mail" as the app type
+   - Generate a 16-character password
+
+### 3. Configuration
+Create a `.env` file in your project root:
+```ini
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+SMTP_USERNAME=your_email@gmail.com
+SMTP_PASSWORD=your_app_password  # The 16-char password from Google
+SMTP_FROM=your_email@gmail.com
+```
+
+## File Structure Explained
+
+### 1. Config (`config/email_config.py`)
+Handles SMTP configuration with Pydantic settings:
+```python
+from pydantic_settings import BaseSettings
+from pydantic import SecretStr
+
+class EmailSettings(BaseSettings):
+    SMTP_HOST: str = "smtp.gmail.com"
+    SMTP_PORT: int = 587
+    SMTP_USERNAME: str
+    SMTP_PASSWORD: SecretStr  # Securely stores password
+    SMTP_FROM: str
+
+    class Config:
+        env_file = ".env"
+
+email_settings = EmailSettings()
+```
+
+### 2. Utils (`utils/email.py`)
+Contains the email sending logic:
+```python
+async def send_email(recipient: str, subject: str, body: str) -> bool:
+    """Sends email using SMTP"""
+    # Implementation details...
+```
+
+### 3. Services (`services/user_service.py`)
+Business logic for password reset:
+```python
+async def reset_and_email_password(db, email: str):
+    """Generates new password and sends email"""
+    # 1. Generate random password
+    # 2. Update user in database
+    # 3. Send email via utils/email.py
+```
+
+### 4. API (`api/routers/user_router.py`)
+Exposes the password reset endpoint:
+```python
+@router.post("/reset-password")
+async def reset_password(request: PasswordResetRequest):
+    """API endpoint for password reset"""
+    return await user_service.reset_and_email_password(request.email)
+```
+
+## How It Works
+
+1. **Flow**:
+   ```
+   API Request → Router → Service → Email Utils → SMTP Server
+   ```
+
+2. **Password Reset Process**:
+   - User requests password reset via API
+   - System generates a random password
+   - Password is hashed and stored in database
+   - Plaintext password is emailed to user (temporary)
+
+3. **Security**:
+   - Uses Google App Passwords (not main account password)
+   - Passwords are hashed before storage (bcrypt)
+   - SMTP credentials stored in `.env` (gitignored)
+
+## Troubleshooting
+
+### Common Issues
+
+1. **Emails not sending**:
+   - Verify `.env` file exists and has correct permissions
+   - Check Gmail's "Less secure apps" setting is OFF
+   - Ensure you're using an App Password (not account password)
+
+2. **Configuration errors**:
+   ```bash
+   # Test config loading
+   python -c "from config.email_config import email_settings; print(email_settings.SMTP_HOST)"
+   ```
+
+3. **SMTP Connection Issues**:
+   ```python
+   # Test SMTP connection
+   import smtplib
+   with smtplib.SMTP("smtp.gmail.com", 587) as server:
+       server.starttls()
+       server.login("your_email", "your_app_password")
+   ```
+
+---
+
+===========================================================================
 USER
 ──────
 • id (Integer, PK)

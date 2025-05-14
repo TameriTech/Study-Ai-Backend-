@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <style type="text/css">
+        /* Base styles */
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: #333333;
+            background-color: #f7f9fc;
+            margin: 0;
+            padding: 0;
+        }
+        
+        /* Container */
+        .email-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #4b6cb7 0%, #182848 100%);
+            padding: 30px 20px;
+            text-align: center;
+            border-bottom: 4px solid #f1c40f;
+        }
+        
+        .logo {
+            max-height: 60px;
+            width: auto;
+        }
+        
+        /* Content */
+        .content {
+            padding: 30px;
+        }
+        
+        h1 {
+            color: #2c3e50;
+            margin-top: 0;
+            font-size: 24px;
+        }
+        
+        p {
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+        
+        .button {
+            display: inline-block;
+            background: #3498db;
+            color: white !important;
+            text-decoration: none;
+            padding: 12px 25px;
+            border-radius: 4px;
+            margin: 15px 0;
+            font-weight: bold;
+        }
+        
+        /* Footer */
+        .footer {
+            background: #f1f5f9;
+            padding: 20px;
+            text-align: center;
+            font-size: 14px;
+            color: #7f8c8d;
+        }
+        
+        .social-links a {
+            margin: 0 10px;
+            text-decoration: none;
+        }
+        
+        /* Responsive */
+        @media only screen and (max-width: 600px) {
+            .content {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <div class="header">
+            <img src="cid:logo" alt="Study AI Logo" class="logo">
+        </div>
+        
+        <div class="content">
+            <h1>{{ subject }}</h1>
+            
+            <div class="message-content">
+                {{ body }}
+            </div>
+            
+            {% if button_url and button_text %}
+            <center>
+                <a href="{{ button_url }}" class="button">{{ button_text }}</a>
+            </center>
+            {% endif %}
+        </div>
+        
+        <div class="footer">
+            <p>© 2025 Tameri Study AI. All rights reserved.</p>
+            <p>Enhancing education through technology</p>
+            <div class="social-links">
+                <a href="https://www.facebook.com/AllJsonSarl">Facebook</a>
+                <a href="https://twitter.com/youracademy">Twitter</a>
+                <a href="https://linkedin.com/company/youracademy">LinkedIn</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
