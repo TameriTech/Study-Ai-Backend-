@@ -146,3 +146,22 @@ class Feedback(Base):
 
     # Relationships
     course = relationship("Course", back_populates="feedbacks")
+
+class Comment(Base):
+    __tablename__ = "Comments"
+
+    id_comment = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey('Users.id'), nullable=False)  # User who made the comment
+    quiz_id = Column(Integer, ForeignKey('Quizzes.id_quiz'), nullable=True)  # Optional, if related to a quiz
+    course_id = Column(Integer, ForeignKey('Courses.id_course'), nullable=True)  # Optional, if related to a course
+    comment_text = Column(String, nullable=False)  # Text of the comment
+    likes = Column(Integer, default=0)  # Number of likes
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+    # Relationships
+    user = relationship("User", backref="comments")  # Relationship to User
+    quiz = relationship("Quiz", backref="comments")  # Relationship to Quiz (optional)
+    course = relationship("Course", backref="comments")  # Relationship to Course (optional)
+    
+    def __repr__(self):
+        return f"<Comment(user_id={self.user_id}, quiz_id={self.quiz_id}, course_id={self.course_id}, likes={self.likes})>"

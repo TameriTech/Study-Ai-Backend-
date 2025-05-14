@@ -40,18 +40,11 @@ class UserUpdate(BaseModel):
     academic_level: Optional[str] = None
     statistic: Optional[int] = None
 
-class ResetPasswordRequest(BaseModel):
+# In your schemas.py
+class EmailUpdateRequest(BaseModel):
     email: str
-    new_password: str
-    old_password: str
-
-class ForgotPasswordRequest(BaseModel):
-    email: str
-
-class ForgotPasswordReset(BaseModel):
-    email: str
-    new_password: str
-    token: str  # Token sent to email for verification
+    password: str
+    new_email: str
 
 class UserCreate(UserBase):
     pass
@@ -208,6 +201,35 @@ class Feedback(FeedbackBase):
     
     class Config:
         from_attributes = True
+
+# Comment related schemas
+class CommentBase(BaseModel):
+    user_id: int  # User who made the comment
+    quiz_id: Optional[int] = None  # Optional: related to a quiz
+    course_id: Optional[int] = None  # Optional: related to a course
+    comment_text: str  # Text of the comment
+    likes: int = 0  # Number of likes, default is 0
+
+class CommentCreate(CommentBase):
+    pass  # You can extend this if there are additional fields for creating comments
+
+class Comment(CommentBase):
+    id_comment: int  # The primary key for the comment
+    created_at: datetime  # Timestamp when the comment was created
+
+    class Config:
+        from_attributes = True  # Enable Pydantic to support ORM mode
+
+class CommentSearchResponse(BaseModel):
+    results: List[Comment]  # List of comments in the response
+    pagination: dict = Field(
+        example={
+            "total": 15,
+            "returned": 10,
+            "skip": 0,
+            "limit": 10
+        }
+    )
 
 # Update the forward references after all classes are defined
 Course.model_rebuild()

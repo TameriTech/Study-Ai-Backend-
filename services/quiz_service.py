@@ -8,7 +8,7 @@ from utils.general_utils import extract_and_parse_questions
 # from utils.open_router import ask_openrouter  # Import the ask_openrouter function
 import json
 import re
-from utils.gemini_api import generate_gemini_response
+from utils.gemini_api import generate_gemini_response, validate_and_parse_json
 
 
 def create_quiz(db: Session, quiz_data: QuizCreate) -> Quiz:
@@ -62,7 +62,7 @@ Remember "choice is a dictionary".
     print(f"Raw response of questions:\n{response}")
     
     # Parse the questions from the response
-    questions = extract_and_parse_questions(response)  # Assuming you already have a function to parse it
+    questions = validate_and_parse_json(response)  # Assuming you already have a function to parse it
     print(f"Prse response of questions:\n{questions}")
 
     # If no valid questions are found, raise an error

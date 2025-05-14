@@ -1,11 +1,25 @@
+import json
 import os
+from typing import Dict, List, Optional
 import google.generativeai as genai
 
 GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
 # --- Setup Gemini API ---
-genai.configure(api_key="AIzaSyCxenYhoXs_YHzZO0hqQ9kw8xTtIARGkPM")  # Optional fallback
+genai.configure(api_key=GOOGLE_API_KEY)  # Optional fallback
 
-
+def validate_and_parse_json(json_str: str) -> Optional[List[Dict]]:
+    """Helper function to validate and parse JSON strings"""
+    if not json_str or not json_str.strip():
+        return None
+    
+    try:
+        parsed = json.loads(json_str)
+        if not isinstance(parsed, list):  # Ensure it's a list as expected
+            return None
+        return parsed
+    except json.JSONDecodeError:
+        return None
+    
 def generate_gemini_response(
     prompt: str,
     response_type: str = "text",  # "text" or "json"

@@ -13,21 +13,7 @@ from typing import List, Dict, Optional
 from utils.open_router import ask_openrouter  # Import the ask_openrouter function
 # from utils.general_utils import parse_modules
 # from utils.ollama_utils import generate_from_ollama, text_generate_from_ollama
-from utils.gemini_api import generate_gemini_response
-
-
-def validate_and_parse_json(json_str: str) -> Optional[List[Dict]]:
-    """Helper function to validate and parse JSON strings"""
-    if not json_str or not json_str.strip():
-        return None
-    
-    try:
-        parsed = json.loads(json_str)
-        if not isinstance(parsed, list):  # Ensure it's a list as expected
-            return None
-        return parsed
-    except json.JSONDecodeError:
-        return None
+from utils.gemini_api import generate_gemini_response, validate_and_parse_json
     
 def create_course(
         db, 
