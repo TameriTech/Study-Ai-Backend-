@@ -26,7 +26,15 @@ def create_vocabulary_entry(course_id: int, db: Session) -> schemas.Vocabulary:
     if not course:
         raise HTTPException(status_code=404, detail="Course not found")
 
-    # Step 2: Create a clean and strict prompt
+    # Step 2: Check if vocabulary already exists for the course
+    existing_vocabulary = db.query(models.Vocabulary).filter(models.Vocabulary.course_id == course_id).first()
+    if existing_vocabulary:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Vocabulary entry already exists for course ID {course_id}. You cannot create another one."
+        )
+
+    # Step 3: Create a clean and strict prompt
     vocabulary_prompt = f"""
     Extract important terms and their definitions from this course text:
     ---
@@ -43,30 +51,26 @@ def create_vocabulary_entry(course_id: int, db: Session) -> schemas.Vocabulary:
     }}
     IMPORTANT:
     - Do NOT include any markdown, bullet points, or explanatory text.
-    - Do NOT include unescaped double quotes (") or characters like `?` in Big O examples. Use `O(n^2)` instead of `O(n?)`, and avoid malformed examples like `O(2")`.
+    - Do NOT include unescaped double quotes (") or characters like `?` in Big O examples. Use `O(n^2)` instead of `O(n?)`, and avoid malformed examples like `O(2")` instead of `O(n^2)`.
     - Your entire output must be valid JSON, starting with {{ and parsable using json.loads().
     """
 
     try:
-        # Step 3: Get AI response
+        # Step 4: Get AI response
         raw_response = ask_openrouter(
             vocabulary_prompt,
             system_prompt="You are a JSON-only assistant."
         )
         print(f"RAW RESPONSE >>>{raw_response}<<<")
 
-        # Step 4: Extract and clean response text
-        # response = raw_response['choices'][0]['message']['content'].strip()
+        # Step 5: Extract and clean response text
         response = generate_gemini_response(
-        prompt=vocabulary_prompt,
-        response_type="json",
-        system_prompt="You are a JSON-only assistant. Only output valid JSON"
-    )
+            prompt=vocabulary_prompt,
+            response_type="json",
+            system_prompt="You are a JSON-only assistant. Only output valid JSON"
+        )
 
-        # Optional debug log
-        # print(f"RAW RESPONSE >>>{response}<<<")
-
-        # Step 5: Parse JSON safely
+        # Step 6: Parse JSON safely
         try:
             result = json.loads(response)
         except json.JSONDecodeError as e:
@@ -75,7 +79,7 @@ def create_vocabulary_entry(course_id: int, db: Session) -> schemas.Vocabulary:
                 detail=f"Invalid JSON response from AI: {str(e)}"
             )
 
-        # Step 6: Validate the structure
+        # Step 7: Validate the structure
         if not isinstance(result, dict) or "words" not in result or not isinstance(result["words"], list):
             raise HTTPException(
                 status_code=400,
@@ -92,7 +96,7 @@ def create_vocabulary_entry(course_id: int, db: Session) -> schemas.Vocabulary:
                     detail="Each word must include 'term' and 'definition'."
                 )
 
-        # Step 7: Save to DB
+        # Step 8: Save to DB
         db_vocabulary = models.Vocabulary(
             course_id=course_id,
             words=words_list,  # Ensure this field in your DB is of type JSON
@@ -112,7 +116,6 @@ def create_vocabulary_entry(course_id: int, db: Session) -> schemas.Vocabulary:
             status_code=500,
             detail=f"Server error: {str(e)}"
         )
-
     
 def get_vocabulary_words_by_course(course_id: int, db: Session) -> List[Dict[str, Any]]:
     vocabulary = db.query(models.Vocabulary).filter(

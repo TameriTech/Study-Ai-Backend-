@@ -20,6 +20,33 @@ def validate_and_parse_json(json_str: str) -> Optional[List[Dict]]:
     except json.JSONDecodeError:
         return None
     
+def quiz_validate_and_parse_json(json_str: str) -> Optional[List[Dict]]:
+    """Helper function to validate and parse JSON strings"""
+    if not json_str or not json_str.strip():
+        return None
+    
+    try:
+        parsed = json.loads(json_str)
+        
+        # Debug: Log the parsed response to verify its structure
+        print(f"Parsed response: {parsed}")
+        
+        if not isinstance(parsed, list):  # Ensure it's a list as expected
+            print("Response is not a list.")
+            return None
+        
+        # Check if all items are dictionaries with expected keys
+        for item in parsed:
+            if not isinstance(item, dict) or "question" not in item:
+                print("One or more items in the list are invalid.")
+                return None
+            
+        return parsed
+    
+    except json.JSONDecodeError:
+        print("Failed to decode JSON.")
+        return None
+
 def generate_gemini_response(
     prompt: str,
     response_type: str = "text",  # "text" or "json"

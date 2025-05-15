@@ -203,10 +203,9 @@ class Feedback(FeedbackBase):
 # Comment related schemas
 class CommentBase(BaseModel):
     user_id: int  # User who made the comment
-    quiz_id: Optional[int] = None  # Optional: related to a quiz
     course_id: Optional[int] = None  # Optional: related to a course
     comment_text: str  # Text of the comment
-    likes: int = 0  # Number of likes, default is 0
+    likes: int = Field(default=0, ge=0, le=5, description="Number of likes, range 0-5") 
 
 class CommentCreate(CommentBase):
     pass  # You can extend this if there are additional fields for creating comments

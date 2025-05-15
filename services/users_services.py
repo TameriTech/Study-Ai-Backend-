@@ -155,3 +155,25 @@ Need help? Reply to this email!</small>
     except Exception as e:
         db.rollback()
         raise HTTPException(status_code=500, detail=str(e))
+    
+async def update_user_password(db: Session, user_id: int, old_password: str, new_password: str, confirm_password: str):
+    try:
+        # Retrieve the user from the database
+        user = db.query(User).filter(User.id == user_id).first()
+        
+        if not user:
+            raise HTTPException(status_code=404, detail="User not found")
+
+        if not verify_password(old_password, user.password):
+            raise HTTPException(status_code=400, detail="Old password is incorrect")
+
+        if new_password != confirm_password:
+            raise HTTPException(status_code=400, detail="New password and confirmation do not match")
+        
+        hashed_new_password = hash_password(new_password)
+        user.password = hashed_new_password
+        db.commit()
+        return {"message": "Password updated successfully"}
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="An error occurred while updating the password: " + str(e))

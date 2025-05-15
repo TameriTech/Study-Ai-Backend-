@@ -54,6 +54,7 @@ def create_course(
     ]
     Return only JSON.
     """
+    
     # simplified_modules_text = text_generate_from_ollama(simplified_modules_prompt)
     # summary_modules_text = text_generate_from_ollama(summary_modules_prompt)
 
@@ -69,9 +70,25 @@ def create_course(
         system_prompt="You are a JSON-only assistant. Only output valid JSON"
     )
     summary_modules_text = generate_gemini_response(
-        prompt=simplified_modules_prompt,
+        prompt=summary_modules_prompt,
         response_type="json",
         system_prompt="You are a JSON-only assistant. Only output valid JSON"
+    )
+
+    course_name_prompt = f"""
+    Check this course content and the original name and give a name
+    to the course that is best appropriate for displaying on a mobile app or websit
+    Give exactly the name no pre-text or text after, I want to directly save it in the database.
+    for example: Mathematics - Intergration.
+    ---
+    Course content: {summary_modules_text}, course original name: {course_name}
+    ---
+
+    """
+    course_name = generate_gemini_response(
+        prompt=course_name_prompt,
+        response_type="text",
+        system_prompt="You are a TETX-only assistant."
     )
     # Parse the module results
     simplified_modules = validate_and_parse_json(simplified_modules_text) or []

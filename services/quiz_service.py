@@ -8,7 +8,39 @@ from utils.general_utils import extract_and_parse_questions
 # from utils.open_router import ask_openrouter  # Import the ask_openrouter function
 import json
 import re
-from utils.gemini_api import generate_gemini_response, validate_and_parse_json
+from utils.gemini_api import generate_gemini_response, quiz_validate_and_parse_json
+
+
+import time
+from typing import Optional
+
+def get_ai_response_with_retry(quiz_prompt: str, retries: int = 2) -> Optional[str]:
+    """Helper function to get a valid AI response with retries"""
+    attempt = 0
+    while attempt < retries:
+        try:
+            response = generate_gemini_response(
+                prompt=quiz_prompt,
+                response_type="json",
+                system_prompt="You are a JSON-only assistant. Only output valid JSON"
+            )
+            
+            # Debug: Log the raw response
+            print(f"Attempt {attempt + 1}: Raw response from AI:\n{response}")
+            
+            # Validate the response, if it fails, retry
+            if not response:
+                raise ValueError("Empty response from AI")
+
+            return response  # Return valid response if successful
+        except Exception as e:
+            # Log the error and retry
+            print(f"Attempt {attempt + 1} failed: {e}")
+            attempt += 1
+            time.sleep(2)  # Optional: Add a delay before retrying
+    
+    # If all retries fail, return None
+    return None
 
 
 def create_quiz(db: Session, quiz_data: QuizCreate) -> Quiz:
@@ -20,6 +52,14 @@ def create_quiz(db: Session, quiz_data: QuizCreate) -> Quiz:
             detail=f"Course with id {quiz_data.course_id} not found"
         )
     
+    # Check if quizzes already exist for the course
+    existing_quizzes = db.query(QuizModel).filter(QuizModel.course_id == quiz_data.course_id).first()
+    if existing_quizzes:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"A set of quizzes already exists for course ID {quiz_data.course_id}. You cannot create another set."
+        )
+
     # Update the course details if quiz instruction is provided
     if quiz_data.quiz_instruction:
         course.quiz_instruction = quiz_data.quiz_instruction
@@ -50,20 +90,18 @@ Questions: [
 Remember "choice is a dictionary".
 """
     
-    # Get the response from OpenRouter
-    # response = ask_openrouter(quiz_prompt, system_prompt="You are a JSON-only assistant.")
-    # Call the function
-    response = generate_gemini_response(
-        prompt=quiz_prompt,
-        response_type="json",
-        system_prompt="You are a JSON-only assistant. Only output valid JSON"
-    )
-    # Extract and print the raw response for debugging
-    print(f"Raw response of questions:\n{response}")
-    
+    # Retry getting a valid response from AI
+    response = get_ai_response_with_retry(quiz_prompt)
+
+    if not response:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Failed to generate valid quiz questions after multiple attempts."
+        )
+
     # Parse the questions from the response
-    questions = validate_and_parse_json(response)  # Assuming you already have a function to parse it
-    print(f"Prse response of questions:\n{questions}")
+    questions = quiz_validate_and_parse_json(response)
+    # print(f"Parsed response of questions:\n{questions}")
 
     # If no valid questions are found, raise an error
     if not questions:
@@ -103,6 +141,7 @@ Remember "choice is a dictionary".
     
     # Return the first quiz (as per the response model)
     return quizzes[0]
+
 
 def get_quiz_questions_by_course(db: Session, course_id: int) -> List[Quiz]:
     # Verify course exists

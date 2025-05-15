@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
-from api import users, courses, documents, vocabulary, segments, feedback, quiz
+from api import users, courses, documents, vocabulary, segments, feedback, quiz, comment
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
@@ -21,6 +21,7 @@ app.include_router(courses.router)
 app.include_router(vocabulary.router)
 app.include_router(quiz.router)
 app.include_router(feedback.router)
+app.include_router(comment.router)
 
 @app.get("/")
 async def root():

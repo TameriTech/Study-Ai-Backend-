@@ -20,9 +20,8 @@ python-dotenv
 sentence-transformers>=2.2.2
 numpy==1.26.0 
 python-multipart authlib requests
-google-api-core==2.24.2
 google-auth==2.40.0
 google-generativeai
 pydantic-settings
 aiosmtplib
-Jinja2
+

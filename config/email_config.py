@@ -1,13 +1,16 @@
 # config/email_config.py
+import os
+from dotenv import load_dotenv
 from pydantic_settings import BaseSettings
-from pydantic import SecretStr, Field
+from pydantic import BaseModel, SecretStr, Field
+load_dotenv()
 
 class EmailSettings(BaseSettings):
-    SMTP_HOST: str = Field(default="smtp.gmail.com")
-    SMTP_PORT: int = Field(default=587)
-    SMTP_USERNAME: str = Field(default="tameri.tech25@gmail.com")
-    SMTP_PASSWORD: SecretStr = Field(default="xvzi wxvd cceq oixh")
-    SMTP_FROM: str = Field(default="tameri.tech25@gmail.com")
+    SMTP_HOST: str = os.getenv("SMTP_HOST", "smtp.gmail.com")  # Default if not found
+    SMTP_PORT: int = os.getenv("SMTP_PORT", 587)
+    SMTP_USERNAME: str = os.getenv("SMTP_USERNAME")
+    SMTP_PASSWORD: str = os.getenv("SMTP_PASSWORD")
+    SMTP_FROM: str = os.getenv("SMTP_FROM")
 
     class Config:
         env_file = ".env"
@@ -15,3 +18,10 @@ class EmailSettings(BaseSettings):
         extra = 'ignore'
 
 email_settings = EmailSettings()
+
+class EmailRequest(BaseModel):
+    recipient: str
+    subject: str
+    body: str
+    button_url: str = None
+    button_text: str = None

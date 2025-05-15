@@ -56,10 +56,7 @@ async def send_email(recipient: str, subject: str, body: str,
         # SMTP sending
         with smtplib.SMTP(email_settings.SMTP_HOST, email_settings.SMTP_PORT) as server:
             server.starttls()
-            server.login(
-                email_settings.SMTP_USERNAME,
-                email_settings.SMTP_PASSWORD.get_secret_value()
-            )
+            server.login(email_settings.SMTP_USERNAME, email_settings.SMTP_PASSWORD)
             server.send_message(msg)
         
         return True
