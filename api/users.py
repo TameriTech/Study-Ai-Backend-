@@ -39,15 +39,7 @@ def login_user(request: LoginRequest, db: Session = Depends(get_db)):
     return {
         "access_token": access_token,
         "token_type": "bearer",
-        "user": {
-                "id": user.id,
-                "email": user.email,
-                "fullName": user.fullName,
-                "class_level": user.class_level,
-                "best_subjects": user.best_subjects,
-                "learning_objectives": user.learning_objectives,
-                "academic_level": user.academic_level,
-            }
+        "user": user  # SQLAlchemy model will be auto-converted by Pydantic if compatible
     }
 
 @router.post("/login/facebook", response_model=SocialLoginResponse, tags=["Auth"])
