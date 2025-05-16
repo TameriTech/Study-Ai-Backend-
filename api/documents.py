@@ -4,8 +4,9 @@ from database.db import get_db
 from utils.pdf_util import extract_and_save_pdf
 from utils.image_util import extract_and_save_image
 from utils.video_util import extract_and_save_video
-
 router = APIRouter(prefix="/api", tags=["Document"])
+
+    
 
 @router.post("/extract-pdf-text")
 async def upload_pdf(
@@ -32,12 +33,11 @@ async def extract_text_from_image_route(
 async def process_video(
     file: UploadFile = File(...),
     user_id: int = Query(...),
-    frames_per_second: int = Query(1, gt=0, le=10),
     db: Session = Depends(get_db)
 ):
     try:
-        return await extract_and_save_video(db, file, user_id, frames_per_second)
+        return await extract_and_save_video(db, file, user_id)
     except HTTPException:
         raise
     except Exception as e:
-        raise HTTPException(500, detail=f"Processing failed: {str(e)}")
+        raise HTTPException(500, detail=f"Video processing failed: {str(e)}")

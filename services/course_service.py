@@ -69,12 +69,13 @@ def create_course(
         response_type="json",
         system_prompt="You are a JSON-only assistant. Only output valid JSON"
     )
+    print("Simplified Modules successfully!")
     summary_modules_text = generate_gemini_response(
         prompt=summary_modules_prompt,
         response_type="json",
         system_prompt="You are a JSON-only assistant. Only output valid JSON"
     )
-
+    print("summary Modules successfully!")
     course_name_prompt = f"""
     Check this course content and the original name and give a name
     to the course that is best appropriate for displaying on a mobile app or websit
@@ -93,8 +94,8 @@ def create_course(
     # Parse the module results
     simplified_modules = validate_and_parse_json(simplified_modules_text) or []
     summary_modules = validate_and_parse_json(summary_modules_text) or []
-    print(f"summary_modules content:\n{summary_modules}")
-    print(f"simplified_modules content:\n{simplified_modules}")
+    # print(f"summary_modules content:\n{summary_modules}")
+    # print(f"simplified_modules content:\n{simplified_modules}")
 
     # Estimated time (10 mins per module for estimation)
     num_simplified_modules = len(simplified_modules)

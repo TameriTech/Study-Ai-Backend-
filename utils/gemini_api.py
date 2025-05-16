@@ -5,6 +5,7 @@ import google.generativeai as genai
 
 GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
 # --- Setup Gemini API ---
+
 genai.configure(api_key=GOOGLE_API_KEY)  # Optional fallback
 
 def validate_and_parse_json(json_str: str) -> Optional[List[Dict]]:
