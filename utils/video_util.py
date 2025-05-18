@@ -10,23 +10,19 @@ from services.course_service import create_course
 from services.segment_service import process_segments
 import tempfile
 from utils.gemini_api import generate_gemini_response
-from moviepy.editor import VideoFileClip
+from pydub import AudioSegment  # Replaced moviepy with pydub
 import whisper
-# from utils.open_router import ask_openrouter  # Import the ask_openrouter function
-# from utils.ollama_utils import generate_from_ollama, text_generate_from_ollama
 
 os.makedirs("temp_files/videos", exist_ok=True)
 os.makedirs("temp_files/videos/audios", exist_ok=True)
-        
-# ****************************ORIGINAL FIRST FUNCTION
+
 async def extract_and_save_video(db: Session, file: UploadFile, user_id: int) -> dict:
-    # First check file size before processing
     MAX_FILE_SIZE = 20 * 1024 * 1024  # 20MB in bytes
     
-    # Get file size by seeking to end and getting position
-    file.file.seek(0, 2)  # Seek to end
+    # Check file size
+    file.file.seek(0, 2)
     file_size = file.file.tell()
-    file.file.seek(0)  # Reset file pointer to beginning
+    file.file.seek(0)
     
     if file_size > MAX_FILE_SIZE:
         raise HTTPException(
@@ -34,7 +30,6 @@ async def extract_and_save_video(db: Session, file: UploadFile, user_id: int) ->
             detail="File is too large. Maximum allowed size is 20MB."
         )
 
-    # Create a temporary directory for processing
     with tempfile.TemporaryDirectory() as temp_dir:
         try:
             allowed_extensions = ('.mp4', '.mov', '.avi', '.mkv')
@@ -44,27 +39,31 @@ async def extract_and_save_video(db: Session, file: UploadFile, user_id: int) ->
             # Save video
             timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
             video_filename = f"{timestamp}_{file.filename.replace(' ', '_')}"
-            audio_filename = f"{timestamp}_audio.mp3"  # This is the timestamped filename we want to use
+            audio_filename = f"{timestamp}_audio.mp3"
             
-            # Define paths in our project directory
             video_path = os.path.normpath(f"temp_files/videos/{video_filename}")
-            audio_path = os.path.normpath(f"temp_files/videos/audios/{audio_filename}")  # Fixed path with slash
+            audio_path = os.path.normpath(f"temp_files/videos/audios/{audio_filename}")
             
             # Write the uploaded file to disk
             with open(video_path, "wb") as buffer:
                 buffer.write(await file.read())
 
-            # Process video with MoviePy
-            video = VideoFileClip(video_path)
-            video.audio.write_audiofile(audio_path, codec='mp3')
-            video.close()  # Important to release resources
+            # Convert video to audio using pydub
+            try:
+                audio = AudioSegment.from_file(video_path)
+                audio.export(audio_path, format="mp3")
+            except Exception as e:
+                raise HTTPException(
+                    status_code=400,
+                    detail=f"Audio extraction failed: {str(e)}. Please ensure FFmpeg is installed."
+                )
 
-            # Step 3: Transcribe Audio to Text
+            # Transcribe Audio to Text
             print("Transcribing audio... (This may take a few minutes)")
-            whisper_model = whisper.load_model("base")  # Use "small", "medium", or "large" for better accuracy
+            whisper_model = whisper.load_model("base", device="cpu")
             transcription = whisper_model.transcribe(audio_path)
             video_text = transcription["text"]
-            print(f"Transcript extracted successfully!")  # Fixed f-string
+            print("Transcript extracted successfully!")
 
             # Generate prompts
             summary_prompt = f"""
@@ -89,15 +88,16 @@ async def extract_and_save_video(db: Session, file: UploadFile, user_id: int) ->
                 response_type="text",
                 system_prompt="You are a TEXT summarization assistant."
             )
-            print("summary text successfully!")
+            print("Summary text generated successfully!")
+            
             simplified_text = generate_gemini_response(
                 prompt=simplify_prompt,
                 response_type="text",
                 system_prompt="You are a TEXT simplification assistant."
             )
-            print("Simplified text successfully!")
+            print("Simplified text generated successfully!")
             
-            # Create document record in database
+            # Create document record
             db_document = Document(
                 title=file.filename,
                 type_document="video",
@@ -111,7 +111,7 @@ async def extract_and_save_video(db: Session, file: UploadFile, user_id: int) ->
             db.commit()
             db.refresh(db_document)
 
-            # Process text into segments with embeddings
+            # Process text into segments
             course = create_course(db, db_document.id_document, file.filename, 
                                  video_text, simplified_text, summary_text)
             process_segments(db, db_document.id_document, video_text)
@@ -122,14 +122,18 @@ async def extract_and_save_video(db: Session, file: UploadFile, user_id: int) ->
                 "course_info": {"id": course.id_course},
                 "filename": file.filename,
                 "storage_path": video_path,
-                "audio_path": audio_path,  # Added audio path to response
+                "audio_path": audio_path,
                 "extracted_text": video_text[:100],
             }
 
+        except HTTPException:
+            raise  # Re-raise HTTP exceptions
         except Exception as e:
             db.rollback()
-            raise HTTPException(status_code=200, detail=f"Video processing failed: {str(e)}")
-
+            raise HTTPException(
+                status_code=500,
+                detail=f"Video processing failed: {str(e)}"
+            )
 
 
 # *****************************************REJECT >20MB AND COMPRESS ANYTHING ABOVE 10MB      
