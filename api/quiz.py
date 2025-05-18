@@ -1,4 +1,4 @@
-from typing import List
+from typing import Dict, List
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from database import schemas
@@ -7,6 +7,7 @@ from services.quiz_service import (
     create_quiz,
     get_quiz_by_id,
     get_quiz_questions_by_course,
+    get_user_quizzes_grouped_by_course,
     update_user_answer
 )
 
@@ -53,3 +54,10 @@ def get_quiz(quiz_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail=str(ve))
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error retrieving quiz: {str(e)}")
+    
+@router.get("/user/{user_id}/quizzes", response_model=Dict[str, List[schemas.Quiz]])
+def get_grouped_quizzes_for_user(user_id: int, db: Session = Depends(get_db)):
+    grouped = get_user_quizzes_grouped_by_course(user_id, db)
+    if not grouped:
+        raise HTTPException(status_code=404, detail="No quizzes found for this user.")
+    return grouped

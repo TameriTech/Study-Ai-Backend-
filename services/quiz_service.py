@@ -1,8 +1,10 @@
+from collections import defaultdict
 from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
 from datetime import datetime
-from typing import List
-from database.models import Quiz as QuizModel, Course
+from typing import Dict, List
+import database.models as models
+from database.models import Quiz as QuizModel, Course, Document
 from database.schemas import QuizCreate, Quiz
 from utils.general_utils import extract_and_parse_questions
 # from utils.open_router import ask_openrouter  # Import the ask_openrouter function
@@ -168,3 +170,20 @@ def get_quiz_by_id(db: Session, quiz_id: int) -> QuizModel:
     if not quiz:
         raise ValueError(f"Quiz with ID {quiz_id} not found")
     return quiz
+
+def get_user_quizzes_grouped_by_course(user_id: int, db: Session) -> Dict[int, List[Quiz]]:
+    quizzes = (
+        db.query(models.Quiz)
+        .join(models.Course, models.Quiz.course_id == models.Course.id_course)
+        .join(models.Document, models.Course.document_id == models.Document.id_document)
+        .filter(models.Document.user_id == user_id)
+        .all()
+    )
+
+    grouped_quizzes: Dict[int, List[Quiz]] = defaultdict(list)
+
+    for quiz in quizzes:
+        key = f"Course_id:{quiz.course_id}"
+        grouped_quizzes[key].append(Quiz.from_orm(quiz))
+
+    return grouped_quizzes

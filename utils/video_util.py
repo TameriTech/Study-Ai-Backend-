@@ -8,8 +8,6 @@ from sqlalchemy.orm import Session
 from database.models import Document
 from services.course_service import create_course
 from services.segment_service import process_segments
-import pytesseract
-from PIL import Image
 import tempfile
 from utils.gemini_api import generate_gemini_response
 from moviepy.editor import VideoFileClip

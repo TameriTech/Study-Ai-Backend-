@@ -151,6 +151,38 @@ def get_summary_modules_by_course_id(db: Session, course_id: int) -> Optional[Li
         return None
     return course.summary_modules
 
+def get_user_summary_modules(user_id: int, db: Session) -> Dict[str, List[dict]]:
+    courses = (
+        db.query(models.Course)
+        .join(models.Document)
+        .filter(models.Document.user_id == user_id)
+        .all()
+    )
+
+    summary_data = {}
+
+    for course in courses:
+        if course.summary_modules:
+            summary_data[f"Course_id_{course.id_course}"] = course.summary_modules
+
+    return summary_data
+
+def get_user_simplified_modules(user_id: int, db: Session) -> Dict[str, List[dict]]:
+    courses = (
+        db.query(models.Course)
+        .join(models.Document)
+        .filter(models.Document.user_id == user_id)
+        .all()
+    )
+
+    simplified_data = {}
+
+    for course in courses:
+        if course.simplified_modules:
+            simplified_data[f"Course_id_{course.id_course}"] = course.simplified_modules
+
+    return simplified_data
+
 
 def update_simplified_progress(db: Session, course_id: int, simplified_current_page: int) -> Optional[Course]:
     course = db.query(Course).filter(Course.id_course == course_id).first()

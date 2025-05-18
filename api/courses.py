@@ -10,6 +10,8 @@ from services.course_service import (
     get_simplified_modules_by_course_id,
     get_summary_modules,
     get_summary_modules_by_course_id,
+    get_user_simplified_modules,
+    get_user_summary_modules,
     search_courses,
     update_simplified_progress,
     update_summary_progress
@@ -96,7 +98,25 @@ def search_courses_endpoint(
 #         return modules
 #     raise HTTPException(status_code=404, detail="Modules not found for this document")
 
-@router.get("/api/user/{user_id}/courses", response_model=List[schemas.Course], tags=["Course"])
+@router.get("/user/{user_id}/revisions", tags=["Course"])
+def get_summary_modules_for_user(user_id: int, db: Session = Depends(get_db)) -> Dict[str, List[dict]]:
+    summary_data = get_user_summary_modules(user_id, db)
+
+    if not summary_data:
+        raise HTTPException(status_code=404, detail="No summary modules found for this user")
+
+    return summary_data
+
+@router.get("/user/{user_id}/courses", tags=["Course"])
+def get_simplified_modules_for_user(user_id: int, db: Session = Depends(get_db)) -> Dict[str, List[dict]]:
+    simplified_data = get_user_simplified_modules(user_id, db)
+
+    if not simplified_data:
+        raise HTTPException(status_code=404, detail="No simplified modules found for this user")
+
+    return simplified_data
+
+@router.get("/user/{user_id}/courses", response_model=List[schemas.Course], tags=["Course"])
 def get_user_courses(
     user_id: int,
     db: Session = Depends(get_db)
@@ -111,7 +131,7 @@ def get_user_courses(
     
     return db_courses
 
-@router.get("/api/courses-id/{course_id}/simplified-modules", response_model=List[Dict], tags=["Course"])
+@router.get("/course-revision/{course_id}", response_model=List[Dict], tags=["Course"])
 def get_simplified_modules(
     course_id: int,
     db: Session = Depends(get_db),
@@ -121,7 +141,7 @@ def get_simplified_modules(
         return modules
     raise HTTPException(status_code=404, detail="Simplified modules not found for this course")
 
-@router.get("/api/courses/{course_id}/summary-modules", response_model=List[Dict], tags=["Course"])
+@router.get("/course/{course_id}", response_model=List[Dict], tags=["Course"])
 def get_summary_modules(
     course_id: int,
     db: Session = Depends(get_db),
@@ -132,7 +152,7 @@ def get_summary_modules(
     raise HTTPException(status_code=404, detail="Summary modules not found for this course")
 
 
-@router.put("/api/course/{course_id}/update-simplified-progress", response_model=schemas.Course, tags=["Course"])
+@router.put("/update-course/{course_id}/progress", response_model=schemas.Course, tags=["Course"])
 def update_course_simplified_progress(
     simplified_current_page: int,
     course_id: int,
@@ -143,7 +163,7 @@ def update_course_simplified_progress(
         raise HTTPException(status_code=404, detail="Course not found!")
     return db_update
 
-@router.put("/api/course/{course_id}/update-summary-progress", response_model=schemas.Course, tags=["Course"])
+@router.put("/course/{course_id}/update-revision-progress", response_model=schemas.Course, tags=["Course"])
 def update_course_summary_progress(
     summary_current_page: int,
     course_id: int,
