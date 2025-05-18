@@ -1,7 +1,9 @@
 import json
 import os
 from typing import Dict, List, Optional
+from fastapi import HTTPException
 import google.generativeai as genai
+from PIL import Image
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -56,18 +58,6 @@ def generate_gemini_response(
     response_type: str = "text",  # "text" or "json"
     system_prompt: str = None
 ) -> str:
-    """
-    Generate a response from the Gemini model.
-
-    Args:
-        prompt (str): User prompt to send.
-        model_name (str): Gemini model variant.
-        response_type (str): "text" or "json".
-        system_prompt (str, optional): Optional system-level instructions.
-
-    Returns:
-        str: Raw text or JSON string from the model.
-    """
     # Init model
     model = genai.GenerativeModel(model_name="gemini-2.5-flash-preview-04-17")
 
@@ -83,3 +73,14 @@ def generate_gemini_response(
     response = chat.send_message(prompt, generation_config=gen_config)
 
     return response.text
+
+def extract_text_from_image(image: Image.Image) -> str:
+    """Extract text using Gemini Vision."""
+    try:
+        import google.generativeai as genai
+        genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
+        model = genai.GenerativeModel("gemini-1.5-flash")
+        response = model.generate_content(["Extract all text from this image:", image])
+        return response.text.strip()
+    except Exception as e:
+        raise HTTPException(500, f"Gemini Vision OCR failed: {str(e)}")

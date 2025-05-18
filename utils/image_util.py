@@ -7,7 +7,7 @@ from PIL import Image
 from database.models import Document
 from services.course_service import create_course
 from services.segment_service import process_segments
-from utils.gemini_api import generate_gemini_response
+from utils.gemini_api import generate_gemini_response, extract_text_from_image
 
 # Configuration Constants
 TEMP_IMAGE_DIR = "temp_files/images"
@@ -29,17 +29,6 @@ def compress_image_if_needed(image_bytes: bytes) -> bytes:
         compressed_io.seek(0)
         return compressed_io.read()
     return image_bytes
-
-def extract_text_from_image(image: Image.Image) -> str:
-    """Extract text using Gemini Vision."""
-    try:
-        import google.generativeai as genai
-        genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
-        model = genai.GenerativeModel("gemini-1.5-flash")
-        response = model.generate_content(["Extract all text from this image:", image])
-        return response.text.strip()
-    except Exception as e:
-        raise HTTPException(500, f"Gemini Vision OCR failed: {str(e)}")
 
 async def extract_and_save_image(db: Session, file: UploadFile, user_id: int) -> dict:
     ensure_directories()
