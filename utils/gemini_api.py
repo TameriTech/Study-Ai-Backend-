@@ -2,7 +2,8 @@ import json
 import os
 from typing import Dict, List, Optional
 from fastapi import HTTPException
-import google.generativeai as genai
+from google import genai
+from google.genai import types
 from PIL import Image
 from dotenv import load_dotenv
 load_dotenv()
@@ -11,7 +12,7 @@ load_dotenv()
 GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
 # --- Setup Gemini API ---
 
-genai.configure(api_key=GOOGLE_API_KEY)  # Optional fallback
+genai.Client(api_key=GOOGLE_API_KEY)  # Optional fallback
 
 def generate_gemini_response(
     prompt: str,
@@ -19,16 +20,21 @@ def generate_gemini_response(
     system_prompt: str = None
 ) -> str:
     try:
-        import google.generativeai as genai
-        model = genai.GenerativeModel(model_name="gemini-2.5-flash-preview-04-17")
-
-        chat = model.start_chat(history=[])
+        client = genai.Client(api_key=GOOGLE_API_KEY)
+        
+        config_params = {}
+        if response_type == "json":
+            config_params["response_mime_type"] = "application/json"
         if system_prompt:
-            chat.send_message(system_prompt)
-
-        gen_config = {"response_mime_type": "application/json"} if response_type == "json" else {}
-
-        response = chat.send_message(prompt, generation_config=gen_config)
+            config_params["system_instruction"] = system_prompt
+            
+        config = types.GenerateContentConfig(**config_params) if config_params else None
+        
+        response = client.models.generate_content(
+            model="gemini-2.5-flash-preview-04-17",
+            contents=[prompt],
+            config=config
+        )
         return response.text.strip()
 
     except Exception as e:
@@ -38,14 +44,14 @@ def generate_gemini_response(
 def extract_text_from_image(image: Image.Image) -> str:
     """Extract text using Gemini Vision."""
     try:
-        import google.generativeai as genai
-        genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
-        model = genai.GenerativeModel("gemini-1.5-flash")
-        response = model.generate_content(["Extract all text from this image:", image])
+        client = genai.Client(api_key=GOOGLE_API_KEY)
+        response = client.models.generate_content(
+            model="gemini-1.5-flash",
+            contents=["Extract all text from this image:", image]
+        )
         return response.text.strip()
     except Exception as e:
-        raise HTTPException(500, f"Gemini Vision OCR failed: {str(e)}")
-    
+        raise HTTPException(500, f"Gemini Vision OCR failed: {str(e)}")  
 
 def validate_and_parse_json(json_str: str) -> Optional[List[Dict]]:
     """Helper function to validate and parse JSON strings"""

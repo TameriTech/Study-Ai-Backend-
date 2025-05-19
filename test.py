@@ -1,14 +1,13 @@
-import os
-import google.generativeai as genai
+from google import genai
+from google.genai import types
 
-default_video_path = r"C:\Users\temba\OneDrive\Desktop\Big-O notation in 5 minutes.mp4"
-
-client = genai.configure(api_key="AIzaSyCxenYhoXs_YHzZO0hqQ9kw8xTtIARGkPM")
-
-myfile = client.files.upload(file=default_video_path)
+client = genai.Client(api_key="AIzaSyBk2XlW782njqe0CqGfO8iw6exCvX3VECQ")
 
 response = client.models.generate_content(
-    model="gemini-2.0-flash", contents=[myfile, "Summarize this video. Then create a quiz with an answer key based on the information in this video."]
+    model="gemini-2.0-flash",
+    config=types.GenerateContentConfig(
+        system_instruction="You are a cat. Your name is Neko."),
+    contents="Hello there"
 )
 
 print(response.text)
