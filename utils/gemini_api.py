@@ -15,31 +15,32 @@ genai.configure(api_key=GOOGLE_API_KEY)  # Optional fallback
 
 def generate_gemini_response(
     prompt: str,
-    response_type: str = "text",  # "text" or "json"
+    response_type: str = "json",  # "text" or "json"
     system_prompt: str = None
 ) -> str:
-    # Init model
-    model = genai.GenerativeModel(model_name="gemini-2.0-flash-lite")
+    try:
+        import google.generativeai as genai
+        model = genai.GenerativeModel(model_name="gemini-2.5-flash-preview-04-17")
 
-    # Start chat with optional system prompt
-    chat = model.start_chat(history=[])
-    if system_prompt:
-        chat.send_message(system_prompt)
+        chat = model.start_chat(history=[])
+        if system_prompt:
+            chat.send_message(system_prompt)
 
-    # Configure response MIME type for JSON enforcement
-    gen_config = {"response_mime_type": "application/json"} if response_type == "json" else {}
+        gen_config = {"response_mime_type": "application/json"} if response_type == "json" else {}
 
-    # Send user prompt
-    response = chat.send_message(prompt, generation_config=gen_config)
+        response = chat.send_message(prompt, generation_config=gen_config)
+        return response.text.strip()
 
-    return response.text
+    except Exception as e:
+        return f"Gemini API error: {str(e)}"
+
 
 def extract_text_from_image(image: Image.Image) -> str:
     """Extract text using Gemini Vision."""
     try:
         import google.generativeai as genai
         genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
-        model = genai.GenerativeModel("gemini-2.0-flash-lite")
+        model = genai.GenerativeModel("gemini-1.5-flash")
         response = model.generate_content(["Extract all text from this image:", image])
         return response.text.strip()
     except Exception as e:
