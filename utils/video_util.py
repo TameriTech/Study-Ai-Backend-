@@ -65,7 +65,7 @@ async def extract_and_save_video(db: Session, file: UploadFile, user_id: int) ->
             # Transcribe Audio to Text
             logger.info("Loading Whisper model...")
             try:
-                whisper_model = whisper.load_model("base", device="cpu")
+                whisper_model = whisper.load_model("tiny", device="cpu")
                 logger.info("Starting transcription...")
                 transcription = whisper_model.transcribe(audio_path)
                 video_text = transcription["text"]
