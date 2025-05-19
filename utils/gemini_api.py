@@ -40,7 +40,6 @@ def generate_gemini_response(
     except Exception as e:
         return f"Gemini API error: {str(e)}"
 
-
 def extract_text_from_image(image: Image.Image) -> str:
     """Extract text using Gemini Vision."""
     try:

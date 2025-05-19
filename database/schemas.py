@@ -228,6 +228,79 @@ class CommentSearchResponse(BaseModel):
         }
     )
 
+# Add these to your existing schemas.py
+
+class QuestionRequest(BaseModel):
+    """Schema for asking questions to the chatbot"""
+    question: str = Field(..., description="The question to ask the chatbot")
+    document_id: Optional[int] = Field(
+        None,
+        description="Optional document ID to restrict the search to a specific document"
+    )
+
+class AnswerResponse(BaseModel):
+    """Schema for the chatbot's response"""
+    answer: str = Field(..., description="The generated answer to the question")
+    sources: List[int] = Field(
+        default_factory=list,
+        description="List of segment IDs used to generate the answer"
+    )
+    relevant_segments: List[str] = Field(
+        default_factory=list,
+        description="The actual text of the relevant segments used"
+    )
+    confidence: Optional[float] = Field(
+        None,
+        ge=0,
+        le=1,
+        description="Confidence score of the answer (0-1)"
+    )
+
+    class Config:
+        from_attributes = True
+class DocumentBase(BaseModel):
+    title: str
+    type_document: Optional[str] = None
+    original_filename: str
+
+class DocumentCreate(DocumentBase):
+    storage_path: str
+    original_text: Optional[str] = None
+
+class Document(DocumentBase):
+    id_document: int
+    user_id: int
+    storage_path: str
+    original_text: Optional[str] = None
+    uploaded_at: datetime
+    
+    class Config:
+        from_attributes = True  # Replaces orm_mode = True in Pydantic v2
+
+# Segment Schemas
+class SegmentBase(BaseModel):
+    raw_text: str
+    
+class SegmentCreate(SegmentBase):
+    document_id: int
+
+class Segment(SegmentBase):
+    id_segment: int
+    document_id: int
+    created_at: datetime
+    
+    class Config:
+        from_attributes = True
+
+# Chat Schemas
+class QuestionRequest(BaseModel):
+    question: str
+    document_id: Optional[int] = None
+
+class AnswerResponse(BaseModel):
+    answer: str
+    sources: List[int]
+    relevant_segments: List[str]
 # Update the forward references after all classes are defined
 Course.model_rebuild()
 Quiz.model_rebuild()

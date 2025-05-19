@@ -21,7 +21,7 @@ sentence-transformers>=2.2.2
 numpy==1.26.0 
 python-multipart authlib requests
 google-auth==2.40.0
-google-generativeai
+google-genai
 pydantic-settings
 aiosmtplib
 
