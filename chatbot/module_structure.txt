@@ -1,0 +1,11 @@
+Study-Ai-Backend-/chatbot/
+├── services/               # Core business logic
+│   ├── document_services.py
+│   ├── embedding_service.py
+│   ├── retrieval_service.py
+│   └── generation_service.py
+├── routers/                # API endpoints
+│   ├── chat.py             # Chat/QA endpoints
+│   └── documentsegments.py # Document management endpoints
+└── utils/                  # Utility functions
+    ├── chunking.py         # Text chunking utilities

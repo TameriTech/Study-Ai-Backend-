@@ -24,4 +24,4 @@ google-auth==2.40.0
 google-genai
 pydantic-settings
 aiosmtplib
-
+PyPDF2
