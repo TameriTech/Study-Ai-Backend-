@@ -17,7 +17,6 @@ app.add_middleware(
 
 # Mount static files
 app.mount("/static", StaticFiles(directory="static"), name="static")
-app.mount("/temp_files", StaticFiles(directory="temp_files"), name="temp_files")
 app.include_router(users.router)
 app.include_router(documents.router)
 app.include_router(courses.router)

@@ -7,9 +7,6 @@ from fastapi import status
 from database import schemas
 from database.db import get_db
 from database import models
-from utils.general_utils import parse_vocabulary_response
-from utils.ollama_utils import text_generate_from_ollama
-from utils.open_router import ask_openrouter  # Import the ask_openrouter function
 import re
 import json
 from typing import List, Dict
@@ -19,6 +16,9 @@ from sqlalchemy.orm import Session
 from datetime import datetime
 import json
 import re
+
+import time
+from typing import Optional
 
 def create_vocabulary_entry(course_id: int, db: Session) -> schemas.Vocabulary:
     # Step 1: Check if course exists
@@ -55,68 +55,67 @@ def create_vocabulary_entry(course_id: int, db: Session) -> schemas.Vocabulary:
     - Your entire output must be valid JSON, starting with {{ and parsable using json.loads().
     """
 
-    try:
-        # Step 4: Get AI response
-        raw_response = ask_openrouter(
-            vocabulary_prompt,
-            system_prompt="You are a JSON-only assistant."
-        )
-        print(f"RAW RESPONSE >>>{raw_response}<<<")
-
-        # Step 5: Extract and clean response text
-        response = generate_gemini_response(
-            prompt=vocabulary_prompt,
-            response_type="json",
-            system_prompt="You are a JSON-only assistant. Only output valid JSON"
-        )
-
-        # Step 6: Parse JSON safely
+    # Retry mechanism
+    max_retries = 2  # Try once more if it fails
+    attempt = 0
+    while attempt < max_retries:
         try:
-            result = json.loads(response)
-        except json.JSONDecodeError as e:
-            raise HTTPException(
-                status_code=400,
-                detail=f"Invalid JSON response from AI: {str(e)}"
+            # Step 5: Extract and clean response text
+            response = generate_gemini_response(
+                prompt=vocabulary_prompt,
+                response_type="json",
+                system_prompt="You are a JSON-only assistant. Only output valid JSON"
             )
-
-        # Step 7: Validate the structure
-        if not isinstance(result, dict) or "words" not in result or not isinstance(result["words"], list):
-            raise HTTPException(
-                status_code=400,
-                detail="AI response missing required 'words' list or invalid structure."
-            )
-
-        words_list = result["words"]
-
-        # Optional: Sanitize each word (skip if your model is well-trained)
-        for word in words_list:
-            if not word.get("term") or not word.get("definition"):
+            # print(f"RAW RESPONSE >>>{response}<<<")
+            
+            # Step 6: Parse JSON safely
+            try:
+                result = json.loads(response)
+            except json.JSONDecodeError as e:
                 raise HTTPException(
                     status_code=400,
-                    detail="Each word must include 'term' and 'definition'."
+                    detail=f"Invalid JSON response from AI: {str(e)}"
                 )
 
-        # Step 8: Save to DB
-        db_vocabulary = models.Vocabulary(
-            course_id=course_id,
-            words=words_list,  # Ensure this field in your DB is of type JSON
-            created_at=datetime.utcnow()
-        )
-        db.add(db_vocabulary)
-        db.commit()
-        db.refresh(db_vocabulary)
+            # Step 7: Validate the structure
+            if not isinstance(result, dict) or "words" not in result or not isinstance(result["words"], list):
+                raise HTTPException(
+                    status_code=400,
+                    detail="AI response missing required 'words' list or invalid structure."
+                )
 
-        return db_vocabulary
+            words_list = result["words"]
 
-    except HTTPException as http_ex:
-        raise http_ex  # Pass through known errors
+            # Optional: Sanitize each word (skip if your model is well-trained)
+            for word in words_list:
+                if not word.get("term") or not word.get("definition"):
+                    raise HTTPException(
+                        status_code=400,
+                        detail="Each word must include 'term' and 'definition'."
+                    )
 
-    except Exception as e:
-        raise HTTPException(
-            status_code=500,
-            detail=f"Server error: {str(e)}"
-        )
-    
+            # Step 8: Save to DB
+            db_vocabulary = models.Vocabulary(
+                course_id=course_id,
+                words=words_list,  # Ensure this field in your DB is of type JSON
+                created_at=datetime.utcnow()
+            )
+            db.add(db_vocabulary)
+            db.commit()
+            db.refresh(db_vocabulary)
+
+            return db_vocabulary
+
+        except Exception as e:
+            attempt += 1
+            if attempt >= max_retries:
+                raise HTTPException(
+                    status_code=500,
+                    detail=f"Server error after {max_retries} attempts: {str(e)}"
+                )
+            # Wait before retrying
+            time.sleep(2)  # Wait for 2 seconds before retrying
+  
 def get_vocabulary_words_by_course(course_id: int, db: Session) -> List[Dict[str, Any]]:
     vocabulary = db.query(models.Vocabulary).filter(
         models.Vocabulary.course_id == course_id

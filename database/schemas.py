@@ -126,10 +126,12 @@ class QuizBase(BaseModel):
     quiz_type: QuizEnumType  # Now uses correct enum
     level_of_difficulty: QuizDifficultyLevelEnum  # Separate enum for difficulty
     number_of_questions: int
+    course_name: Optional[str] = None  # Add this line
 
 class Quiz(QuizBase):
     id_quiz: int
     course_id: int  # Still included in response model
+    course_name: str  # Add this field
     created_at: datetime
     
     class Config:
@@ -227,8 +229,6 @@ class CommentSearchResponse(BaseModel):
             "limit": 10
         }
     )
-
-# Add these to your existing schemas.py
 
 class QuestionRequest(BaseModel):
     """Schema for asking questions to the chatbot"""

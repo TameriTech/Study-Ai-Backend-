@@ -1,3 +1,4 @@
+import logging
 import numpy as np
 from sentence_transformers import SentenceTransformer
 from datetime import datetime
@@ -5,7 +6,7 @@ from database import db
 from database.models import Segment
 import json
 
-
+logging.getLogger("sentence_transformers").setLevel(logging.WARNING)
 # Initialize embedding model (small but effective)
 model = SentenceTransformer('all-MiniLM-L6-v2')
 
@@ -47,9 +48,3 @@ def process_segments(db, document_id: int, text: str, chunk_size: int = 1000) ->
     
     db.commit()
     return segments_created
-
-# To retrieve and use embeddings later:
-# segment = db.query(Segment).first()
-# if segment:
-#     embedding = segment.get_embedding()
-#     print(f"Embedding shape: {embedding.shape}")  # Should be (384,) for MiniLM-L6

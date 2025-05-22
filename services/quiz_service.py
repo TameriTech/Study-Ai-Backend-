@@ -6,8 +6,6 @@ from typing import Dict, List
 import database.models as models
 from database.models import Quiz as QuizModel, Course, Document
 from database.schemas import QuizCreate, Quiz
-from utils.general_utils import extract_and_parse_questions
-# from utils.open_router import ask_openrouter  # Import the ask_openrouter function
 import json
 import re
 from utils.gemini_api import generate_gemini_response, quiz_validate_and_parse_json
@@ -28,7 +26,7 @@ def get_ai_response_with_retry(quiz_prompt: str, retries: int = 2) -> Optional[s
             )
             
             # Debug: Log the raw response
-            print(f"Attempt {attempt + 1}: Raw response from AI:\n{response}")
+            # print(f"Attempt {attempt + 1}: Raw response from AI:\n{response}")
             
             # Validate the response, if it fails, retry
             if not response:
@@ -71,26 +69,27 @@ def create_quiz(db: Session, quiz_data: QuizCreate) -> Quiz:
     
     # Construct the quiz prompt for OpenRouter
     quiz_prompt = f"""
-from this text I quiz with this criteria:
-level of difficulty: {quiz_data.level_of_difficulty}
-quiz type: {quiz_data.quiz_type}, 
-Number of questions: {quiz_data.number_of_questions}
-additional instruction: {quiz_data.quiz_instruction}
----
-{course.original_text}
----
-Make sure the correct answer matches the right option 
-because it will be used to rate the quiz.
-Return ONLY a JSON array formatted like this:
-Questions: [
-  {{
-    "question": "questions",
-    "choices": {{"A": "answer A", "B": "answer B", "C": "answer C", "D": "answer D"}},
-    "correct_answer": "correct letter from choices e.g C"
-  }}
-]
-Remember "choice is a dictionary".
-"""
+        from this text I quiz with this criteria:
+        level of difficulty: {quiz_data.level_of_difficulty}
+        quiz type: {quiz_data.quiz_type}, 
+        Number of questions: {quiz_data.number_of_questions}
+        additional instruction: {quiz_data.quiz_instruction}
+
+        Make sure the correct answer matches the right option 
+        because it will be used to rate the quiz.
+        Return ONLY a JSON array formatted like this:
+        Questions: [
+        {{
+            "question": "questions",
+            "choices": {{"A": "answer A", "B": "answer B", "C": "answer C", "D": "answer D"}},
+            "correct_answer": "correct letter from choices e.g C"
+        }}
+        ]
+        Remember "choice is a dictionary".
+        ---
+        {course.original_text}
+        ---
+        """
     
     # Retry getting a valid response from AI
     response = get_ai_response_with_retry(quiz_prompt)
@@ -140,23 +139,101 @@ Remember "choice is a dictionary".
     # Commit the changes to the database
     db.commit()
     db.refresh(quizzes[0])  # Refresh the first quiz to get its ID
+    course = db.query(Course).filter(Course.id_course == quiz_data.course_id).first()
     
-    # Return the first quiz (as per the response model)
-    return quizzes[0]
-
+    return Quiz(
+        id_quiz=quizzes[0].id_quiz,
+        course_id=quizzes[0].course_id,
+        question=quizzes[0].question,
+        correct_answer=quizzes[0].correct_answer,
+        user_answer=quizzes[0].user_answer,
+        choices=quizzes[0].choices,
+        quiz_type=quizzes[0].quiz_type,
+        level_of_difficulty=quizzes[0].level_of_difficulty,
+        number_of_questions=quizzes[0].number_of_questions,
+        created_at=quizzes[0].created_at,
+        course_name=course.course_name
+    )
 
 def get_quiz_questions_by_course(db: Session, course_id: int) -> List[Quiz]:
-    # Verify course exists
-    if not db.query(Course).filter(Course.id_course == course_id).first():
+    course = db.query(Course).filter(Course.id_course == course_id).first()
+    if not course:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"Course with id {course_id} not found"
         )
     
-    return db.query(QuizModel).filter(QuizModel.course_id == course_id).all()
+    quizzes = db.query(models.Quiz).filter(models.Quiz.course_id == course_id).all()
+    return [
+        Quiz(
+            id_quiz=quiz.id_quiz,
+            course_id=quiz.course_id,
+            question=quiz.question,
+            correct_answer=quiz.correct_answer,
+            user_answer=quiz.user_answer,
+            choices=quiz.choices,
+            quiz_type=quiz.quiz_type,
+            level_of_difficulty=quiz.level_of_difficulty,
+            number_of_questions=quiz.number_of_questions,
+            created_at=quiz.created_at,
+            course_name=course.course_name
+        )
+        for quiz in quizzes
+    ]
 
-def update_user_answer(db: Session, quiz_id: int, user_answer: str) -> QuizModel:
-    quiz = db.query(QuizModel).filter(QuizModel.id_quiz == quiz_id).first()
+def get_quiz_by_id(db: Session, quiz_id: int) -> Quiz:
+    quiz = db.query(models.Quiz).filter(models.Quiz.id_quiz == quiz_id).first()
+    if not quiz:
+        raise ValueError(f"Quiz with ID {quiz_id} not found")
+    
+    course = db.query(Course).filter(Course.id_course == quiz.course_id).first()
+    return Quiz(
+        id_quiz=quiz.id_quiz,
+        course_id=quiz.course_id,
+        question=quiz.question,
+        correct_answer=quiz.correct_answer,
+        user_answer=quiz.user_answer,
+        choices=quiz.choices,
+        quiz_type=quiz.quiz_type,
+        level_of_difficulty=quiz.level_of_difficulty,
+        number_of_questions=quiz.number_of_questions,
+        created_at=quiz.created_at,
+        course_name=course.course_name
+    )
+
+def get_user_quizzes_grouped_by_course(user_id: int, db: Session) -> Dict[str, List[Quiz]]:
+    # Query both Quiz and Course.course_name together
+    quiz_results = (
+        db.query(models.Quiz, models.Course.course_name)
+        .join(models.Course, models.Quiz.course_id == models.Course.id_course)
+        .join(models.Document, models.Course.document_id == models.Document.id_document)
+        .filter(models.Document.user_id == user_id)
+        .all()
+    )
+
+    grouped_quizzes: Dict[str, List[Quiz]] = defaultdict(list)
+
+    for quiz_model, course_name in quiz_results:
+        # Convert SQLAlchemy model to dictionary
+        quiz_dict = {
+            "id_quiz": quiz_model.id_quiz,
+            "course_id": quiz_model.course_id,
+            "question": quiz_model.question,
+            "correct_answer": quiz_model.correct_answer,
+            "user_answer": quiz_model.user_answer,
+            "choices": quiz_model.choices,
+            "quiz_type": quiz_model.quiz_type,
+            "level_of_difficulty": quiz_model.level_of_difficulty,
+            "number_of_questions": quiz_model.number_of_questions,
+            "created_at": quiz_model.created_at,
+            "course_name": course_name  # Add the course_name
+        }
+        grouped_quizzes[f"Course_id:{quiz_model.course_id}"].append(Quiz(**quiz_dict))
+
+    return grouped_quizzes
+
+def update_user_answer(db: Session, quiz_id: int, user_answer: str) -> Quiz:
+    quiz = db.query(Quiz).filter(Quiz.id_quiz == quiz_id).first()
     if not quiz:
         raise ValueError(f"Quiz with ID {quiz_id} not found")
     
@@ -164,26 +241,3 @@ def update_user_answer(db: Session, quiz_id: int, user_answer: str) -> QuizModel
     db.commit()
     db.refresh(quiz)
     return quiz
-
-def get_quiz_by_id(db: Session, quiz_id: int) -> QuizModel:
-    quiz = db.query(QuizModel).filter(QuizModel.id_quiz == quiz_id).first()
-    if not quiz:
-        raise ValueError(f"Quiz with ID {quiz_id} not found")
-    return quiz
-
-def get_user_quizzes_grouped_by_course(user_id: int, db: Session) -> Dict[int, List[Quiz]]:
-    quizzes = (
-        db.query(models.Quiz)
-        .join(models.Course, models.Quiz.course_id == models.Course.id_course)
-        .join(models.Document, models.Course.document_id == models.Document.id_document)
-        .filter(models.Document.user_id == user_id)
-        .all()
-    )
-
-    grouped_quizzes: Dict[int, List[Quiz]] = defaultdict(list)
-
-    for quiz in quizzes:
-        key = f"Course_id:{quiz.course_id}"
-        grouped_quizzes[key].append(Quiz.from_orm(quiz))
-
-    return grouped_quizzes

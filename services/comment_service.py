@@ -5,21 +5,6 @@ from database.schemas import CommentCreate
 from database.models import Comment as CommentModel, Course, User
 
 def create_comment(db: Session, comment_data: CommentCreate) -> CommentModel:
-    """
-    Create a new comment with validation for:
-    - User must exist
-    - Course must exist if course_id is provided
-    
-    Args:
-        db: Database session
-        comment_data: Comment creation data
-        
-    Returns:
-        The created comment
-        
-    Raises:
-        HTTPException: If validation fails
-    """
     # Check if user exists
     user = db.query(User).filter(User.id == comment_data.user_id).first()
     if not user:
@@ -52,20 +37,20 @@ def create_comment(db: Session, comment_data: CommentCreate) -> CommentModel:
     
     return db_comment
 
-def get_comment_by_id(db: Session, comment_id: int) -> CommentModel:
-    """
-    Get a single comment by its ID
+def get_comments_by_user_id(db: Session, user_id: int) -> List[CommentModel]:
+    # First verify user exists
+    user = db.query(User).filter(User.id == user_id).first()
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"User with id {user_id} not found"
+        )
     
-    Args:
-        db: Database session
-        comment_id: ID of the comment to retrieve
-        
-    Returns:
-        The comment if found
-        
-    Raises:
-        HTTPException: If comment is not found
-    """
+    return db.query(CommentModel)\
+             .filter(CommentModel.user_id == user_id)\
+             .all()
+
+def get_comment_by_id(db: Session, comment_id: int) -> CommentModel:
     comment = db.query(CommentModel).filter(CommentModel.id_comment == comment_id).first()
     if not comment:
         raise HTTPException(
@@ -75,18 +60,6 @@ def get_comment_by_id(db: Session, comment_id: int) -> CommentModel:
     return comment
 
 def get_comments_by_course_id(db: Session, course_id: int) -> List[CommentModel]:
-    """
-    Get all comments for a specific course
-    
-    Args:
-        db: Database session
-        course_id: ID of the course to get comments for
-        skip: Number of comments to skip (for pagination)
-        limit: Maximum number of comments to return
-        
-    Returns:
-        List of comments for the course
-    """
     # First verify course exists
     course = db.query(Course).filter(Course.id_course == course_id).first()
     if not course:

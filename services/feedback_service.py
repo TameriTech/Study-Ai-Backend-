@@ -52,9 +52,24 @@ def generate_feedback_comment(rating: int) -> str:
         return "📉 Very poor performance. You need to review all the course materials."
     elif rating < 20:
         return "😞 Extremely weak. Consider revisiting the basics."
-    # ... (rest of your comment logic)
-    else:
+    elif rating < 40:
+        return "🔍 Poor. Make sure to study more and practice quizzes."
+    elif rating < 45:
+        return "⚠️ Below average. You’re close to improving."
+    elif rating < 50:
+        return "➗ Average. Try to understand where you lost marks."
+    elif rating < 60:
+        return "📘 Fair. You can do better with a bit more effort."
+    elif rating < 70:
+        return "✅ Good. Keep pushing for a higher score!"
+    elif rating < 80:
+        return "👍 Very good. Great job!"
+    elif rating < 90:
+        return "🌟 Excellent. You're mastering the course."
+    elif rating <= 100:
         return "🏆 Outstanding! Perfect or near-perfect performance."
+    else:
+        return "❓ Invalid rating. Please enter a value between 0 and 100."
 
 async def send_feedback_email(user: User, course: Course, rating: int, correct: int, total: int):
     """Send feedback email to user"""

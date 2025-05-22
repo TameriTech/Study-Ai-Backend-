@@ -10,9 +10,6 @@ from database import models
 from database.models import Course, Document
 from typing import Optional
 from typing import List, Dict, Optional
-from utils.open_router import ask_openrouter  # Import the ask_openrouter function
-# from utils.general_utils import parse_modules
-# from utils.ollama_utils import generate_from_ollama, text_generate_from_ollama
 from utils.gemini_api import generate_gemini_response, validate_and_parse_json
     
 def create_course(
@@ -54,16 +51,6 @@ def create_course(
     ]
     Return only JSON.
     """
-    
-    # simplified_modules_text = text_generate_from_ollama(simplified_modules_prompt)
-    # summary_modules_text = text_generate_from_ollama(summary_modules_prompt)
-
-    # simplified_response = ask_openrouter(simplified_modules_prompt, system_prompt="You are a JSON-only assistant.")
-    # simplified_modules_text = simplified_response['choices'][0]['message']['content']
-
-    # summary_response = ask_openrouter(summary_modules_prompt, system_prompt="You are a JSON-only assistant.")
-    # summary_modules_text = summary_response['choices'][0]['message']['content']
-
     simplified_modules_text = generate_gemini_response(
         prompt=simplified_modules_prompt,
         response_type="json",
@@ -94,8 +81,6 @@ def create_course(
     # Parse the module results
     simplified_modules = validate_and_parse_json(simplified_modules_text) or []
     summary_modules = validate_and_parse_json(summary_modules_text) or []
-    # print(f"summary_modules content:\n{summary_modules}")
-    # print(f"simplified_modules content:\n{simplified_modules}")
 
     # Estimated time (10 mins per module for estimation)
     num_simplified_modules = len(simplified_modules)

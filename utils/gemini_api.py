@@ -31,7 +31,7 @@ def generate_gemini_response(
         config = types.GenerateContentConfig(**config_params) if config_params else None
         
         response = client.models.generate_content(
-            model="gemini-2.5-flash-preview-04-17",
+            model="gemini-2.5-flash-preview-05-20",
             contents=[prompt],
             config=config
         )
@@ -45,7 +45,7 @@ def extract_text_from_image(image: Image.Image) -> str:
     try:
         client = genai.Client(api_key=GOOGLE_API_KEY)
         response = client.models.generate_content(
-            model="gemini-1.5-flash",
+            model="gemini-2.5-flash-preview-05-20",
             contents=["Extract all text from this image:", image]
         )
         return response.text.strip()
@@ -74,7 +74,7 @@ def quiz_validate_and_parse_json(json_str: str) -> Optional[List[Dict]]:
         parsed = json.loads(json_str)
         
         # Debug: Log the parsed response to verify its structure
-        print(f"Parsed response: {parsed}")
+        # print(f"Parsed response: {parsed}")
         
         if not isinstance(parsed, list):  # Ensure it's a list as expected
             print("Response is not a list.")
