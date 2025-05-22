@@ -3,7 +3,6 @@ from google import genai
 from google.genai import types
 from dotenv import load_dotenv
 from google.genai.types import HarmCategory, SafetySetting, GenerationConfig
-from langdetect import detect  # For language detection
 
 load_dotenv()
 
