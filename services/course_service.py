@@ -144,13 +144,21 @@ def get_user_summary_modules(user_id: int, db: Session) -> Dict[str, List[dict]]
         .all()
     )
 
-    summary_data = {}
-
+    course_list = []
+    
     for course in courses:
         if course.summary_modules:
-            summary_data[f"Course_id_{course.id_course}"] = course.summary_modules
+            course_list.append({
+                f"Course_id_{course.id_course}": {
+                    "course_name": course.course_name,
+                    "level_of_difficulty": course.level_of_difficulty,
+                    "estimated_completion_time": course.estimated_completion_time,
+                    "simplified_module_statistic": course.simplified_module_statistic,
+                    "summary_modules": course.summary_modules,
+                }
+            })
 
-    return summary_data
+    return {"courses": course_list}
 
 def get_user_simplified_modules(user_id: int, db: Session) -> Dict[str, List[dict]]:
     courses = (
@@ -160,13 +168,21 @@ def get_user_simplified_modules(user_id: int, db: Session) -> Dict[str, List[dic
         .all()
     )
 
-    simplified_data = {}
+    course_list = []
 
     for course in courses:
         if course.simplified_modules:
-            simplified_data[f"Course_id_{course.id_course}"] = course.simplified_modules
+            course_list.append({
+                f"Course_id_{course.id_course}": {
+                    "course_name": course.course_name,
+                    "level_of_difficulty": course.level_of_difficulty,
+                    "estimated_completion_time": course.estimated_completion_time,
+                    "simplified_module_statistic": course.simplified_module_statistic,
+                    "simplified_modules": course.simplified_modules,
+                }
+            })
 
-    return simplified_data
+    return {"courses": course_list}
 
 
 def update_simplified_progress(db: Session, course_id: int, simplified_current_page: int) -> Optional[Course]:
