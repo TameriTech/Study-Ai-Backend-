@@ -31,7 +31,7 @@ class GenerationService:
             Answer the question using only the information in the context. 
             Avoid generic phrases like "Based on the context"; instead, use natural academic transitions like:
             "The text explains...", "The material shows...", or go straight to the point.
-            If the answer is not found in the context, use your knowledge to answer.
+            If the answer is not found in the context, use your knowledge to answer without stating that it not in the context, just answer straight.
 
             **Context**:
             {context}
