@@ -82,27 +82,9 @@
         opacity: 0.9;
     }
 
-    .app-container {
-        display: flex;
-        gap: 20px;
-        flex: 1;
-        min-height: 0;
-    }
-
-    .upload-section {
-        height: 450px;
-        flex: 1;
-        background: white;
-        border-radius: 12px;
-        padding: 25px;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-        display: flex;
-        flex-direction: column;
-    }
-
     .chat-section {
-        height: 450px;
-        flex: 2;
+        height: 585px;
+        width: 100%;
         display: flex;
         flex-direction: column;
         min-height: 0;
@@ -125,148 +107,14 @@
         font-size: 1.3rem;
     }
 
-    .upload-area {
-        border: 2px dashed #d1d5db;
-        border-radius: 8px;
-        padding: 30px;
-        text-align: center;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        margin-bottom: 20px;
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-    }
-
-    .upload-area:hover {
-        border-color: var(--accent);
-        background-color: rgba(72, 149, 239, 0.05);
-    }
-
-    .upload-area i {
-        font-size: 3rem;
-        color: var(--accent);
-        margin-bottom: 15px;
-    }
-
-    .upload-area p {
-        margin-bottom: 15px;
-        color: #6b7280;
-    }
-
-    .upload-area.active {
-        border-color: var(--success);
-        background-color: rgba(76, 201, 240, 0.05);
-    }
-
-    #file-input {
-        display: none;
-    }
-
-    .upload-btn {
-        background-color: var(--primary);
-        color: white;
-        border: none;
-        padding: 12px 25px;
-        border-radius: 8px;
-        cursor: pointer;
-        font-size: 1rem;
-        font-weight: 500;
-        transition: all 0.3s ease;
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-    }
-
-    .upload-btn:hover {
-        background-color: var(--secondary);
-        transform: translateY(-2px);
-    }
-
-    .upload-btn i {
-        font-size: 1.1rem;
-    }
-
-    .document-list {
-        margin-top: 20px;
-        max-height: 300px;
-        overflow-y: auto;
-    }
-
-    .document-item {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 12px 15px;
-        background-color: #f8f9fa;
-        border-radius: 8px;
-        margin-bottom: 10px;
-        transition: all 0.3s ease;
-    }
-
-    .document-item:hover {
-        background-color: #e9ecef;
-    }
-
-    .document-item.selected {
-        border-left: 4px solid var(--primary);
-        background-color: rgba(67, 97, 238, 0.05);
-    }
-
-    .document-info {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        flex: 1;
-        min-width: 0;
-    }
-
-    .document-icon {
-        color: var(--accent);
-        font-size: 1.2rem;
-    }
-
-    .document-name {
-        font-weight: 500;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-
-    .document-type {
-        font-size: 0.8rem;
-        color: #6b7280;
-        margin-left: 8px;
-    }
-
-    .document-actions {
-        display: flex;
-        gap: 8px;
-    }
-
-    .action-btn {
-        background: none;
-        border: none;
-        color: #6b7280;
-        cursor: pointer;
-        font-size: 1rem;
-        transition: all 0.2s ease;
-    }
-
-    .action-btn:hover {
-        color: var(--primary);
-    }
-
     .chat-container {
         display: flex;
         flex-direction: column;
-        height: 90%;
+        height: 80%;
     }
 
     .chat-messages {
-        height: 400px;
+        height: 100%;
         overflow-y: auto;
         scroll-behavior: smooth;
         padding: 15px;
@@ -279,7 +127,7 @@
     .message {
         display: flex;
         margin-bottom: 10px;
-        max-width: 90%;
+        max-width: 100%;
     }
 
     .message-user-container {
@@ -384,7 +232,7 @@
     .message-bubble-ai h4 {
         font-size: 1.1rem;
         font-weight: 500;
-        margin: 12px 0 8px 0;
+        margin: 4px 0 2px 0;
         color: var(--secondary);
     }
 
@@ -438,11 +286,12 @@
         display: flex;
         gap: 10px;
         margin-top: auto;
+        position: relative;
     }
 
     #chat-input {
         flex: 1;
-        padding: 15px;
+        padding: 15px 50px 15px 50px;
         border: 1px solid #d1d5db;
         border-radius: 8px;
         font-size: 1rem;
@@ -536,14 +385,74 @@
         font-size: 0.9rem;
     }
 
-    @media (max-width: 768px) {
-        .app-container {
-            flex-direction: column;
-        }
-        
-        .message {
-            max-width: 90%;
-        }
+    /* Document upload button */
+    .upload-btn-container {
+        position: absolute;
+        left: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 10;
+    }
+
+    .upload-btn-chat {
+        background: none;
+        border: none;
+        color: var(--accent);
+        cursor: pointer;
+        font-size: 1.2rem;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+    }
+
+    .upload-btn-chat:hover {
+        background-color: rgba(72, 149, 239, 0.1);
+        color: var(--primary);
+    }
+
+    .file-input-chat {
+        display: none;
+    }
+
+    /* Document list in chat */
+    .document-chip {
+        display: inline-flex;
+        align-items: center;
+        background-color: rgba(72, 149, 239, 0.1);
+        padding: 6px 12px;
+        border-radius: 20px;
+        margin: 5px;
+        font-size: 0.85rem;
+        color: var(--accent);
+    }
+
+    .document-chip i {
+        margin-right: 6px;
+        font-size: 0.9rem;
+    }
+
+    .document-chip-close {
+        margin-left: 8px;
+        cursor: pointer;
+        opacity: 0.7;
+        transition: opacity 0.2s;
+    }
+
+    .document-chip-close:hover {
+        opacity: 1;
+    }
+
+    .documents-container {
+        display: flex;
+        flex-wrap: wrap;
+        margin-bottom: 10px;
+        padding: 5px;
+        border-radius: 8px;
+        background-color: rgba(72, 149, 239, 0.05);
     }
 
     /* Scrollbar styling */
@@ -564,107 +473,82 @@
     ::-webkit-scrollbar-thumb:hover {
         background: var(--primary);
     }
+
     /* Mobile-first responsive adjustments */
-@media (max-width: 1200px) {
-    .container {
-        min-width: 100%;
-        max-width: 100%;
-        padding: 15px;
+    @media (max-width: 1200px) {
+        .container {
+            min-width: 100%;
+            max-width: 100%;
+            padding: 15px;
+        }
     }
-}
 
-@media (max-width: 768px) {
-    .app-container {
-        flex-direction: column;
+    @media (max-width: 768px) {
+        .chat-section {
+            height: auto;
+            min-height: 400px;
+            padding: 15px;
+        }
+        
+        header h1 {
+            font-size: 1.8rem;
+        }
+        
+        header p {
+            font-size: 0.9rem;
+        }
+        
+        .section-title {
+            font-size: 1.2rem;
+        }
+        
+        .message {
+            max-width: 85%;
+        }
+        
+        #chat-input {
+            padding: 12px 40px 12px 40px;
+        }
+        
+        #send-btn {
+            padding: 0 15px;
+        }
     }
-    
-    .upload-section, .chat-section {
-        height: auto;
-        min-height: 300px;
-        flex: none;
-        width: 100%;
-        margin-bottom: 20px;
-    }
-    
-    header h1 {
-        font-size: 1.8rem;
-    }
-    
-    header p {
-        font-size: 0.9rem;
-    }
-    
-    .section-title {
-        font-size: 1.2rem;
-    }
-    
-    .chat-messages {
-        height: 300px;
-    }
-    
-    .message {
-        max-width: 85%;
-    }
-    
-    .upload-area {
-        padding: 20px 10px;
-    }
-    
-    .upload-btn {
-        padding: 10px 15px;
-        font-size: 0.9rem;
-    }
-    
-    #chat-input {
-        padding: 12px;
-    }
-    
-    #send-btn {
-        padding: 0 15px;
-    }
-}
 
-@media (max-width: 480px) {
-    .container {
-        padding: 10px;
+    @media (max-width: 480px) {
+        .container {
+            padding: 10px;
+        }
+        
+        header {
+            padding: 15px 0;
+            margin-bottom: 20px;
+        }
+        
+        header h1 {
+            font-size: 1.5rem;
+        }
+        
+        .chat-section {
+            padding: 15px;
+        }
+        
+        .message-bubble {
+            padding: 10px 12px;
+            font-size: 0.9rem;
+        }
+        
+        .message-avatar {
+            width: 30px;
+            height: 30px;
+        }
+        
+        .upload-btn-chat {
+            width: 30px;
+            height: 30px;
+            font-size: 1rem;
+        }
     }
-    
-    header {
-        padding: 15px 0;
-        margin-bottom: 20px;
-    }
-    
-    header h1 {
-        font-size: 1.5rem;
-    }
-    
-    .upload-section, .chat-section {
-        padding: 15px;
-    }
-    
-    .chat-messages {
-        height: 250px;
-        padding: 10px;
-    }
-    
-    .message-bubble {
-        padding: 10px 12px;
-        font-size: 0.9rem;
-    }
-    
-    .message-avatar {
-        width: 30px;
-        height: 30px;
-    }
-    
-    .document-item {
-        padding: 10px;
-    }
-    
-    .document-name {
-        font-size: 0.9rem;
-    }
-}
     </style>
 </head>
 <body>
@@ -675,29 +559,12 @@
         </header>
 
         <div class="app-container">
-            <div class="upload-section">
-                <h2 class="section-title"><i class="fas fa-file-upload"></i> Upload Document</h2>
-                
-                <div class="upload-area" id="upload-area">
-                    <i class="fas fa-cloud-upload-alt"></i>
-                    <p>Drag & drop your document here or click to browse</p>
-                    <button class="upload-btn" id="upload-btn">
-                        <i class="fas fa-file"></i> Select File
-                    </button>
-                </div>
-                
-                <input type="file" id="file-input" accept=".pdf,.txt,.doc,.docx,.ppt,.pptx">
-                
-                <div class="document-list" id="document-list">
-                    <!-- Documents will appear here -->
-                </div>
-            </div>
-
             <div class="chat-section">
                 <h2 class="section-title"><i class="fas fa-comments"></i> Chat Bot</h2>
-                
+                <div class="documents-container" id="documents-container"></div>
                 <div class="chat-container">
                     <div class="chat-messages" id="chat-messages">
+
                         <!-- Messages will appear here -->
                         <div class="message message-ai-container" style="display: none;">
                             <img src="" alt="AI Avatar" class="message-avatar message-avatar-ai">
@@ -722,6 +589,12 @@
                     </div>
                     
                     <div class="chat-input-container">
+                        <div class="upload-btn-container">
+                            <button class="upload-btn-chat" id="upload-btn" title="Upload document">
+                                <i class="fas fa-paperclip"></i>
+                            </button>
+                            <input type="file" id="file-input" class="file-input-chat" accept=".pdf,.txt,.doc,.docx,.ppt,.pptx">
+                        </div>
                         <input type="text" id="chat-input" placeholder="Ask me anything about your document...">
                         <button id="send-btn"><i class="fas fa-paper-plane"></i></button>
                     </div>
@@ -731,18 +604,22 @@
     </div>
 
     <footer>
-        <p>Tameri Study AI Assistant &copy; 2023 | Powered by Gemini AI</p>
+        <p>Tameri Study AI Assistant &copy; 2025</p>
     </footer>
 
     <script>
+        window.addEventListener('beforeunload', function() {
+        localStorage.removeItem('uploadedDocuments');
+        localStorage.removeItem('lastUsedDocumentId');
+    });
     // Element references
-    const uploadArea = document.getElementById('upload-area');
     const fileInput = document.getElementById('file-input');
     const uploadBtn = document.getElementById('upload-btn');
     const chatMessages = document.getElementById('chat-messages');
     const chatInput = document.getElementById('chat-input');
     const sendBtn = document.getElementById('send-btn');
     const typingIndicator = document.getElementById('typing-indicator');
+    const documentsContainer = document.getElementById('documents-container');
 
     let currentDocumentId = null;
     let currentUserId = 4;
@@ -753,172 +630,176 @@
     const AI_NAME = "Study AI";
     const USER_NAME = "You";
 
+    
+    // Uploaded Documents (loaded from localStorage)
+    let uploadedDocuments = [];
+
     // Event listeners
-    uploadArea.addEventListener('click', () => fileInput.click());
     uploadBtn.addEventListener('click', (e) => {
-        e.stopPropagation(); // Prevent parent click from firing
+        e.preventDefault();
         fileInput.click();
     });
+    
     fileInput.addEventListener('change', handleFileUpload);
+    
     chatInput.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') sendMessage();
     });
+    
     sendBtn.addEventListener('click', sendMessage);
-// Add this to your existing JavaScript
 document.addEventListener('DOMContentLoaded', function() {
-    // Handle touch events for mobile
-    const uploadArea = document.getElementById('upload-area');
-    
-    // Prevent default drag behaviors
-    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-        uploadArea.addEventListener(eventName, preventDefaults, false);
+        addMessage('ai', 'Welcome to Tameri Study AI! Upload a document to get started or ask me a question.');
+        
+        // Load any previously uploaded documents
+        loadDocuments();
     });
+
+    // Load documents from storage or API
+    function loadDocuments() {
+        // Fetch saved documents from localStorage
+    const savedDocuments = JSON.parse(localStorage.getItem('uploadedDocuments')) || [];
+    uploadedDocuments = savedDocuments;
+
+    // Get the last used document ID from localStorage
+    const lastUsedDocId = localStorage.getItem('lastUsedDocumentId');
     
-    function preventDefaults(e) {
-        e.preventDefault();
-        e.stopPropagation();
+    // Render documents and highlight the last used document
+    renderDocuments(lastUsedDocId);
     }
-    
-    // Handle mobile keyboard appearance
-    const chatInput = document.getElementById('chat-input');
-    chatInput.addEventListener('focus', function() {
-        if (window.innerWidth < 768) {
-            setTimeout(() => {
-                this.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            }, 300);
+
+    // Render document chips
+    function renderDocuments(lastUsedDocId) {
+    documentsContainer.innerHTML = '';
+
+    if (uploadedDocuments.length === 0) {
+        documentsContainer.style.display = 'none';
+        return;
+    }
+
+    documentsContainer.style.display = 'flex';
+
+    uploadedDocuments.forEach(doc => {
+        const docElement = document.createElement('div');
+        docElement.className = 'document-chip';
+        docElement.innerHTML = `
+            <i class="fas fa-file-alt"></i>
+            <span>${doc.name}</span>
+            <span class="document-chip-close" data-id="${doc.id}">&times;</span>
+        `;
+        
+        // If this document is the last used, highlight it in rgb(117, 255, 117)
+        if (doc.id === lastUsedDocId) {
+            docElement.style.backgroundColor = 'rgb(117, 255, 117)';
+        } else {
+            docElement.style.backgroundColor = 'rgba(72, 149, 239, 0.1)'; // Lighter blue for others
         }
-    });
-});
-    // Upload function
-    function handleFileUpload() {
-        const file = fileInput.files[0];
-        if (!file) return;
 
-        // Update UI to show uploading status
-        uploadArea.classList.add("active");
-        uploadArea.querySelector("p").textContent = `Uploading ${file.name}...`;
-        uploadArea.querySelector("i").className = "fas fa-spinner fa-spin";
-        uploadBtn.disabled = true;
+        documentsContainer.appendChild(docElement);
 
-        const formData = new FormData();
-        formData.append("file", file);
-
-        fetch(`/api/documents/?user_id=${currentUserId}&title=${encodeURIComponent(file.name)}&type_document=pdf`, {
-            method: "POST",
-            body: formData
-        })
-        .then(response => {
-            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-            return response.json();
-        })
-        .then(data => {
-            currentDocumentId = data.id_document;
-            addMessage('ai', `Document "${file.name}" uploaded successfully. Ask me anything about it!`);
-        })
-        .catch(error => {
-            console.error('Upload error:', error);
-            addMessage('ai', 'Failed to upload document. Please try again.');
-        })
-        .finally(() => {
-            // Reset UI
-            uploadArea.classList.remove("active");
-            uploadArea.querySelector("p").textContent = "Drag & drop your document here or click to browse";
-            uploadArea.querySelector("i").className = "fas fa-cloud-upload-alt";
-            uploadBtn.disabled = false;
-            fileInput.value = ''; // Clear input for future uploads
+        // Add click handler to select or remove document
+        docElement.addEventListener('click', (e) => {
+            if (e.target.classList.contains('document-chip-close')) {
+                e.stopPropagation();
+                removeDocument(doc.id);
+            } else {
+                selectDocument(doc.id);
+            }
         });
-    }
-
-    // Message function
-  function addMessage(sender, content) {
-    const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-    const messageDiv = document.createElement('div');
-
-    const formattedContent = formatContent(content);
-
-    if (sender === 'user') {
-        messageDiv.className = 'message message-user-container';
-        messageDiv.innerHTML = `
-            <div class="message-content message-user-content">
-                <div class="message-info">
-                    <span class="message-sender">${USER_NAME}</span>
-                    <span class="message-time">${time}</span>
-                </div>
-                <div class="message-bubble message-bubble-user">
-                    <div class="message-text">${formattedContent}</div>
-                </div>
-            </div>
-            <img src="${USER_AVATAR}" alt="User Avatar" class="message-avatar message-avatar-user">
-        `;
-    } else {
-        messageDiv.className = 'message message-ai-container';
-        messageDiv.innerHTML = `
-            <img src="${AI_AVATAR}" alt="AI Avatar" class="message-avatar message-avatar-ai">
-            <div class="message-content message-ai-content">
-                <div class="message-info">
-                    <span class="message-sender">${AI_NAME}</span>
-                    <span class="message-time">${time}</span>
-                </div>
-                <div class="message-bubble message-bubble-ai">
-                    <div class="message-text">${formattedContent}</div>
-                </div>
-            </div>
-        `;
-    }
-
-    chatMessages.appendChild(messageDiv);
+    });
+}
     
-    // Process MathJax after a slight delay to ensure DOM is ready
-    setTimeout(() => {
-        if (typeof MathJax !== 'undefined') {
-            MathJax.typesetPromise([messageDiv]).catch((err) => {
-                console.log('MathJax typeset error:', err);
-                // Fallback for any unprocessed math
-                const mathElements = messageDiv.querySelectorAll('.message-text');
-                mathElements.forEach(el => {
-                    el.innerHTML = el.innerHTML
-                        .replace(/\\(\((.*?)\\)/g, '<span class="math-inline">$1</span>')
-                        .replace(/\\\[(.*?)\\\]/g, '<div class="math-display">$1</div>');
-                });
-            });
+    // Select a document
+    function selectDocument(docId) {
+    currentDocumentId = docId;
+    const doc = uploadedDocuments.find(d => d.id === docId);
+
+    // Save the last used document ID in localStorage
+    localStorage.setItem('lastUsedDocumentId', docId);
+
+    // Highlight the selected document in rgb(117, 255, 117)
+    document.querySelectorAll('.document-chip').forEach(chip => {
+        if (chip.dataset.id === docId) {
+            chip.style.backgroundColor = 'rgb(117, 255, 117)';
+        } else {
+            chip.style.backgroundColor = 'rgba(72, 149, 239, 0.1)'; // Light blue for unselected docs
         }
-    }, 100);
-    
-    setTimeout(() => {
-        chatMessages.scrollTop = chatMessages.scrollHeight;
-    }, 0);
+    });
+
+    addMessage('ai', `Now using document: "${doc.name}". Ask me anything about it!`);
 }
 
-    // Function to format the content with HTML tags
-    function formatContent(content) {
-    // Preserve math blocks first
-    content = content.replace(/\$\$(.*?)\$\$/gs, 'MATH_DISPLAY_BLOCK$1MATH_DISPLAY_BLOCK');
-    content = content.replace(/\$(.*?)\$/g, 'MATH_INLINE$1MATH_INLINE');
+// Remove a document
+   function removeDocument(docId) {
+    uploadedDocuments = uploadedDocuments.filter(doc => doc.id !== docId);
+    localStorage.setItem('uploadedDocuments', JSON.stringify(uploadedDocuments));
 
-    // Basic formatting
-    content = content.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-    content = content.replace(/\*(.*?)\*/g, '<em>$1</em>');
-    
-    // Lists
-    content = content.replace(/^\s*•\s(.*$)/gm, '<li>$1</li>');
-    content = content.replace(/(<li>.*<\/li>)+/g, '<ul>$&</ul>');
-    content = content.replace(/^\s*\d+\.\s(.*$)/gm, '<li>$1</li>');
-    content = content.replace(/(<li>.*<\/li>)+/g, '<ol>$&</ol>');
-    
-    // Headings
-    content = content.replace(/^##\s(.*$)/gm, '<h3>$1</h3>');
-    content = content.replace(/^###\s(.*$)/gm, '<h4>$1</h4>');
-    
-    // Line breaks
-    content = content.replace(/\n/g, '<br>');
-    
-    // Restore math blocks
-    content = content.replace(/MATH_DISPLAY_BLOCK(.*?)MATH_DISPLAY_BLOCK/gs, '$$$1$$');
-    content = content.replace(/MATH_INLINE(.*?)MATH_INLINE/g, '\\($1\\)');
-    
-    return content;
+    // If the removed document is the current one, clear the current document ID
+    if (currentDocumentId === docId) {
+        currentDocumentId = null;
+        localStorage.removeItem('lastUsedDocumentId'); // Clear last used document
+    }
+
+    renderDocuments();
 }
     
+
+// Upload function
+    function handleFileUpload() {
+    const file = fileInput.files[0];
+    if (!file) return;
+
+    // Show uploading status in chat
+    uploadBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+    uploadBtn.disabled = true;
+
+    const formData = new FormData();
+    formData.append("file", file);
+
+    // Send the file to the server using an actual API
+    fetch(`/api/documents/?user_id=${currentUserId}&title=${encodeURIComponent(file.name)}&type_document=pdf`, {
+        method: "POST",
+        body: formData
+    })
+    .then(response => {
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+        return response.json();  // Parse the response to get document data
+    })
+    .then(data => {
+        // Use the API response to update the document info
+        const newDoc = {
+            id: data.id_document,
+            name: file.name,
+            type: file.type,
+            size: file.size,
+            uploadedAt: new Date().toISOString()
+        };
+
+        // Add the new document to the uploadedDocuments array
+        uploadedDocuments.push(newDoc);
+        localStorage.setItem('uploadedDocuments', JSON.stringify(uploadedDocuments));
+
+        // Set the current document ID as the last uploaded document
+        currentDocumentId = newDoc.id;
+        localStorage.setItem('lastUsedDocumentId', newDoc.id);
+
+        // Render the documents list and highlight the uploaded document
+        renderDocuments(newDoc.id);
+
+        // Add success message to chat
+        // addMessage('ai', `Document "${file.name}" uploaded successfully. Ask me anything about it!`);
+    })
+    .catch(error => {
+        console.error('Upload error:', error);
+        addMessage('ai', 'Failed to upload document. Please try again.');
+    })
+    .finally(() => {
+        // Reset the upload button and input field
+        uploadBtn.innerHTML = '<i class="fas fa-paperclip"></i>';
+        uploadBtn.disabled = false;
+        fileInput.value = '';  // Clear file input field
+    });
+}
+
     // Chat send function
     function sendMessage() {
         const message = chatInput.value.trim();
@@ -954,24 +835,114 @@ document.addEventListener('DOMContentLoaded', function() {
             typingIndicator.style.display = 'none';
         });
     }
-    </script>
-    <script>
-// Initialize MathJax on page load
-document.addEventListener('DOMContentLoaded', function() {
-    if (typeof MathJax !== 'undefined') {
-        MathJax.startup.document.state(0);
-        MathJax.typesetPromise();
+
+
+    // Message function
+    function addMessage(sender, content) {
+        const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        const messageDiv = document.createElement('div');
+
+        const formattedContent = formatContent(content);
+
+        if (sender === 'user') {
+            messageDiv.className = 'message message-user-container';
+            messageDiv.innerHTML = `
+                <div class="message-content message-user-content">
+                    <div class="message-info">
+                        <span class="message-sender">${USER_NAME}</span>
+                        <span class="message-time">${time}</span>
+                    </div>
+                    <div class="message-bubble message-bubble-user">
+                        <div class="message-text">${formattedContent}</div>
+                    </div>
+                </div>
+                <img src="${USER_AVATAR}" alt="User Avatar" class="message-avatar message-avatar-user">
+            `;
+        } else {
+            messageDiv.className = 'message message-ai-container';
+            messageDiv.innerHTML = `
+                <img src="${AI_AVATAR}" alt="AI Avatar" class="message-avatar message-avatar-ai">
+                <div class="message-content message-ai-content">
+                    <div class="message-info">
+                        <span class="message-sender">${AI_NAME}</span>
+                        <span class="message-time">${time}</span>
+                    </div>
+                    <div class="message-bubble message-bubble-ai">
+                        <div class="message-text">${formattedContent}</div>
+                    </div>
+                </div>
+            `;
+        }
+
+        chatMessages.appendChild(messageDiv);
+        
+        // Process MathJax after a slight delay to ensure DOM is ready
+        setTimeout(() => {
+            if (typeof MathJax !== 'undefined') {
+                MathJax.typesetPromise([messageDiv]).catch((err) => {
+                    console.log('MathJax typeset error:', err);
+                    // Fallback for any unprocessed math
+                    const mathElements = messageDiv.querySelectorAll('.message-text');
+                    mathElements.forEach(el => {
+                        el.innerHTML = el.innerHTML
+                            .replace(/\\(\((.*?)\\)/g, '<span class="math-inline">$1</span>')
+                            .replace(/\\\[(.*?)\\\]/g, '<div class="math-display">$1</div>');
+                    });
+                });
+            }
+        }, 100);
+        
+        setTimeout(() => {
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }, 0);
+    }
+
+    // Function to format the content with HTML tags
+    function formatContent(content) {
+        // Preserve math blocks first
+        content = content.replace(/\$\$(.*?)\$\$/gs, 'MATH_DISPLAY_BLOCK$1MATH_DISPLAY_BLOCK');
+        content = content.replace(/\$(.*?)\$/g, 'MATH_INLINE$1MATH_INLINE');
+
+        // Basic formatting
+        content = content.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+        content = content.replace(/\*(.*?)\*/g, '<em>$1</em>');
+        
+        // Lists
+        content = content.replace(/^\s*•\s(.*$)/gm, '<li>$1</li>');
+        content = content.replace(/(<li>.*<\/li>)+/g, '<ul>$&</ul>');
+        content = content.replace(/^\s*\d+\.\s(.*$)/gm, '<li>$1</li>');
+        content = content.replace(/(<li>.*<\/li>)+/g, '<ol>$&</ol>');
+        
+        // Headings
+        content = content.replace(/^##\s(.*$)/gm, '<h3>$1</h3>');
+        content = content.replace(/^###\s(.*$)/gm, '<h4>$1</h4>');
+        
+        // Line breaks
+        content = content.replace(/\n/g, '<br>');
+        
+        // Restore math blocks
+        content = content.replace(/MATH_DISPLAY_BLOCK(.*?)MATH_DISPLAY_BLOCK/gs, '$$$1$$');
+        content = content.replace(/MATH_INLINE(.*?)MATH_INLINE/g, '\\($1\\)');
+        
+        return content;
     }
     
-    // Reprocess any existing messages
-    const messages = document.querySelectorAll('.message-bubble-ai .message-text');
-    messages.forEach(msg => {
-        msg.innerHTML = formatContent(msg.textContent);
+    // Initialize MathJax on page load
+    document.addEventListener('DOMContentLoaded', function() {
         if (typeof MathJax !== 'undefined') {
-            MathJax.typesetPromise([msg.parentElement]);
+            MathJax.startup.document.state(0);
+            MathJax.typesetPromise();
         }
+        
+        // Reprocess any existing messages
+        const messages = document.querySelectorAll('.message-bubble-ai .message-text');
+        messages.forEach(msg => {
+            msg.innerHTML = formatContent(msg.textContent);
+            if (typeof MathJax !== 'undefined') {
+                MathJax.typesetPromise([msg.parentElement]);
+            }
+        });
     });
-});
-</script>
+    </script>
 </body>
 </html>

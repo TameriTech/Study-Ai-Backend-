@@ -150,6 +150,7 @@ def get_user_summary_modules(user_id: int, db: Session) -> Dict[str, List[dict]]
         if course.summary_modules:
             course_list.append({
                 f"Course_id_{course.id_course}": {
+                    "id_course": course.id_course,
                     "course_name": course.course_name,
                     "level_of_difficulty": course.level_of_difficulty,
                     "estimated_completion_time": course.estimated_completion_time,
@@ -174,6 +175,7 @@ def get_user_simplified_modules(user_id: int, db: Session) -> Dict[str, List[dic
         if course.simplified_modules:
             course_list.append({
                 f"Course_id_{course.id_course}": {
+                    "id_course": course.id_course,
                     "course_name": course.course_name,
                     "level_of_difficulty": course.level_of_difficulty,
                     "estimated_completion_time": course.estimated_completion_time,
