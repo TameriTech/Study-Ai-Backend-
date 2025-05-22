@@ -146,7 +146,7 @@
             
             try {
                 // Send token to backend
-                const response = await fetch(`${BACKEND_URL}/api/login/facebook`, {
+                const response = await fetch(`/api/login/facebook`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

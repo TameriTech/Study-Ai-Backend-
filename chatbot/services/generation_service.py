@@ -1,4 +1,7 @@
+import base64
+from io import BytesIO
 import os
+from fastapi import HTTPException
 from google import genai
 from google.genai import types
 from dotenv import load_dotenv
@@ -7,6 +10,38 @@ from google.genai.types import HarmCategory, SafetySetting, GenerationConfig
 load_dotenv()
 
 class GenerationService:
+    def generate_image(self, prompt: str) -> BytesIO:
+        """Generate an image based on the given prompt and return as BytesIO"""
+        try:
+            client = genai.Client(api_key=os.getenv("GOOGLE_API_KEY"))
+            response = client.models.generate_content(
+                model="gemini-2.0-flash-preview-image-generation",
+                contents=prompt,
+                config=types.GenerateContentConfig(
+                    response_modalities=['TEXT', 'IMAGE']
+                )
+            )
+            
+            # Process the response
+            image_data = None
+            text_response = ""
+            
+            for part in response.candidates[0].content.parts:
+                if part.text is not None:
+                    text_response += part.text
+                elif part.inline_data is not None:
+                    image_data = part.inline_data.data
+            
+            if not image_data:
+                raise ValueError("No image data was generated")
+            
+            # Create BytesIO object with the image data
+            image_bytes = BytesIO(image_data)
+            return image_bytes
+            
+        except Exception as e:
+            raise HTTPException(status_code=500, detail=f"Image generation failed: {str(e)}")
+        
     def generate_answer(self, context: str, question: str) -> str:
         """Generate an answer to the question based on the context, considering the detected language."""
         

@@ -99,7 +99,7 @@
             const { credential } = response;
             
             try {
-                const res = await fetch(`${API_BASE_URL}/api/login/google`, {
+                const res = await fetch(`/api/login/google`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'

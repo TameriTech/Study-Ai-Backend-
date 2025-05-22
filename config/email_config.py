@@ -25,3 +25,11 @@ class EmailRequest(BaseModel):
     body: str
     button_url: str = None
     button_text: str = None
+
+class ImageGenerationRequest(BaseModel):
+    prompt: str
+
+class ImageResponse(BaseModel):
+    image: str  # base64 encoded image
+    text: str   # any accompanying text
+    format: str # image format (png, jpeg, etc.)

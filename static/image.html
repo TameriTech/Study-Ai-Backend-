@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Image Generator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6c5ce7;
+            --secondary: #a29bfe;
+            --dark: #2d3436;
+            --light: #f5f6fa;
+            --success: #00b894;
+            --danger: #d63031;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8f9fa;
+            color: var(--dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .subtitle {
+            font-weight: 300;
+            opacity: 0.9;
+        }
+        
+        main {
+            flex: 1;
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+        
+        .generator-container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+        
+        .prompt-section {
+            padding: 2rem;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--dark);
+        }
+        
+        textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 1rem;
+            resize: vertical;
+            min-height: 100px;
+            transition: border 0.3s;
+        }
+        
+        textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        
+        .btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            font-size: 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: inherit;
+            font-weight: 500;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .btn:hover {
+            background: #5a4bd6;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .btn i {
+            margin-right: 8px;
+        }
+        
+        .result-section {
+            padding: 2rem;
+            display: none;
+        }
+        
+        .image-container {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .generated-image {
+            max-width: 100%;
+            max-height: 600px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border: 1px solid #eee;
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 2rem;
+        }
+        
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(0, 0, 0, 0.1);
+            border-radius: 50%;
+            border-top-color: var(--primary);
+            animation: spin 1s ease-in-out infinite;
+            margin: 0 auto 1rem;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .error-message {
+            color: var(--danger);
+            background: #ffebee;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            display: none;
+        }
+        
+        .history-section {
+            margin-top: 2rem;
+        }
+        
+        .history-title {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+        
+        .history-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .history-item {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+            cursor: pointer;
+        }
+        
+        .history-item:hover {
+            transform: translateY(-5px);
+        }
+        
+        .history-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        
+        .history-prompt {
+            padding: 1rem;
+            font-size: 0.9rem;
+            color: #666;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 1.5rem;
+            background: var(--dark);
+            color: white;
+            margin-top: auto;
+        }
+        
+        @media (max-width: 768px) {
+            main {
+                padding: 1rem;
+            }
+            
+            .history-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Tameri AI Image Generator</h1>
+        <p class="subtitle">Create stunning images with the power of AI</p>
+    </header>
+    
+    <main>
+        <div class="generator-container">
+            <div class="prompt-section">
+                <div class="form-group">
+                    <label for="prompt">Describe the image you want to generate</label>
+                    <textarea id="prompt" placeholder="Example: An image of a cherubim angel in a heavenly garden with golden light"></textarea>
+                </div>
+                <button id="generate-btn" class="btn">
+                    <i>🎨</i> Generate Image
+                </button>
+                <div class="error-message" id="error-message"></div>
+            </div>
+            
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <p>Generating your image... This may take a moment</p>
+            </div>
+            
+            <div class="result-section" id="result-section">
+                <h2>Your Generated Image</h2>
+                <div class="image-container">
+                    <img id="generated-image" class="generated-image" src="" alt="Generated image">
+                </div>
+                <div class="image-actions">
+                    <button id="download-btn" class="btn">
+                        <i>⬇️</i> Download Image
+                    </button>
+                    <button id="generate-again-btn" class="btn" style="background: var(--secondary);">
+                        <i>🔄</i> Generate Another
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="history-section" id="history-section">
+            <h3 class="history-title">Your Recent Creations</h3>
+            <div class="history-grid" id="history-grid">
+                <!-- History items will be added here dynamically -->
+            </div>
+        </div>
+    </main>
+    
+    <footer>
+        <p>© 2025 AI Image Generator | Powered by Tameri Tech</p>
+    </footer>
+
+    <script>
+        window.addEventListener('beforeunload', function() {
+        localStorage.removeItem('imageHistory');
+    });
+        document.addEventListener('DOMContentLoaded', function() {
+            const promptInput = document.getElementById('prompt');
+            const generateBtn = document.getElementById('generate-btn');
+            const loadingSection = document.getElementById('loading');
+            const resultSection = document.getElementById('result-section');
+            const generatedImage = document.getElementById('generated-image');
+            const downloadBtn = document.getElementById('download-btn');
+            const generateAgainBtn = document.getElementById('generate-again-btn');
+            const errorMessage = document.getElementById('error-message');
+            const historyGrid = document.getElementById('history-grid');
+            const historySection = document.getElementById('history-section');
+            
+            let currentImageUrl = '';
+            let generationHistory = JSON.parse(localStorage.getItem('imageHistory')) || [];
+            
+            // Display history if exists
+            if (generationHistory.length > 0) {
+                renderHistory();
+            } else {
+                historySection.style.display = 'none';
+            }
+            
+            // Generate image
+            generateBtn.addEventListener('click', generateImage);
+            
+            // Download image
+            downloadBtn.addEventListener('click', function() {
+                if (!currentImageUrl) return;
+                
+                const a = document.createElement('a');
+                a.href = currentImageUrl;
+                a.download = `ai-image-${Date.now()}.png`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            });
+            
+            // Generate another image
+            generateAgainBtn.addEventListener('click', function() {
+                resultSection.style.display = 'none';
+                promptInput.value = '';
+                promptInput.focus();
+            });
+            
+            // Handle Enter key in textarea
+            promptInput.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    generateImage();
+                }
+            });
+            
+            function generateImage() {
+                const prompt = promptInput.value.trim();
+                
+                if (!prompt) {
+                    showError('Please enter a description for the image');
+                    return;
+                }
+                
+                // Clear previous results and errors
+                errorMessage.style.display = 'none';
+                resultSection.style.display = 'none';
+                
+                // Show loading
+                loadingSection.style.display = 'block';
+                generateBtn.disabled = true;
+                
+                // Prepare request
+                const myHeaders = new Headers();
+                myHeaders.append("Content-Type", "application/json");
+                
+                const raw = JSON.stringify({
+                    "prompt": prompt
+                });
+                
+                const requestOptions = {
+                    method: "POST",
+                    headers: myHeaders,
+                    body: raw,
+                    redirect: "follow"
+                };
+                
+                // Make API call
+                fetch("/api/chat/generate-image", requestOptions)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.blob();
+                    })
+                    .then(blob => {
+                        const imageUrl = URL.createObjectURL(blob);
+                        currentImageUrl = imageUrl;
+                        generatedImage.src = imageUrl;
+                        
+                        // Add to history
+                        addToHistory(prompt, imageUrl);
+                        
+                        // Show result
+                        loadingSection.style.display = 'none';
+                        resultSection.style.display = 'block';
+                        
+                        // Scroll to result
+                        resultSection.scrollIntoView({ behavior: 'smooth' });
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        showError('Failed to generate image. Please try again.');
+                        loadingSection.style.display = 'none';
+                    })
+                    .finally(() => {
+                        generateBtn.disabled = false;
+                    });
+            }
+            
+            function showError(message) {
+                errorMessage.textContent = message;
+                errorMessage.style.display = 'block';
+            }
+            
+            function addToHistory(prompt, imageUrl) {
+                const historyItem = {
+                    prompt: prompt,
+                    imageUrl: imageUrl,
+                    timestamp: Date.now()
+                };
+                
+                generationHistory.unshift(historyItem);
+                
+                // Keep only last 10 items
+                if (generationHistory.length > 10) {
+                    generationHistory = generationHistory.slice(0, 10);
+                }
+                
+                // Save to localStorage
+                localStorage.setItem('imageHistory', JSON.stringify(generationHistory));
+                
+                // Update UI
+                renderHistory();
+                historySection.style.display = 'block';
+            }
+            
+            function renderHistory() {
+                historyGrid.innerHTML = '';
+                
+                generationHistory.forEach(item => {
+                    const historyItem = document.createElement('div');
+                    historyItem.className = 'history-item';
+                    historyItem.innerHTML = `
+                        <img src="${item.imageUrl}" class="history-image" alt="${item.prompt}">
+                        <div class="history-prompt" title="${item.prompt}">${item.prompt}</div>
+                    `;
+                    
+                    historyItem.addEventListener('click', function() {
+                        currentImageUrl = item.imageUrl;
+                        generatedImage.src = item.imageUrl;
+                        promptInput.value = item.prompt;
+                        resultSection.style.display = 'block';
+                        resultSection.scrollIntoView({ behavior: 'smooth' });
+                    });
+                    
+                    historyGrid.appendChild(historyItem);
+                });
+            }
+        });
+    </script>
+</body>
+</html>
