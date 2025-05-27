@@ -24,7 +24,7 @@ def create_course(
     # Prompt for simplified modules
     simplified_modules_prompt = f"""
     You must return a simplified structured course modules strictly as a JSON array of objects, each object with "topic" and "body" keys.
-
+    Make to simplied in the language of the provided text
     Example:
     [
     {{"topic": "topic 1", "body": "body 1"}}
@@ -44,7 +44,7 @@ def create_course(
     {original_text}
     ---
     From the above course content you must return a summarized structured course modules strictly as a JSON array of objects, each object with "topic" and "body" keys.
-
+    Make to summarize in the language of the provided text
     Example:
     [
     {{"topic": "topic 1", "body": "body 1"}}

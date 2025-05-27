@@ -232,12 +232,15 @@ def get_user_quizzes_grouped_by_course(user_id: int, db: Session) -> Dict[str, L
 
     return grouped_quizzes
 
-def update_user_answer(db: Session, quiz_id: int, user_answer: str) -> Quiz:
-    quiz = db.query(Quiz).filter(Quiz.id_quiz == quiz_id).first()
+def update_user_answer(db: Session, quiz_id: int, user_answer: str) -> QuizModel:
+    quiz = db.query(QuizModel).filter(QuizModel.id_quiz == quiz_id).first()
     if not quiz:
         raise ValueError(f"Quiz with ID {quiz_id} not found")
     
     quiz.user_answer = user_answer
+    course = db.query(Course).filter(Course.id_course == quiz.course_id).first()
+    quiz.course_name = course.course_name
+
     db.commit()
     db.refresh(quiz)
     return quiz

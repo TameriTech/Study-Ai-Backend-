@@ -71,6 +71,7 @@ async def extract_and_save_pdf(db: Session, file: UploadFile, user_id: int) -> d
     {text}
     ---
     Summarize the text above for revision purpose.
+    Make to sammurize in the language of the provided text
     """
    
     simplify_prompt = f"""
@@ -79,6 +80,7 @@ async def extract_and_save_pdf(db: Session, file: UploadFile, user_id: int) -> d
     {text}
     ---
     Simplify the text above for purpose of better understanding.
+    Make to simplied in the language of the provided text
     """
 
     # Generate summaries using Gemini

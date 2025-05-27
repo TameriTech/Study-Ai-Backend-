@@ -84,6 +84,7 @@ async def extract_and_save_video(db: Session, file: UploadFile, user_id: int) ->
             {video_text}
             ---
             Summarize the text above for revision purpose.
+            Make to summarize in the language of the provided text
             """
             
             simplify_prompt = f"""
@@ -92,6 +93,7 @@ async def extract_and_save_video(db: Session, file: UploadFile, user_id: int) ->
             {video_text}
             ---
             Simplify the text above for purpose of better understanding.
+            Make to simplied in the language of the provided text
             """
             # Generate summaries using Gemini
             logger.info("Calling Gemini API for summary...")

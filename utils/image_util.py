@@ -55,12 +55,12 @@ async def extract_and_save_image(db: Session, file: UploadFile, user_id: int) ->
     # Prompt templates
     sample_text = extracted_text
     summary_text = generate_gemini_response(
-        prompt=f"Here is a text from a document:\n---\n{sample_text}\n---\nSummarize the text above for revision purposes.",
+        prompt=f"Here is a text from a document:\n---\n{sample_text}\n---\nSummarize the text above for revision purposes. Make to summarize in the language of the provided text",
         response_type="text",
         system_prompt="You are a TEXT summarization assistant."
     )
     simplified_text = generate_gemini_response(
-        prompt=f"Here is a text from a document:\n---\n{sample_text}\n---\nSimplify the text above for better understanding.",
+        prompt=f"Here is a text from a document:\n---\n{sample_text}\n---\nSimplify the text above for better understanding. Make to simplied in the language of the provided text",
         response_type="text",
         system_prompt="You are a TEXT simplification assistant."
     )
