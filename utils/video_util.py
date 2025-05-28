@@ -25,7 +25,7 @@ os.makedirs("temp_files/videos/audios", exist_ok=True)
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-async def extract_and_save_video(db: Session, file: UploadFile, user_id: int) -> dict:
+async def extract_and_save_video(db: Session, file: UploadFile, user_id: int, instructions: str) -> dict:
     MAX_FILE_SIZE = 20 * 1024 * 1024  # 20MB in bytes
     
     # Check file size
@@ -76,50 +76,6 @@ async def extract_and_save_video(db: Session, file: UploadFile, user_id: int) ->
                 logger.error(f"Whisper transcription failed: {str(e)}")
                 raise HTTPException(status_code=500, detail=f"Transcription failed: {str(e)}")
 
-            # Generate prompts
-            logger.info("Generating Gemini prompts...")
-            summary_prompt = f"""
-            Here is a text extracted from a video:
-            ---
-            {video_text}
-            ---
-            Summarize the text above for revision purpose.
-            Make to summarize in the language of the provided text
-            """
-            
-            simplify_prompt = f"""
-            Here is a text extracted from a video:
-            ---
-            {video_text}
-            ---
-            Simplify the text above for purpose of better understanding.
-            Make to simplied in the language of the provided text
-            """
-            # Generate summaries using Gemini
-            logger.info("Calling Gemini API for summary...")
-            try:
-                summary_text = generate_gemini_response(
-                    prompt=summary_prompt,
-                    response_type="text",
-                    system_prompt="You are a TEXT summarization assistant."
-                )
-                logger.info("Summary text generated successfully!")
-            except Exception as e:
-                logger.error(f"Gemini summary generation failed: {str(e)}")
-                raise HTTPException(status_code=500, detail=f"Summary generation failed: {str(e)}")
-
-            logger.info("Calling Gemini API for simplified text...")
-            try:
-                simplified_text = generate_gemini_response(
-                    prompt=simplify_prompt,
-                    response_type="text",
-                    system_prompt="You are a TEXT simplification assistant."
-                )
-                logger.info("Simplified text generated successfully!")
-            except Exception as e:
-                logger.error(f"Gemini simplification failed: {str(e)}")
-                raise HTTPException(status_code=500, detail=f"Simplification failed: {str(e)}")
-
             # Create document record
             logger.info("Saving document to database...")
             try:
@@ -144,7 +100,7 @@ async def extract_and_save_video(db: Session, file: UploadFile, user_id: int) ->
             # Process text into segments
             logger.info("Creating course and segments...")
             try:
-                course = create_course(db, db_document.id_document, file.filename, video_text, simplified_text, summary_text)
+                course = create_course(db, db_document.id_document, file.filename, video_text, instructions)
                 process_segments(db, db_document.id_document, video_text)
                 logger.info("Course and segments processed successfully!")
             except Exception as e:

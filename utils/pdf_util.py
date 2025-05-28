@@ -11,7 +11,7 @@ from utils.gemini_api import generate_gemini_response
 # Ensure the temp_files/pdf directory exists
 os.makedirs("temp_files/pdf", exist_ok=True)
 
-async def extract_and_save_pdf(db: Session, file: UploadFile, user_id: int) -> dict:
+async def extract_and_save_pdf(db: Session, file: UploadFile, user_id: int, instruction: str) -> dict:
     """
     Process PDF file: save to storage, extract text (limited to 5000 words),
     create database records, and generate text segments with embeddings.
@@ -64,37 +64,6 @@ async def extract_and_save_pdf(db: Session, file: UploadFile, user_id: int) -> d
     else:
         processing_message = f"PDF processed successfully with {word_count} words"
 
-    # Generate prompts with the limited text
-    summary_prompt = f"""
-    Here is a text from a PDF document:
-    ---
-    {text}
-    ---
-    Summarize the text above for revision purpose.
-    Make to sammurize in the language of the provided text
-    """
-   
-    simplify_prompt = f"""
-    Here is a text from a PDF document:
-    ---
-    {text}
-    ---
-    Simplify the text above for purpose of better understanding.
-    Make to simplied in the language of the provided text
-    """
-
-    # Generate summaries using Gemini
-    summary_text = generate_gemini_response(
-        prompt=summary_prompt,
-        response_type="text",
-        system_prompt="You are a TEXT summarization assistant."
-    )
-    simplified_text = generate_gemini_response(
-        prompt=simplify_prompt,
-        response_type="text",
-        system_prompt="You are a TEXT simplification assistant."
-    )
-
     # Create document record in database
     db_document = Document(
         title=file.filename,
@@ -110,7 +79,7 @@ async def extract_and_save_pdf(db: Session, file: UploadFile, user_id: int) -> d
     db.refresh(db_document)
 
     # Process text into segments with embeddings
-    course = create_course(db, db_document.id_document, file.filename, text, simplified_text, summary_text)
+    course = create_course(db, db_document.id_document, file.filename, text, instruction)
     process_segments(db, db_document.id_document, text)
 
     return {

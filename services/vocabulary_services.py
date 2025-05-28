@@ -36,7 +36,7 @@ def create_vocabulary_entry(course_id: int, db: Session) -> schemas.Vocabulary:
 
     # Step 3: Create a clean and strict prompt
     vocabulary_prompt = f"""
-    Extract important terms and their definitions from this course text:
+    Extract important terms and their definitions from this course text, make sure the text language is respected while giving the terms and definitions:
     ---
     {course.original_text}
     ---

@@ -59,13 +59,6 @@ def create_quiz(db: Session, quiz_data: QuizCreate) -> Quiz:
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=f"A set of quizzes already exists for course ID {quiz_data.course_id}. You cannot create another set."
         )
-
-    # Update the course details if quiz instruction is provided
-    if quiz_data.quiz_instruction:
-        course.quiz_instruction = quiz_data.quiz_instruction
-        course.level_of_difficulty = quiz_data.level_of_difficulty
-        db.commit()
-        db.refresh(course)
     
     # Construct the quiz prompt for OpenRouter
     quiz_prompt = f"""

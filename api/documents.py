@@ -1,3 +1,4 @@
+from typing import Optional
 from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, Query
 from sqlalchemy.orm import Session
 from database.db import get_db
@@ -12,18 +13,20 @@ router = APIRouter(prefix="/api", tags=["Document"])
 async def upload_pdf(
     file: UploadFile = File(...),
     user_id: int = Query(..., description="ID of the user uploading the document"),
+    instructions: Optional[str] = Query(default=None, description="Optional instructions"),  # ✅ Properly optional
     db: Session = Depends(get_db)
 ):
-    return await extract_and_save_pdf(db, file, user_id)
+    return await extract_and_save_pdf(db, file, user_id, instructions)
 
 @router.post("/extract-text-from-image/")
 async def extract_text_from_image_route(
     file: UploadFile = File(...),
     user_id: int = Query(..., description="ID of the user uploading the image"),
+    instructions: Optional[str] = Query(default=None, description="Optional instructions"),  # ✅ Properly optional
     db: Session = Depends(get_db)
 ):
     try:
-        return await extract_and_save_image(db, file, user_id)
+        return await extract_and_save_image(db, file, user_id, instructions)
     except HTTPException:
         raise
     except Exception as e:
@@ -33,10 +36,11 @@ async def extract_text_from_image_route(
 async def process_video(
     file: UploadFile = File(...),
     user_id: int = Query(...),
+    instructions: Optional[str] = Query(default=None, description="Optional instructions"),  # ✅ Properly optional
     db: Session = Depends(get_db)
 ):
     try:
-        return await extract_and_save_video(db, file, user_id)
+        return await extract_and_save_video(db, file, user_id, instructions)
     except HTTPException:
         raise
     except Exception as e:

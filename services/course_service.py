@@ -17,14 +17,13 @@ def create_course(
         document_id: int,
         course_name: str,
         original_text: Optional[str] = None,
-        simplified_text: Optional[str] = None,
-        summary_text: Optional[str] = None,
+        instructions: Optional[str] = None,
     ) -> Course:
 
     # Prompt for simplified modules
     simplified_modules_prompt = f"""
     You must return a simplified structured course modules strictly as a JSON array of objects, each object with "topic" and "body" keys.
-    Make to simplied in the language of the provided text
+    Make sure to simplied in the language of the provided text
     Example:
     [
     {{"topic": "topic 1", "body": "body 1"}}
@@ -32,9 +31,10 @@ def create_course(
 
     Course content:
     ---
-    {simplified_text}
+    {original_text}
     ---
     Return only JSON.
+    Make sure you follow this instructions {instructions}
     """
 
     # Prompt for summary modules
@@ -44,12 +44,13 @@ def create_course(
     {original_text}
     ---
     From the above course content you must return a summarized structured course modules strictly as a JSON array of objects, each object with "topic" and "body" keys.
-    Make to summarize in the language of the provided text
+    Make sure to summarize in the language of the provided text
     Example:
     [
     {{"topic": "topic 1", "body": "body 1"}}
     ]
     Return only JSON.
+    Make sure you follow this instructions {instructions}
     """
     simplified_modules_text = generate_gemini_response(
         prompt=simplified_modules_prompt,
@@ -71,7 +72,7 @@ def create_course(
     ---
     Course content: {summary_modules_text}, course original name: {course_name}
     ---
-
+    Make sure let it be in the language if the course content.
     """
     course_name = generate_gemini_response(
         prompt=course_name_prompt,
@@ -95,11 +96,11 @@ def create_course(
         document_id=document_id,
         course_name=course_name,
         original_text=original_text,
-        simplified_text=simplified_text,
-        summary_text=summary_text,
+        simplified_text="simplified_text",
+        summary_text="summary_text",
         level_of_difficulty="medium",
         estimated_completion_time=estimated_completion_time,
-        quiz_instruction="Quiz instruction",
+        quiz_instruction= instructions,
         simplified_modules=simplified_modules,
         simplified_module_pages=simplified_module_pages,
         summary_modules=summary_modules,

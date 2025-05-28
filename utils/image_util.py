@@ -30,7 +30,7 @@ def compress_image_if_needed(image_bytes: bytes) -> bytes:
         return compressed_io.read()
     return image_bytes
 
-async def extract_and_save_image(db: Session, file: UploadFile, user_id: int) -> dict:
+async def extract_and_save_image(db: Session, file: UploadFile, user_id: int, instruction: str) -> dict:
     ensure_directories()
 
     # Validate content type
@@ -51,19 +51,6 @@ async def extract_and_save_image(db: Session, file: UploadFile, user_id: int) ->
 
     if not extracted_text:
         raise HTTPException(422, "No text could be extracted from the image")
-
-    # Prompt templates
-    sample_text = extracted_text
-    summary_text = generate_gemini_response(
-        prompt=f"Here is a text from a document:\n---\n{sample_text}\n---\nSummarize the text above for revision purposes. Make to summarize in the language of the provided text",
-        response_type="text",
-        system_prompt="You are a TEXT summarization assistant."
-    )
-    simplified_text = generate_gemini_response(
-        prompt=f"Here is a text from a document:\n---\n{sample_text}\n---\nSimplify the text above for better understanding. Make to simplied in the language of the provided text",
-        response_type="text",
-        system_prompt="You are a TEXT simplification assistant."
-    )
 
     # Save image locally
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
@@ -88,7 +75,7 @@ async def extract_and_save_image(db: Session, file: UploadFile, user_id: int) ->
     db.refresh(db_document)
 
     # Create course and process segments
-    course = create_course(db, db_document.id_document, file.filename, extracted_text, simplified_text, summary_text)
+    course = create_course(db, db_document.id_document, file.filename, extracted_text, instruction)
     process_segments(db, db_document.id_document, extracted_text)
 
     return {
@@ -97,6 +84,6 @@ async def extract_and_save_image(db: Session, file: UploadFile, user_id: int) ->
         "cours_info": {"id": course.id_course},
         "filename": file.filename,
         "storage_path": storage_path,
-        "extracted_text": sample_text,
+        "extracted_text": extracted_text,
         "message": "IMAGE processed successfully with Gemini OCR and text segmentation"
     }
