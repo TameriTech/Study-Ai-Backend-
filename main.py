@@ -1,9 +1,11 @@
+import asyncio
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
-from api import users, courses, documents, vocabulary, segments, feedback, quiz, comment, email
+import websockets
+from api import users, courses, documents, vocabulary, segments, feedback, quiz, comment, email, websocket
 from fastapi.middleware.cors import CORSMiddleware
-
 from chatbot.routers import chat, documentsegments
+
 
 app = FastAPI()
 
@@ -27,6 +29,7 @@ app.include_router(comment.router)
 app.include_router(documentsegments.router)
 app.include_router(chat.router)
 app.include_router(email.router)
+app.include_router(websocket.router)
 
 @app.get("/")
 async def root():
