@@ -186,6 +186,11 @@
       border-radius: 18px 0 18px 18px;
     }
 
+    .message-sender {
+      font-weight: bold;
+      margin-bottom: 4px;
+    }
+
     .message-time {
       font-size: 0.75rem;
       color: #6b7280;
@@ -345,7 +350,7 @@
     <div class="chat-header">
       <div class="chat-header-content">
         <i class="fas fa-comments"></i>
-        <h2>WebSocket Chat</h2>
+        <h2>WebSocket Chat - <span id="current-user-id"></span></h2>
       </div>
       <div class="header-controls">
         <div class="connection-status">
@@ -380,16 +385,39 @@
     const statusIndicator = document.querySelector(".status-indicator");
     const notificationBell = document.getElementById("notification-bell");
     const notificationBadge = document.getElementById("notification-badge");
+    const currentUserIdElement = document.getElementById("current-user-id");
     
     // State variables
     let unreadMessages = 0;
     let isWindowFocused = true;
     let isScrolledToBottom = true;
     let clientId = generateClientId();
+    let roomId = getRoomIdFromUrl() || "default-room";
+    let currentUserId = getUserIdFromUrl() || clientId;
+    let reconnectAttempts = 0;
+    const maxReconnectAttempts = 5;
+    const reconnectDelay = 3000; // 3 seconds
+    let socket;
+    
+    // Display current user ID
+    currentUserIdElement.textContent = currentUserId;
     
     // Generate unique client ID
     function generateClientId() {
-      return 'client-' + Math.random().toString(36).substr(2, 9);
+      return 'Tameri-user_' + Math.random().toString(36).substr(2, 9);
+    }
+    
+    // Get room ID from URL if present
+    function getRoomIdFromUrl() {
+      const path = window.location.pathname.split('/');
+      const roomIndex = path.indexOf('room') + 1;
+      return roomIndex > 0 && path.length > roomIndex ? path[roomIndex] : null;
+    }
+    
+    // Get user ID from URL if present
+    function getUserIdFromUrl() {
+      const params = new URLSearchParams(window.location.search);
+      return params.get('user_id');
     }
     
     // Check if window is focused
@@ -451,83 +479,85 @@
       audio.play().catch(e => console.log("Audio playback failed:", e));
     }
     
-   function connectWebSocket() {
-  socket = new WebSocket("wss://study.tameri.tech/api/ws"); // ✅ Updated from ws://localhost to wss://...
-
-  socket.onopen = () => {
-    console.log("WebSocket connection opened.");
-    statusText.textContent = "Connected";
-    statusIndicator.className = "status-indicator connected";
-    sendBtn.disabled = false;
-    reconnectAttempts = 0;
-
-    // Send client ID to server
-    socket.send(JSON.stringify({
-      type: "client_id",
-      clientId: clientId
-    }));
-
-    // Add connection message
-    addSystemMessage("Connected to WebSocket server");
-  };
-
-  socket.onclose = (event) => {
-    console.log("WebSocket connection closed.", event);
-    statusText.textContent = "Disconnected";
-    statusIndicator.className = "status-indicator disconnected";
-    sendBtn.disabled = true;
-
-    // Add disconnection message
-    addSystemMessage("Disconnected from WebSocket server");
-
-    // Attempt to reconnect if the closure was unexpected
-    if (event.code !== 1000 && reconnectAttempts < maxReconnectAttempts) {
-      reconnectAttempts++;
-      const delay = reconnectAttempts * reconnectDelay;
-      console.log(`Attempting to reconnect in ${delay/1000} seconds... (attempt ${reconnectAttempts} of ${maxReconnectAttempts})`);
-      addSystemMessage(`Attempting to reconnect in ${delay/1000} seconds...`);
-      setTimeout(connectWebSocket, delay);
+    function connectWebSocket() {
+      socket = new WebSocket(`ws://${window.location.host}/api/ws/${roomId}/${currentUserId}`);
+      
+      socket.onopen = () => {
+        console.log("WebSocket connection opened.");
+        statusText.textContent = "Connected";
+        statusIndicator.className = "status-indicator connected";
+        sendBtn.disabled = false;
+        reconnectAttempts = 0;
+        
+        // Add connection message
+        addSystemMessage(`Connected to room ${roomId} as ${currentUserId}`);
+      };
+      
+      socket.onclose = (event) => {
+        console.log("WebSocket connection closed.", event);
+        statusText.textContent = "Disconnected";
+        statusIndicator.className = "status-indicator disconnected";
+        sendBtn.disabled = true;
+        
+        // Add disconnection message
+        addSystemMessage("Disconnected from WebSocket server");
+        
+        // Attempt to reconnect if the closure was unexpected
+        if (event.code !== 1000 && reconnectAttempts < maxReconnectAttempts) {
+          reconnectAttempts++;
+          const delay = reconnectAttempts * reconnectDelay;
+          console.log(`Attempting to reconnect in ${delay/1000} seconds... (attempt ${reconnectAttempts} of ${maxReconnectAttempts})`);
+          addSystemMessage(`Attempting to reconnect in ${delay/1000} seconds...`);
+          setTimeout(connectWebSocket, delay);
+        }
+      };
+      
+      socket.onerror = (error) => {
+        console.error("WebSocket error:", error);
+        addSystemMessage("WebSocket error occurred", "error");
+      };
+      
+      socket.onmessage = (event) => {
+        const data = event.data;
+        try {
+          const parsedData = JSON.parse(data);
+          
+          // Check if message is from this client
+          const isOwnMessage = parsedData.user_id === currentUserId;
+          
+          switch (parsedData.type) {
+            case "message":
+              addMessage(
+                parsedData.content || parsedData.message, 
+                parsedData.timestamp, 
+                isOwnMessage ? "sent" : "received",
+                parsedData.user_id
+              );
+              triggerNotification(isOwnMessage);
+              break;
+              
+            case "system":
+              addSystemMessage(parsedData.content);
+              break;
+              
+            default:
+              addReceivedMessage(parsedData.content || data, parsedData.timestamp, parsedData.user_id);
+              triggerNotification(isOwnMessage);
+          }
+        } catch (e) {
+          // If not JSON, treat as plain text
+          addReceivedMessage(data);
+          triggerNotification();
+        }
+      };
     }
-  };
-
-  socket.onerror = (error) => {
-    console.error("WebSocket error:", error);
-    addSystemMessage("WebSocket error occurred", "error");
-  };
-
-  socket.onmessage = (event) => {
-    const data = event.data;
-    try {
-      const parsedData = JSON.parse(data);
-
-      // Check if message is from this client
-      const isOwnMessage = parsedData.clientId === clientId;
-
-      if (parsedData.type === "message") {
-        addMessage(
-          parsedData.message || parsedData.content,
-          parsedData.timestamp,
-          isOwnMessage ? "sent" : "received"
-        );
-
-        // Trigger notification if needed
-        triggerNotification(isOwnMessage);
-      }
-    } catch (e) {
-      // If not JSON, treat as plain text
-      addReceivedMessage(data);
-      triggerNotification();
-    }
-  };
-}
-
-    // Helper functions for adding messages
-    function addReceivedMessage(content, timestamp) {
-      addMessage(content, timestamp, "received");
+    
+    function addReceivedMessage(content, timestamp, senderId) {
+      addMessage(content, timestamp, "received", senderId);
     }
     
     function addSentMessage(content, timestamp) {
-      addMessage(content, timestamp, "sent");
+      addMessage(content, timestamp, "sent", currentUserId);
     }
     
     function addSystemMessage(content, type = "info") {
@@ -543,7 +573,7 @@
       scrollToBottom();
     }
     
-    function addMessage(content, timestamp, type) {
+    function addMessage(content, timestamp, type, senderId) {
       const messageContainer = document.createElement("div");
       messageContainer.className = `message message-${type}`;
       
@@ -552,7 +582,18 @@
       
       const messageBubble = document.createElement("div");
       messageBubble.className = `message-bubble message-bubble-${type}`;
-      messageBubble.textContent = content;
+      
+      // Add sender ID to message if it's a received message
+      if (type === "received") {
+        const senderElement = document.createElement("div");
+        senderElement.className = "message-sender small text-muted mb-1";
+        senderElement.textContent = senderId || "Unknown";
+        messageBubble.appendChild(senderElement);
+      }
+      
+      const contentElement = document.createElement("div");
+      contentElement.textContent = content;
+      messageBubble.appendChild(contentElement);
       
       const messageTime = document.createElement("div");
       messageTime.className = "message-time";
@@ -587,12 +628,12 @@
     function sendMessage() {
       const message = input.value.trim();
       if (message && socket.readyState === WebSocket.OPEN) {
-        // Create a message object with timestamp and client ID
+        // Create a message object with timestamp and user ID
         const messageObj = {
           type: "message",
-          message: message,
+          content: message,
           timestamp: new Date().toISOString(),
-          clientId: clientId
+          user_id: currentUserId
         };
         
         socket.send(JSON.stringify(messageObj));
@@ -610,7 +651,7 @@
     
     // Enable/disable send button based on input
     input.addEventListener("input", () => {
-      sendBtn.disabled = input.value.trim() === "" || socket.readyState !== WebSocket.OPEN;
+      sendBtn.disabled = input.value.trim() === "" || !socket || socket.readyState !== WebSocket.OPEN;
     });
     
     // Initial connection
