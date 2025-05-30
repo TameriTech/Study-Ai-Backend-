@@ -8,7 +8,8 @@ from chatbot.routers import chat, documentsegments
 from database.db import create_tables, drop_tables
 
 app = FastAPI()
-CREATE_TABLES =  drop_tables()
+CREATE_TABLES =  create_tables()
+# DROP_TABLES =  drop_tables()
 
 app.add_middleware(
     CORSMiddleware,
