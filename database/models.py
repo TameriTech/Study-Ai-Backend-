@@ -1,5 +1,5 @@
 from database.db import Base
-from sqlalchemy import Integer, Column, String, Date, Numeric
+from sqlalchemy import Boolean, Integer, Column, String, Date, Numeric
 from sqlalchemy import Column, Integer, String, Date, DateTime, ForeignKey, Enum, JSON
 from sqlalchemy.orm import relationship
 from datetime import datetime
@@ -77,6 +77,7 @@ class Course(Base):
     summary_module_pages = Column(Integer, default=0)
     simplified_module_statistic = Column(Numeric(10, 2), default=0)  # 10 digits total, 2 after decimal
     summary_modules_statistic = Column(Numeric(10, 2), default=0)
+    has_quiz = Column(Boolean, default=False, nullable=False)
     document_id = Column(Integer, ForeignKey('Documents.id_document'), nullable=False)
     created_at = Column(DateTime, default=datetime.utcnow)
     

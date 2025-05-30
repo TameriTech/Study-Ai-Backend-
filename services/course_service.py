@@ -105,6 +105,7 @@ def create_course(
         simplified_module_pages=simplified_module_pages,
         summary_modules=summary_modules,
         summary_module_pages=summary_module_pages,
+        has_quiz=False,
         created_at=datetime.utcnow()
     )
     db.add(course)
@@ -157,6 +158,8 @@ def get_user_summary_modules(user_id: int, db: Session) -> Dict[str, List[dict]]
                     "estimated_completion_time": course.estimated_completion_time,
                     "simplified_module_statistic": course.simplified_module_statistic,
                     "summary_modules": course.summary_modules,
+                    "created_at": course.created_at,
+                    "has_quiz": course.has_quiz,
                 }
             })
 
@@ -182,6 +185,8 @@ def get_user_simplified_modules(user_id: int, db: Session) -> Dict[str, List[dic
                     "estimated_completion_time": course.estimated_completion_time,
                     "simplified_module_statistic": course.simplified_module_statistic,
                     "simplified_modules": course.simplified_modules,
+                    "created_at": course.created_at,
+                    "has_quiz": course.has_quiz,
                 }
             })
 

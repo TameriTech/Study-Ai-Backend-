@@ -57,9 +57,8 @@
 
     <script>
         // Your backend API base URL
-        const API_BASE_URL = 'https://study.tameri.tech';
-        // https://study.tameri.tech/
-        // Load the Google API client library
+        const httpProtocol = window.location.protocol === 'https:' ? 'https://' : 'http://';
+        const API_BASE_URL = httpProtocol + window.location.host;
         function loadGoogleAPI() {
             const script = document.createElement('script');
             script.src = 'https://accounts.google.com/gsi/client';

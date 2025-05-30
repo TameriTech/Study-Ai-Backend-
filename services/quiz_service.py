@@ -53,20 +53,20 @@ def create_quiz(db: Session, quiz_data: QuizCreate) -> Quiz:
         )
     
     # Check if quizzes already exist for the course
-    existing_quizzes = db.query(QuizModel).filter(QuizModel.course_id == quiz_data.course_id).first()
-    if existing_quizzes:
+    if course.has_quiz:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"A set of quizzes already exists for course ID {quiz_data.course_id}. You cannot create another set."
+            detail=f"A set of quizzes already exists for course."
         )
     
     # Construct the quiz prompt for OpenRouter
     quiz_prompt = f"""
-        from this text I quiz with this criteria:
+        from this text create quiz with this criteria:
         level of difficulty: {quiz_data.level_of_difficulty}
         quiz type: {quiz_data.quiz_type}, 
         Number of questions: {quiz_data.number_of_questions}
         additional instruction: {quiz_data.quiz_instruction}
+        Make sure let it be in the language of the course content.
 
         Make sure the correct answer matches the right option 
         because it will be used to rate the quiz.
@@ -128,7 +128,9 @@ def create_quiz(db: Session, quiz_data: QuizCreate) -> Quiz:
         # Add the new quiz to the database session
         db.add(db_quiz)
         quizzes.append(db_quiz)
-    
+        
+    course.has_quiz = True
+    db.add(course) 
     # Commit the changes to the database
     db.commit()
     db.refresh(quizzes[0])  # Refresh the first quiz to get its ID

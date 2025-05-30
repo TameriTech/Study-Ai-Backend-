@@ -79,7 +79,7 @@ class CourseBase(BaseModel):
     simplified_text: Optional[str] = None
     summary_text: Optional[str] = None
     level_of_difficulty: QuizDifficultyLevelEnum
-    quiz_instruction: str
+    quiz_instruction: Optional[str] = None
     estimated_completion_time: Optional[str] = None
     summary_modules: Optional[List[Dict[str, Any]]] = Field(default_factory=list)
     simplified_modules: Optional[List[Dict[str, Any]]] = Field(default_factory=list)
@@ -90,6 +90,7 @@ class CourseBase(BaseModel):
     simplified_module_statistic: Optional[float] = 0.0  # Changed to float since it was Float in SQLAlchemy
     summary_modules_statistic: Optional[float] = 0.0  # Changed to float
     document_id: int
+    has_quiz: bool = False
 
 class CourseCreate(CourseBase):
     pass

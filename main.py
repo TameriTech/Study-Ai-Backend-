@@ -5,9 +5,10 @@ import websockets
 from api import users, courses, documents, vocabulary, segments, feedback, quiz, comment, email, websocket
 from fastapi.middleware.cors import CORSMiddleware
 from chatbot.routers import chat, documentsegments
-
+from database.db import create_tables, drop_tables
 
 app = FastAPI()
+CREATE_TABLES =  drop_tables()
 
 app.add_middleware(
     CORSMiddleware,

@@ -1,60 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>WebSocket Chat</title>
-  <!-- Bootstrap 5 CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tameri Study AI Chat Group</title>
+  <link rel="icon" href="/static/favicon.ico" type="image/x-icon">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     :root {
       --primary: #4361ee;
       --secondary: #3f37c9;
       --accent: #4895ef;
-      --light: #f8f9fa;
-      --dark: #212529;
       --success: #4cc9f0;
       --danger: #f72585;
       --warning: #f8961e;
       --info: #560bad;
+      --light: #f8f9fa;
+      --dark: #212529;
     }
 
     body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background-color: #f5f7fb;
-      font-family: 'Poppins', sans-serif;
       margin: 0;
       padding: 0;
     }
 
+    /* Chat Container */
     .chat-container {
-      max-width: 800px;
+      max-width: 1200px;
       margin: 2rem auto;
       box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
       border-radius: 12px;
       overflow: hidden;
+      height: 90vh;
+      display: flex;
+      flex-direction: column;
     }
 
+    /* Header */
     .chat-header {
       background: linear-gradient(135deg, var(--primary), var(--secondary));
       color: white;
       padding: 1.25rem 1.5rem;
-      position: relative;
       display: flex;
       justify-content: space-between;
       align-items: center;
-    }
-
-    .chat-header-content {
-      display: flex;
-      align-items: center;
-      gap: 10px;
+      flex-shrink: 0;
     }
 
     .chat-header h2 {
       margin: 0;
       font-weight: 700;
+      font-size: 1.5rem;
     }
 
     .header-controls {
@@ -64,16 +63,19 @@
     }
 
     .connection-status {
-      font-size: 0.8rem;
+      font-size: 0.9rem;
       display: flex;
       align-items: center;
+      background: rgba(0, 0, 0, 0.2);
+      padding: 5px 10px;
+      border-radius: 20px;
     }
 
     .status-indicator {
       width: 10px;
       height: 10px;
       border-radius: 50%;
-      margin-right: 5px;
+      margin-right: 8px;
     }
 
     .connected {
@@ -84,39 +86,52 @@
       background-color: var(--danger);
     }
 
-    .notification-bell {
+    /* Notification Bell */
+    .notification-container {
       position: relative;
+    }
+
+    .notification-bell {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
       cursor: pointer;
-      color: white;
-      font-size: 1.2rem;
       transition: all 0.3s ease;
+      position: relative;
     }
 
     .notification-bell:hover {
-      transform: scale(1.1);
+      background: rgba(255, 255, 255, 0.3);
+      transform: scale(1.05);
     }
 
-    .notification-bell.active {
-      animation: ring 0.5s ease-in-out;
-      color: #ffcc00;
+    .notification-bell i {
+      color: white;
+      font-size: 1.2rem;
     }
 
     .notification-badge {
       position: absolute;
       top: -5px;
       right: -5px;
-      background-color: var(--danger);
+      background: var(--danger);
       color: white;
       border-radius: 50%;
-      width: 18px;
-      height: 18px;
-      font-size: 0.7rem;
+      width: 20px;
+      height: 20px;
       display: flex;
       align-items: center;
       justify-content: center;
+      font-size: 0.7rem;
+      font-weight: bold;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
       opacity: 0;
       transform: scale(0);
-      transition: all 0.3s ease;
+      transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
     }
 
     .notification-badge.show {
@@ -124,24 +139,346 @@
       transform: scale(1);
     }
 
-    @keyframes ring {
-      0% { transform: rotate(0deg); }
-      25% { transform: rotate(15deg); }
-      50% { transform: rotate(-15deg); }
-      75% { transform: rotate(10deg); }
-      100% { transform: rotate(0deg); }
+    .notification-bell.ring {
+      animation: bellRing 0.5s ease-in-out;
+    }
+
+    @keyframes bellRing {
+      0%, 100% { transform: rotate(0deg); }
+      15% { transform: rotate(15deg); }
+      30% { transform: rotate(-15deg); }
+      45% { transform: rotate(10deg); }
+      60% { transform: rotate(-10deg); }
+      75% { transform: rotate(5deg); }
+    }
+
+    /* Notification Dropdown */
+    .notification-dropdown {
+      position: absolute;
+      top: 50px;
+      right: 0;
+      width: 350px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+      z-index: 1000;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(10px);
+      transition: all 0.3s ease;
+      max-height: 70vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .notification-dropdown.show {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+
+    .notification-header {
+      padding: 15px;
+      border-bottom: 1px solid #eee;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-shrink: 0;
+    }
+
+    .notification-header h5 {
+      margin: 0;
+      font-weight: 600;
+      font-size: 1rem;
+    }
+
+    .notification-clear {
+      background: none;
+      border: none;
+      color: var(--primary);
+      cursor: pointer;
+      font-size: 0.8rem;
+      padding: 5px;
+    }
+
+    .notification-clear:hover {
+      text-decoration: underline;
+    }
+
+    .notification-list {
+      overflow-y: auto;
+      padding: 0;
+      margin: 0;
+      list-style: none;
+      flex-grow: 1;
+    }
+
+    .notification-item {
+      padding: 15px;
+      border-bottom: 1px solid #f5f5f5;
+      display: flex;
+      align-items: flex-start;
+      transition: background 0.2s;
+      cursor: pointer;
+    }
+
+    .notification-item:last-child {
+      border-bottom: none;
+    }
+
+    .notification-item:hover {
+      background: #f9f9f9;
+    }
+
+    .notification-item.unread {
+      background: rgba(67, 97, 238, 0.05);
+    }
+
+    .notification-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 12px;
+      flex-shrink: 0;
+    }
+
+    .notification-icon.message {
+      background: rgba(67, 97, 238, 0.1);
+      color: var(--primary);
+    }
+
+    .notification-icon.system {
+      background: rgba(248, 150, 30, 0.1);
+      color: var(--warning);
+    }
+
+    .notification-icon.direct {
+      background: rgba(247, 37, 133, 0.1);
+      color: var(--danger);
+    }
+
+    .notification-content {
+      flex-grow: 1;
+      min-width: 0;
+    }
+
+    .notification-title {
+      font-weight: 600;
+      margin-bottom: 5px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .notification-time {
+      font-size: 0.7rem;
+      color: #999;
+      white-space: nowrap;
+      margin-left: 10px;
+    }
+
+    .notification-text {
+      font-size: 0.9rem;
+      color: #555;
+      line-height: 1.4;
+      word-break: break-word;
+    }
+
+    .notification-empty {
+      padding: 30px 15px;
+      text-align: center;
+      color: #999;
+      font-size: 0.9rem;
+    }
+
+    /* Toast Notifications */
+    .notification-toast {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 300px;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+      padding: 15px;
+      display: flex;
+      align-items: center;
+      z-index: 9999;
+      transform: translateX(150%);
+      transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    }
+
+    .notification-toast.show {
+      transform: translateX(0);
+    }
+
+    .notification-toast.hide {
+      transform: translateX(150%);
+    }
+
+    .notification-toast-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 12px;
+      flex-shrink: 0;
+    }
+
+    .notification-toast-icon.message {
+      background: rgba(67, 97, 238, 0.1);
+      color: var(--primary);
+    }
+
+    .notification-toast-icon.system {
+      background: rgba(248, 150, 30, 0.1);
+      color: var(--warning);
+    }
+
+    .notification-toast-icon.direct {
+      background: rgba(247, 37, 133, 0.1);
+      color: var(--danger);
+    }
+
+    .notification-toast-content {
+      flex-grow: 1;
+      min-width: 0;
+    }
+
+    .notification-toast-title {
+      font-weight: 600;
+      margin-bottom: 5px;
+      font-size: 0.95rem;
+    }
+
+    .notification-toast-text {
+      font-size: 0.85rem;
+      color: #555;
+      line-height: 1.4;
+      word-break: break-word;
+    }
+
+    .notification-toast-close {
+      background: none;
+      border: none;
+      color: #999;
+      cursor: pointer;
+      margin-left: 10px;
+      font-size: 0.9rem;
+    }
+
+    /* Chat Body */
+    .chat-body {
+      display: flex;
+      flex-grow: 1;
+      overflow: hidden;
+      background-color: white;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 250px;
+      background-color: white;
+      border-right: 1px solid #e3e6f0;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .sidebar-section {
+      padding: 1rem;
+      border-bottom: 1px solid #e3e6f0;
+    }
+
+    .sidebar-title {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--dark);
+      margin-bottom: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .room-list, .user-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      overflow-y: auto;
+    }
+
+    .room-item, .user-item {
+      padding: 0.5rem 0.75rem;
+      border-radius: 6px;
+      margin-bottom: 0.25rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+    }
+
+    .room-item:hover, .user-item:hover {
+      background-color: #f8f9fa;
+    }
+
+    .room-item.active {
+      background-color: #e9f5ff;
+      font-weight: 600;
+      color: var(--primary);
+    }
+
+    .user-item {
+      position: relative;
+    }
+
+    .user-presence {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      margin-right: 8px;
+      flex-shrink: 0;
+    }
+
+    .user-presence.online {
+      background-color: var(--success);
+    }
+
+    .user-presence.offline {
+      background-color: #adb5bd;
+    }
+
+    .user-name {
+      flex-grow: 1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .user-last-seen {
+      font-size: 0.7rem;
+      color: #6c757d;
+      margin-left: 5px;
+    }
+
+    /* Chat Content */
+    .chat-content {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
     }
 
     .chat-messages {
-      height: 400px;
+      flex-grow: 1;
       overflow-y: auto;
       padding: 1.5rem;
-      background-color: white;
-      border-left: 1px solid #e3e6f0;
-      border-right: 1px solid #e3e6f0;
       scroll-behavior: smooth;
-      display: flex;
-      flex-direction: column;
+      background-color: #f5f7fb;
     }
 
     .message {
@@ -149,7 +486,41 @@
       margin-bottom: 15px;
       max-width: 100%;
     }
+ .profile-pic {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-right: 10px;
+      flex-shrink: 0;
+    }
 
+    .message-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 5px;
+    }
+
+    .message-sender {
+      font-weight: bold;
+      font-size: 0.85rem;
+      color: #6c757d;
+    }
+
+    /* Update message bubble layout */
+    .message-content {
+      display: flex;
+      flex-direction: column;
+      max-width: 70%;
+    }
+
+    .message-received .message-content {
+      align-items: flex-start;
+    }
+
+    .message-sent .message-content {
+      align-items: flex-end;
+    }
     .message-sent {
       justify-content: flex-end;
     }
@@ -161,7 +532,7 @@
     .message-content {
       display: flex;
       flex-direction: column;
-      max-width: 80%;
+      max-width: 70%;
     }
 
     .message-bubble {
@@ -175,9 +546,10 @@
     }
 
     .message-bubble-received {
-      background-color: #e9ecef;
+      background-color: white;
       color: var(--dark);
       border-radius: 0 18px 18px 18px;
+      border: 1px solid #e3e6f0;
     }
 
     .message-bubble-sent {
@@ -189,6 +561,8 @@
     .message-sender {
       font-weight: bold;
       margin-bottom: 4px;
+      font-size: 0.85rem;
+      color: #6c757d;
     }
 
     .message-time {
@@ -209,50 +583,29 @@
       margin: 10px 0;
     }
 
-    /* Typing indicator */
-    .typing-indicator {
-      display: none;
-      padding: 10px 15px;
-      background-color: #e9ecef;
-      border-radius: 18px;
-      margin-bottom: 15px;
-      align-self: flex-start;
-      max-width: 80%;
+    .presence-message {
+      text-align: center;
+      color: var(--info);
+      font-size: 0.8rem;
+      margin: 10px 0;
     }
 
-    .typing-dots {
-      display: flex;
-      gap: 5px;
+    .notification-message {
+      text-align: center;
+      color: var(--warning);
+      font-size: 0.8rem;
+      margin: 10px 0;
+      font-weight: 600;
     }
 
-    .typing-dot {
-      width: 8px;
-      height: 8px;
-      background-color: #6b7280;
-      border-radius: 50%;
-      animation: typingAnimation 1.4s infinite ease-in-out;
-    }
-
-    .typing-dot:nth-child(1) { animation-delay: 0s; }
-    .typing-dot:nth-child(2) { animation-delay: 0.2s; }
-    .typing-dot:nth-child(3) { animation-delay: 0.4s; }
-
-    @keyframes typingAnimation {
-      0%, 60%, 100% { transform: translateY(0); }
-      30% { transform: translateY(-5px); }
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
+    /* Chat Input */
     .chat-input-container {
       background-color: white;
       padding: 1rem;
       border-top: 1px solid #e3e6f0;
       display: flex;
       gap: 10px;
+      flex-shrink: 0;
     }
 
     .chat-input {
@@ -293,54 +646,60 @@
       cursor: not-allowed;
     }
 
-    /* Scrollbar styling */
-    .chat-messages::-webkit-scrollbar {
+    /* Scrollbars */
+    ::-webkit-scrollbar {
       width: 8px;
+      height: 8px;
     }
 
-    .chat-messages::-webkit-scrollbar-track {
+    ::-webkit-scrollbar-track {
       background: #f1f1f1;
       border-radius: 4px;
     }
 
-    .chat-messages::-webkit-scrollbar-thumb {
-      background: var(--accent);
+    ::-webkit-scrollbar-thumb {
+      background: #c1c1c1;
       border-radius: 4px;
     }
 
-    .chat-messages::-webkit-scrollbar-thumb:hover {
-      background: var(--primary);
+    ::-webkit-scrollbar-thumb:hover {
+      background: #a8a8a8;
     }
 
-    /* Responsive adjustments */
+    /* Animations */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Responsive */
     @media (max-width: 768px) {
       .chat-container {
-        margin: 1rem;
+        margin: 0;
+        height: 100vh;
+        border-radius: 0;
       }
       
-      .chat-messages {
-        height: 300px;
-        padding: 1rem;
+      .sidebar {
+        width: 200px;
+      }
+      
+      .notification-dropdown {
+        width: 280px;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .chat-header h2 {
+        font-size: 1.2rem;
+      }
+      
+      .sidebar {
+        width: 180px;
       }
       
       .message-content {
-        max-width: 90%;
-      }
-      
-      .message-bubble {
-        padding: 10px 14px;
-        font-size: 0.9rem;
-      }
-
-      .chat-header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 10px;
-      }
-
-      .header-controls {
-        width: 100%;
-        justify-content: space-between;
+        max-width: 85%;
       }
     }
   </style>
@@ -348,314 +707,852 @@
 <body>
   <div class="chat-container">
     <div class="chat-header">
-      <div class="chat-header-content">
-        <i class="fas fa-comments"></i>
-        <h2>WebSocket Chat - <span id="current-user-id"></span></h2>
-      </div>
+      <h2><span id="current-user-id"></span></h2>
       <div class="header-controls">
         <div class="connection-status">
           <span class="status-indicator disconnected"></span>
           <span id="status-text">Disconnected</span>
         </div>
-        <div class="notification-bell" id="notification-bell" title="New messages">
-          <i class="fas fa-bell"></i>
-          <span class="notification-badge" id="notification-badge">0</span>
+        <div class="notification-container">
+          <div class="notification-bell" id="notification-bell">
+            <i class="fas fa-bell"></i>
+            <span class="notification-badge" id="notification-badge">0</span>
+          </div>
+          <div class="notification-dropdown" id="notification-dropdown">
+            <div class="notification-header">
+              <h5>Notifications</h5>
+              <button class="notification-clear" id="notification-clear">Clear All</button>
+            </div>
+            <ul class="notification-list" id="notification-list">
+              <li class="notification-empty">No notifications yet</li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
     
-    <div class="chat-messages" id="messages"></div>
-    
-    <div class="chat-input-container">
-      <input type="text" id="input" class="chat-input" placeholder="Type your message here..." autocomplete="off" />
-      <button id="send-btn" class="send-btn" onclick="sendMessage()" disabled>
-        <i class="fas fa-paper-plane"></i>
-      </button>
+    <div class="chat-body">
+      <div class="sidebar">
+        <div class="sidebar-section">
+          <div class="sidebar-title">Chat History</div>
+          <ul class="room-list" id="room-list">
+            <li class="room-item active" data-room="general">Study Group</li>
+            <li class="room-item" data-room="support">M. Allpha</li>
+            <li class="room-item" data-room="random">Ms. Nathalie</li>
+          </ul>
+        </div>
+        
+        <div class="sidebar-section">
+          <div class="sidebar-title">Active Users</div>
+          <ul class="user-list" id="user-list">
+            <!-- Users will be populated here -->
+          </ul>
+        </div>
+      </div>
+      
+      <div class="chat-content">
+        <div class="chat-messages" id="messages"></div>
+        
+        <div class="chat-input-container">
+          <input type="text" id="input" class="chat-input" placeholder="Type your message here..." autocomplete="off" />
+          <button id="send-btn" class="send-btn" onclick="sendMessage()" disabled>
+            <i class="fas fa-paper-plane"></i>
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 
-  <!-- Bootstrap JS Bundle with Popper -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Notification Toast (will be added dynamically) -->
   
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <script>
-    const messagesDiv = document.getElementById("messages");
-    const input = document.getElementById("input");
-    const sendBtn = document.getElementById("send-btn");
-    const statusText = document.getElementById("status-text");
-    const statusIndicator = document.querySelector(".status-indicator");
-    const notificationBell = document.getElementById("notification-bell");
-    const notificationBadge = document.getElementById("notification-badge");
-    const currentUserIdElement = document.getElementById("current-user-id");
+    // Notification System (unchanged)
+class NotificationManager {
+  constructor() {
+    this.unreadCount = 0;
+    this.notifications = [];
+    this.soundEnabled = true;
+    this.browserNotificationsAllowed = false;
+    this.lastNotificationTime = 0;
     
-    // State variables
-    let unreadMessages = 0;
-    let isWindowFocused = true;
-    let isScrolledToBottom = true;
-    let clientId = generateClientId();
-    let roomId = getRoomIdFromUrl() || "default-room";
-    let currentUserId = getUserIdFromUrl() || clientId;
-    let reconnectAttempts = 0;
-    const maxReconnectAttempts = 5;
-    const reconnectDelay = 3000; // 3 seconds
-    let socket;
+    // DOM Elements
+    this.bell = document.getElementById('notification-bell');
+    this.badge = document.getElementById('notification-badge');
+    this.dropdown = document.getElementById('notification-dropdown');
+    this.list = document.getElementById('notification-list');
+    this.clearBtn = document.getElementById('notification-clear');
     
-    // Display current user ID
-    currentUserIdElement.textContent = currentUserId;
+    // Sound elements with fallback
+    this.sounds = {
+      message: this.createAudioElement('/static/notif0.mp3'),
+      direct: this.createAudioElement('/static/notif1.mp3'),
+      system: this.createAudioElement('/static/bell.mp3')
+    };
     
-    // Generate unique client ID
-    function generateClientId() {
-      return 'Tameri-user_' + Math.random().toString(36).substr(2, 9);
+    // Initialize
+    this.setupEventListeners();
+    this.checkNotificationPermission();
+  }
+  
+  createAudioElement(src) {
+    const audio = new Audio();
+    audio.src = src;
+    audio.volume = 0.3;
+    audio.preload = 'auto';
+    return audio;
+  }
+  
+  setupEventListeners() {
+    // Bell click to toggle dropdown
+    this.bell.addEventListener('click', (e) => {
+      e.stopPropagation();
+      this.toggleDropdown();
+      this.markAllAsRead();
+    });
+    
+    // Clear all notifications
+    this.clearBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      this.clearAllNotifications();
+    });
+    
+    // Close dropdown when clicking outside
+    document.addEventListener('click', () => {
+      this.dropdown.classList.remove('show');
+    });
+    
+    // Prevent dropdown close when clicking inside
+    this.dropdown.addEventListener('click', (e) => {
+      e.stopPropagation();
+    });
+  }
+  
+  playSound(type) {
+    if (!this.soundEnabled || !this.sounds[type]) return;
+    
+    try {
+      // Clone the audio element to allow multiple rapid plays
+      const audio = this.sounds[type].cloneNode();
+      audio.volume = 0.3;
+      audio.play().catch(e => console.log("Audio playback failed:", e));
+    } catch (e) {
+      console.error("Error playing sound:", e);
+    }
+  }
+  
+  toggleDropdown() {
+    this.dropdown.classList.toggle('show');
+  }
+  
+  addNotification(type, title, message, senderId = null) {
+    const timestamp = new Date();
+    const notification = {
+      id: Date.now(),
+      type,
+      title,
+      message,
+      senderId,
+      timestamp,
+      read: false
+    };
+    
+    this.notifications.unshift(notification);
+    this.unreadCount++;
+    this.updateUI();
+    this.playSound(type);
+    this.showToast(notification);
+    this.showBrowserNotification(notification);
+    
+    // Throttle notifications (max 1 per second)
+    this.lastNotificationTime = Date.now();
+  }
+  
+  updateUI() {
+    // Update badge
+    this.badge.textContent = this.unreadCount > 9 ? '9+' : this.unreadCount;
+    this.badge.classList.toggle('show', this.unreadCount > 0);
+    
+    // Animate bell
+    this.bell.classList.add('ring');
+    setTimeout(() => {
+      this.bell.classList.remove('ring');
+    }, 1000);
+    
+    // Update dropdown list
+    this.renderNotificationList();
+  }
+  
+  renderNotificationList() {
+    if (this.notifications.length === 0) {
+      this.list.innerHTML = '<li class="notification-empty">No notifications yet</li>';
+      return;
     }
     
-    // Get room ID from URL if present
-    function getRoomIdFromUrl() {
-      const path = window.location.pathname.split('/');
-      const roomIndex = path.indexOf('room') + 1;
-      return roomIndex > 0 && path.length > roomIndex ? path[roomIndex] : null;
-    }
+    this.list.innerHTML = this.notifications.map(notif => `
+      <li class="notification-item ${notif.read ? '' : 'unread'}" data-id="${notif.id}">
+        <div class="notification-icon ${notif.type}">
+          <i class="fas ${
+            notif.type === 'message' ? 'fa-comment-dots' : 
+            notif.type === 'direct' ? 'fa-user' : 'fa-info-circle'
+          }"></i>
+        </div>
+        <div class="notification-content">
+          <div class="notification-title">
+            <span>${notif.title}</span>
+            <span class="notification-time">${this.formatTime(notif.timestamp)}</span>
+          </div>
+          <div class="notification-text">${notif.message}</div>
+        </div>
+      </li>
+    `).join('');
     
-    // Get user ID from URL if present
-    function getUserIdFromUrl() {
-      const params = new URLSearchParams(window.location.search);
-      return params.get('user_id');
+    // Add click handlers to notification items
+    document.querySelectorAll('.notification-item').forEach(item => {
+      item.addEventListener('click', (e) => {
+        const id = parseInt(item.dataset.id);
+        this.markAsRead(id);
+      });
+    });
+  }
+  
+  markAsRead(id) {
+    const notification = this.notifications.find(n => n.id === id);
+    if (notification && !notification.read) {
+      notification.read = true;
+      this.unreadCount--;
+      this.updateUI();
     }
+  }
+  
+  markAllAsRead() {
+    this.notifications.forEach(n => n.read = true);
+    this.unreadCount = 0;
+    this.updateUI();
+  }
+  
+  clearAllNotifications() {
+    this.notifications = [];
+    this.unreadCount = 0;
+    this.updateUI();
+  }
+  
+  showToast(notification) {
+    const toast = document.createElement('div');
+    toast.className = `notification-toast show`;
+    toast.innerHTML = `
+      <div class="notification-toast-icon ${notification.type}">
+        <i class="fas ${
+          notification.type === 'message' ? 'fa-comment-dots' : 
+          notification.type === 'direct' ? 'fa-user' : 'fa-info-circle'
+        }"></i>
+      </div>
+      <div class="notification-toast-content">
+        <div class="notification-toast-title">${notification.title}</div>
+        <div class="notification-toast-text">${notification.message}</div>
+      </div>
+      <button class="notification-toast-close">
+        <i class="fas fa-times"></i>
+      </button>
+    `;
     
-    // Check if window is focused
+    document.body.appendChild(toast);
+    
+    // Close button
+    toast.querySelector('.notification-toast-close').addEventListener('click', () => {
+      toast.classList.remove('show');
+      setTimeout(() => {
+        toast.remove();
+      }, 300);
+    });
+    
+    // Auto-remove after 5 seconds
+    setTimeout(() => {
+      toast.classList.remove('show');
+      setTimeout(() => {
+        toast.remove();
+      }, 300);
+    }, 5000);
+  }
+  
+  showBrowserNotification(notification) {
+    if (!this.browserNotificationsAllowed || document.hasFocus()) return;
+    
+    const title = notification.type === 'direct' 
+      ? `New message from ${notification.senderId || 'a user'}`
+      : notification.title;
+    
+    const options = {
+      body: notification.message,
+      icon: '/static/logo.png',
+      tag: 'chat-notification'
+    };
+    
+    new Notification(title, options);
+  }
+  
+  checkNotificationPermission() {
+    if ('Notification' in window) {
+      this.browserNotificationsAllowed = Notification.permission === 'granted';
+    }
+  }
+  
+  requestNotificationPermission() {
+    if ('Notification' in window) {
+      Notification.requestPermission().then(permission => {
+        this.browserNotificationsAllowed = permission === 'granted';
+      });
+    }
+  }
+  
+  formatTime(date) {
+    const now = new Date();
+    const diff = now - date;
+    
+    if (diff < 60000) return 'Just now';
+    if (diff < 3600000) return `${Math.floor(diff / 60000)}m ago`;
+    if (diff < 86400000) return `${Math.floor(diff / 3600000)}h ago`;
+    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  }
+}
+
+// Chat Application (modified to include login)
+class ChatApplication {
+  constructor() {
+    this.currentUserId = null; // Will be set after login
+    this.currentRoomId = "general";
+    this.currentRecipientId = null;
+    this.socket = null;
+    this.users = {};
+    this.isWindowFocused = true;
+    this.isScrolledToBottom = true;
+    this.reconnectAttempts = 0;
+    this.maxReconnectAttempts = 5;
+    this.reconnectDelay = 3000;
+    this.accessToken = null;
+    
+    // Profile pictures configuration
+    this.profilePictures = {
+      default: '/static/logo.png',
+      currentUser: '/static/images/blaise.jpg',
+      otherUsers: {
+        'user1': '/static/logo.png',
+        'user2': '/static/images/blaise.jpg'
+      }
+    };
+    
+    // DOM Elements
+    this.messagesDiv = document.getElementById('messages');
+    this.input = document.getElementById('input');
+    this.sendBtn = document.getElementById('send-btn');
+    this.statusText = document.getElementById('status-text');
+    this.statusIndicator = document.querySelector('.status-indicator');
+    this.currentUserIdElement = document.getElementById('current-user-id');
+    this.userList = document.getElementById('user-list');
+    this.roomList = document.getElementById('room-list');
+    
+    // Initialize
+    this.notificationManager = new NotificationManager();
+    this.setupEventListeners();
+    this.initializeUI();
+    this.showLoginModal();
+  }
+  
+  showLoginModal() {
+    // Create modal HTML
+    const modalHTML = `
+<div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content" style="border-radius: 15px; border: none; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);">
+      <div class="modal-header" style="border-bottom: none; padding-bottom: 0; background: linear-gradient(135deg, #6e8efb, #a777e3); border-radius: 15px 15px 0 0;">
+        <h5 class="modal-title" id="loginModalLabel" style="color: white; font-weight: 600; width: 100%; text-align: center; padding: 1.5rem 0;">Welcome Back!</h5>
+      </div>
+      <div class="modal-body" style="padding: 2rem;">
+        <form id="loginForm">
+          <div class="mb-4">
+            <label for="email" class="form-label" style="font-weight: 500; color: #495057;">Email Address</label>
+            <input type="email" class="form-control" id="email" required 
+                   style="padding: 12px; border-radius: 8px; border: 1px solid #e0e0e0; transition: all 0.3s;"
+                   placeholder="Enter your email">
+            <div class="form-text" style="font-size: 0.8rem; color: #6c757d;">We'll never share your email</div>
+          </div>
+          <div class="mb-4">
+            <label for="password" class="form-label" style="font-weight: 500; color: #495057;">Password</label>
+            <input type="password" class="form-control" id="password" required 
+                   style="padding: 12px; border-radius: 8px; border: 1px solid #e0e0e0;"
+                   placeholder="Enter your password">
+            
+          </div>
+          <div class="d-grid gap-2 mt-4">
+            <button type="submit" class="btn btn-primary" 
+                    style="padding: 12px; border-radius: 8px; font-weight: 600; background: linear-gradient(135deg, #6e8efb, #a777e3); border: none; 
+                           box-shadow: 0 4px 15px rgba(110, 142, 251, 0.4); transition: all 0.3s;">
+              Login to Your Account
+            </button>
+          </div>
+          
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+    
+    // Add modal to body
+    document.body.insertAdjacentHTML('beforeend', modalHTML);
+    
+    // Initialize Bootstrap modal
+    const loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
+    loginModal.show();
+    
+    // Handle form submission
+    document.getElementById('loginForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      this.handleLogin();
+    });
+  }
+  
+  async handleLogin() {
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    const httpProtocol = window.location.protocol === 'https:' ? 'https://' : 'http://';
+    const apiUrl = httpProtocol + window.location.host + '/api/login';
+    try {
+      const response = await fetch(apiUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          email: email,
+          password: password
+        })
+      });
+      
+      if (!response.ok) {
+        throw new Error('Login failed');
+      }
+      
+      const data = await response.json();
+      
+      // Store the access token
+      this.accessToken = data.access_token;
+      
+      // Set the current user ID to the email (or you can use data.user.id if you prefer)
+      this.currentUserId = data.user.fullName;
+      
+      // Update UI
+      this.currentUserIdElement.textContent = this.currentUserId;
+      
+      // Close the modal
+      const loginModal = bootstrap.Modal.getInstance(document.getElementById('loginModal'));
+      loginModal.hide();
+      
+      // Connect to WebSocket
+      this.connectWebSocket();
+      
+      // Show welcome message
+      this.notificationManager.addNotification(
+        'system',
+        'Welcome!',
+        `You are now logged in as ${this.currentUserId}`,
+        'system'
+      );
+      
+    } catch (error) {
+      console.error("Login error:", error);
+      alert("Login failed. Please check your credentials and try again.");
+    }
+  }
+  
+  generateClientId() {
+    return 'user_' + Math.random().toString(36).substr(2, 8);
+  }
+  
+  getProfilePicture(userId) {
+    if (userId === this.currentUserId) {
+      return this.profilePictures.currentUser;
+    }
+    return this.profilePictures.otherUsers[userId] || this.profilePictures.default;
+  }
+  
+  initializeUI() {
+    // Set up room click handlers
+    document.querySelectorAll('.room-item').forEach(item => {
+      item.addEventListener('click', () => {
+        document.querySelectorAll('.room-item').forEach(i => i.classList.remove('active'));
+        item.classList.add('active');
+        this.currentRoomId = item.dataset.room;
+        this.currentRecipientId = null;
+        this.addSystemMessage(`Joined room: ${this.currentRoomId}`);
+        this.connectWebSocket();
+      });
+    });
+  }
+  
+  setupEventListeners() {
+    // Window focus/blur
     window.addEventListener('focus', () => {
-      isWindowFocused = true;
-      resetNotifications();
+      this.isWindowFocused = true;
+      this.notificationManager.markAllAsRead();
     });
     
     window.addEventListener('blur', () => {
-      isWindowFocused = false;
+      this.isWindowFocused = false;
     });
     
-    // Check scroll position
-    messagesDiv.addEventListener('scroll', () => {
-      const { scrollTop, scrollHeight, clientHeight } = messagesDiv;
-      isScrolledToBottom = scrollHeight - scrollTop <= clientHeight + 5;
+    // Message scroll
+    this.messagesDiv.addEventListener('scroll', () => {
+      const { scrollTop, scrollHeight, clientHeight } = this.messagesDiv;
+      this.isScrolledToBottom = scrollHeight - scrollTop <= clientHeight + 5;
     });
     
-    // Notification bell click handler
-    notificationBell.addEventListener('click', () => {
-      resetNotifications();
-      scrollToBottom();
-    });
-    
-    function resetNotifications() {
-      unreadMessages = 0;
-      updateNotificationBadge();
-      notificationBell.classList.remove('active');
-    }
-    
-    function updateNotificationBadge() {
-      notificationBadge.textContent = unreadMessages;
-      if (unreadMessages > 0) {
-        notificationBadge.classList.add('show');
-      } else {
-        notificationBadge.classList.remove('show');
-      }
-    }
-    
-    function triggerNotification(isOwnMessage = false) {
-      if (!isOwnMessage && (!isWindowFocused || !isScrolledToBottom)) {
-        unreadMessages++;
-        updateNotificationBadge();
-        notificationBell.classList.add('active');
-        
-        // Remove the animation class after the animation completes
-        setTimeout(() => {
-          notificationBell.classList.remove('active');
-        }, 500);
-        
-        // Notification sound
-        playNotificationSound();
-      }
-    }
-    
-    function playNotificationSound() {
-      const audio = new Audio('data:audio/wav;base64,UklGRl9vT19XQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YU...');
-      audio.volume = 0.3;
-      audio.play().catch(e => console.log("Audio playback failed:", e));
-    }
-    
-    function connectWebSocket() {
-      socket = new WebSocket(`wss://study.tameri.tech/api/ws/${roomId}/${currentUserId}`);
-      
-      socket.onopen = () => {
-        console.log("WebSocket connection opened.");
-        statusText.textContent = "Connected";
-        statusIndicator.className = "status-indicator connected";
-        sendBtn.disabled = false;
-        reconnectAttempts = 0;
-        
-        // Add connection message
-        addSystemMessage(`Connected to room ${roomId} as ${currentUserId}`);
-      };
-      
-      socket.onclose = (event) => {
-        console.log("WebSocket connection closed.", event);
-        statusText.textContent = "Disconnected";
-        statusIndicator.className = "status-indicator disconnected";
-        sendBtn.disabled = true;
-        
-        // Add disconnection message
-        addSystemMessage("Disconnected from WebSocket server");
-        
-        // Attempt to reconnect if the closure was unexpected
-        if (event.code !== 1000 && reconnectAttempts < maxReconnectAttempts) {
-          reconnectAttempts++;
-          const delay = reconnectAttempts * reconnectDelay;
-          console.log(`Attempting to reconnect in ${delay/1000} seconds... (attempt ${reconnectAttempts} of ${maxReconnectAttempts})`);
-          addSystemMessage(`Attempting to reconnect in ${delay/1000} seconds...`);
-          setTimeout(connectWebSocket, delay);
-        }
-      };
-      
-      socket.onerror = (error) => {
-        console.error("WebSocket error:", error);
-        addSystemMessage("WebSocket error occurred", "error");
-      };
-      
-      socket.onmessage = (event) => {
-        const data = event.data;
-        try {
-          const parsedData = JSON.parse(data);
-          
-          // Check if message is from this client
-          const isOwnMessage = parsedData.user_id === currentUserId;
-          
-          switch (parsedData.type) {
-            case "message":
-              addMessage(
-                parsedData.content || parsedData.message, 
-                parsedData.timestamp, 
-                isOwnMessage ? "sent" : "received",
-                parsedData.user_id
-              );
-              triggerNotification(isOwnMessage);
-              break;
-              
-            case "system":
-              addSystemMessage(parsedData.content);
-              break;
-              
-            default:
-              addReceivedMessage(parsedData.content || data, parsedData.timestamp, parsedData.user_id);
-              triggerNotification(isOwnMessage);
-          }
-        } catch (e) {
-          // If not JSON, treat as plain text
-          addReceivedMessage(data);
-          triggerNotification();
-        }
-      };
-    }
-    
-    function addReceivedMessage(content, timestamp, senderId) {
-      addMessage(content, timestamp, "received", senderId);
-    }
-    
-    function addSentMessage(content, timestamp) {
-      addMessage(content, timestamp, "sent", currentUserId);
-    }
-    
-    function addSystemMessage(content, type = "info") {
-      const messageDiv = document.createElement("div");
-      messageDiv.className = `system-message text-center text-muted small my-2`;
-      messageDiv.textContent = content;
-      
-      if (type === "error") {
-        messageDiv.className += " text-danger";
-      }
-      
-      messagesDiv.appendChild(messageDiv);
-      scrollToBottom();
-    }
-    
-    function addMessage(content, timestamp, type, senderId) {
-      const messageContainer = document.createElement("div");
-      messageContainer.className = `message message-${type}`;
-      
-      const messageContent = document.createElement("div");
-      messageContent.className = "message-content";
-      
-      const messageBubble = document.createElement("div");
-      messageBubble.className = `message-bubble message-bubble-${type}`;
-      
-      // Add sender ID to message if it's a received message
-      if (type === "received") {
-        const senderElement = document.createElement("div");
-        senderElement.className = "message-sender small text-muted mb-1";
-        senderElement.textContent = senderId || "Unknown";
-        messageBubble.appendChild(senderElement);
-      }
-      
-      const contentElement = document.createElement("div");
-      contentElement.textContent = content;
-      messageBubble.appendChild(contentElement);
-      
-      const messageTime = document.createElement("div");
-      messageTime.className = "message-time";
-      messageTime.textContent = formatTimestamp(timestamp);
-      
-      messageContent.appendChild(messageBubble);
-      messageContent.appendChild(messageTime);
-      messageContainer.appendChild(messageContent);
-      
-      messagesDiv.appendChild(messageContainer);
-      
-      if (isScrolledToBottom) {
-        scrollToBottom();
-      }
-    }
-    
-    function formatTimestamp(timestamp) {
-      if (!timestamp) {
-        timestamp = new Date();
-      } else if (typeof timestamp === 'string' || typeof timestamp === 'number') {
-        timestamp = new Date(timestamp);
-      }
-      
-      return timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-    }
-    
-    function scrollToBottom() {
-      messagesDiv.scrollTop = messagesDiv.scrollHeight;
-    }
-    
-    // Send message function
-    function sendMessage() {
-      const message = input.value.trim();
-      if (message && socket.readyState === WebSocket.OPEN) {
-        // Create a message object with timestamp and user ID
-        const messageObj = {
-          type: "message",
-          content: message,
-          timestamp: new Date().toISOString(),
-          user_id: currentUserId
-        };
-        
-        socket.send(JSON.stringify(messageObj));
-        addSentMessage(message, new Date());
-        input.value = "";
-      }
-    }
-    
-    // Allow sending message with Enter key
-    input.addEventListener("keypress", (e) => {
+    // Send message on Enter
+    this.input.addEventListener("keypress", (e) => {
       if (e.key === "Enter") {
-        sendMessage();
+        this.sendMessage();
       }
     });
     
     // Enable/disable send button based on input
-    input.addEventListener("input", () => {
-      sendBtn.disabled = input.value.trim() === "" || !socket || socket.readyState !== WebSocket.OPEN;
+    this.input.addEventListener("input", () => {
+      this.sendBtn.disabled = this.input.value.trim() === "" || 
+                            !this.socket || 
+                            this.socket.readyState !== WebSocket.OPEN;
     });
+  }
+  
+  connectWebSocket() {
+    // Close existing connection if any
+    if (this.socket) {
+      this.socket.close();
+    }
     
-    // Initial connection
-    connectWebSocket();
+    // Connect to WebSocket with authorization header if token exists
+    const wsProtocol = window.location.protocol === 'https:' ? 'wss://' : 'ws://';
+    const wsUrl = wsProtocol + window.location.host + '/api/chat/ws/' + 
+                 `${this.currentUserId}?room_id=${this.currentRoomId}`;
+    
+    this.socket = new WebSocket(wsUrl);
+    
+    // Add authorization header if token exists
+    if (this.accessToken) {
+      this.socket.onopen = () => {
+        // Send the auth token as the first message
+        this.socket.send(JSON.stringify({
+          type: "auth",
+          token: this.accessToken
+        }));
+      };
+    }
+    
+    this.socket.onopen = () => {
+      console.log("WebSocket connection opened.");
+      this.statusText.textContent = "Connected";
+      this.statusIndicator.className = "status-indicator connected";
+      this.sendBtn.disabled = false;
+      this.reconnectAttempts = 0;
+      
+      this.addSystemMessage(`Connected as ${this.currentUserId}`);
+      this.sendPresenceUpdate(true);
+    };
+    
+    this.socket.onclose = (event) => {
+      console.log("WebSocket connection closed.", event);
+      this.statusText.textContent = "Disconnected";
+      this.statusIndicator.className = "status-indicator disconnected";
+      this.sendBtn.disabled = true;
+      
+      this.addSystemMessage("Disconnected from WebSocket server");
+      
+      // Attempt to reconnect after a delay
+      if (this.reconnectAttempts < this.maxReconnectAttempts) {
+        this.reconnectAttempts++;
+        setTimeout(() => {
+          this.connectWebSocket();
+        }, this.reconnectDelay);
+      }
+    };
+    
+    this.socket.onerror = (error) => {
+      console.error("WebSocket error:", error);
+      this.addSystemMessage("WebSocket error occurred", "error");
+    };
+    
+    this.socket.onmessage = (event) => {
+      try {
+        const message = JSON.parse(event.data);
+        this.handleIncomingMessage(message);
+      } catch (e) {
+        console.error("Error parsing message:", e);
+        this.addReceivedMessage(event.data);
+      }
+    };
+  }
+  
+  handleIncomingMessage(message) {
+    const isOwnMessage = message.sender_id === this.currentUserId;
+    
+    switch (message.type) {
+      case "text":
+        this.handleTextMessage(message, isOwnMessage);
+        break;
+        
+      case "system":
+        this.handleSystemMessage(message);
+        break;
+        
+      case "notification":
+        this.handleNotificationMessage(message);
+        break;
+        
+      case "presence":
+        this.handlePresenceMessage(message);
+        break;
+        
+      default:
+        console.log("Unknown message type:", message);
+    }
+  }
+  
+  handleTextMessage(message, isOwnMessage) {
+    const isDirectMessage = !!message.recipient_id;
+    const shouldDisplay = isOwnMessage || 
+                        (!isDirectMessage && message.room_id === this.currentRoomId) ||
+                        (isDirectMessage && (message.sender_id === this.currentUserId || 
+                                            message.recipient_id === this.currentUserId));
+    
+    if (shouldDisplay) {
+      this.addMessage(
+        message.content,
+        message.timestamp,
+        isOwnMessage ? "sent" : "received",
+        message.sender_id
+      );
+      
+      if (!isOwnMessage && (!this.isWindowFocused || !this.isScrolledToBottom)) {
+        const notificationType = isDirectMessage ? 'direct' : 'message';
+        const title = isDirectMessage 
+          ? `Message from ${message.sender_id}`
+          : `New message in ${message.room_id || 'chat'}`;
+        
+        this.notificationManager.addNotification(
+          notificationType,
+          title,
+          message.content,
+          message.sender_id
+        );
+      }
+    }
+  }
+  
+  handleSystemMessage(message) {
+    this.addSystemMessage(message.content);
+    
+    if (message.priority === 'high') {
+      this.notificationManager.addNotification(
+        'system',
+        'System Notification',
+        message.content
+      );
+    }
+  }
+  
+  handleNotificationMessage(message) {
+    if (!message.recipient_id || message.recipient_id === this.currentUserId) {
+      this.addNotificationMessage(message.content);
+      this.notificationManager.addNotification(
+        'system',
+        message.title || 'Notification',
+        message.content
+      );
+    }
+  }
+  
+  handlePresenceMessage(message) {
+    this.users[message.sender_id] = {
+      online: message.content.includes("online"),
+      lastSeen: message.timestamp
+    };
+    
+    this.updateUserList();
+    
+    if (message.room_id === this.currentRoomId || 
+        (message.recipient_id && message.recipient_id === this.currentUserId)) {
+      this.addPresenceMessage(message.content);
+    }
+  }
+  
+  updateUserList() {
+    this.userList.innerHTML = '';
+    
+    if (Object.keys(this.users).length === 0) {
+      this.userList.innerHTML = '<li class="text-muted small p-2">No other users online</li>';
+      return;
+    }
+    
+    Object.entries(this.users).forEach(([userId, userData]) => {
+      if (userId === this.currentUserId) return;
+      
+      const userItem = document.createElement('li');
+      userItem.className = 'user-item';
+      userItem.dataset.userId = userId;
+      
+      const profilePic = document.createElement('img');
+      profilePic.className = 'profile-pic';
+      profilePic.src = this.getProfilePicture(userId);
+      profilePic.alt = `${userId}'s profile`;
+      
+      userItem.innerHTML = `
+        <span class="user-presence ${userData.online ? 'online' : 'offline'}"></span>
+      `;
+      userItem.appendChild(profilePic);
+      userItem.innerHTML += `
+        <span class="user-name">${userId}</span>
+        ${!userData.online ? `<span class="user-last-seen">(${this.formatTime(userData.lastSeen)})</span>` : ''}
+      `;
+      
+      userItem.addEventListener('click', () => {
+        document.querySelectorAll('.user-item').forEach(i => i.classList.remove('active'));
+        userItem.classList.add('active');
+        this.currentRecipientId = userId;
+        this.addSystemMessage(`Started private chat with ${userId}`);
+      });
+      
+      this.userList.appendChild(userItem);
+    });
+  }
+  
+  sendMessage() {
+    const messageContent = this.input.value.trim();
+    if (messageContent && this.socket.readyState === WebSocket.OPEN) {
+      const message = {
+        type: "text",
+        content: messageContent,
+        sender_id: this.currentUserId,
+        recipient_id: this.currentRecipientId,
+        room_id: this.currentRecipientId ? null : this.currentRoomId,
+        timestamp: new Date().toISOString()
+      };
+      
+      this.socket.send(JSON.stringify(message));
+      this.input.value = "";
+      
+      this.addMessage(
+        messageContent,
+        message.timestamp,
+        "sent",
+        this.currentUserId
+      );
+    }
+  }
+  
+  sendPresenceUpdate(isOnline) {
+    if (this.socket && this.socket.readyState === WebSocket.OPEN) {
+      const message = {
+        type: "presence",
+        content: `${this.currentUserId} is ${isOnline ? 'online' : 'offline'}`,
+        sender_id: this.currentUserId,
+        room_id: this.currentRoomId,
+        timestamp: new Date().toISOString()
+      };
+      this.socket.send(JSON.stringify(message));
+    }
+  }
+  
+  addMessage(content, timestamp, type, senderId) {
+    const messageContainer = document.createElement("div");
+    messageContainer.className = `message message-${type}`;
+    
+    const messageContent = document.createElement("div");
+    messageContent.className = "message-content";
+    
+    const messageBubble = document.createElement("div");
+    messageBubble.className = `message-bubble message-bubble-${type}`;
+    
+    if (type === "received") {
+      const messageHeader = document.createElement("div");
+      messageHeader.className = "message-header";
+      
+      const profilePic = document.createElement("img");
+      profilePic.className = "profile-pic";
+      profilePic.src = this.getProfilePicture(senderId);
+      profilePic.alt = `${senderId}'s profile`;
+      
+      const senderElement = document.createElement("div");
+      senderElement.className = "message-sender";
+      senderElement.textContent = senderId || "Unknown";
+      
+      messageHeader.appendChild(profilePic);
+      messageHeader.appendChild(senderElement);
+      messageBubble.appendChild(messageHeader);
+    }
+    
+    const contentElement = document.createElement("div");
+    contentElement.textContent = content;
+    messageBubble.appendChild(contentElement);
+    
+    const messageTime = document.createElement("div");
+    messageTime.className = "message-time";
+    messageTime.textContent = this.formatTime(timestamp);
+    
+    messageContent.appendChild(messageBubble);
+    messageContent.appendChild(messageTime);
+    messageContainer.appendChild(messageContent);
+    
+    this.messagesDiv.appendChild(messageContainer);
+    
+    if (this.isScrolledToBottom) {
+      this.scrollToBottom();
+    }
+  }
+  
+  addSystemMessage(content, type = "info") {
+    const messageDiv = document.createElement("div");
+    messageDiv.className = `system-message`;
+    messageDiv.textContent = content;
+    
+    if (type === "error") {
+      messageDiv.className += " text-danger";
+    }
+    
+    this.messagesDiv.appendChild(messageDiv);
+    this.scrollToBottom();
+  }
+  
+  addPresenceMessage(content) {
+    const messageDiv = document.createElement("div");
+    messageDiv.className = `presence-message`;
+    messageDiv.textContent = content;
+    this.messagesDiv.appendChild(messageDiv);
+    this.scrollToBottom();
+  }
+  
+  addNotificationMessage(content) {
+    const messageDiv = document.createElement("div");
+    messageDiv.className = `notification-message`;
+    messageDiv.textContent = content;
+    this.messagesDiv.appendChild(messageDiv);
+    this.scrollToBottom();
+  }
+  
+  scrollToBottom() {
+    this.messagesDiv.scrollTop = this.messagesDiv.scrollHeight;
+  }
+  
+  formatTime(timestamp) {
+    if (!timestamp) return new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    
+    const date = typeof timestamp === 'string' ? new Date(timestamp) : timestamp;
+    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  }
+}
+
+// Initialize the chat application
+document.addEventListener('DOMContentLoaded', () => {
+  const chatApp = new ChatApplication();
+  window.chatApp = chatApp;
+});
   </script>
 </body>
 </html>
