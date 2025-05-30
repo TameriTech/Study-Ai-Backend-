@@ -86,6 +86,7 @@
     <!-- Facebook SDK -->
     <script>
         // Configuration - Replace with your ngrok URL
+        const BACKEND_URL = 'https://study.tameri.tech';
         const FB_APP_ID = '1189867122416318';
         
         // Initialize Facebook SDK
@@ -142,11 +143,10 @@
             const statusElement = document.getElementById('statusMessage');
             statusElement.textContent = "Authenticating with server...";
             statusElement.className = "status";
-            const httpProtocol = window.location.protocol === 'https:' ? 'https://' : 'http://';
-            const API_BASE_URL = httpProtocol + window.location.host + "/api/login/facebook";
+            
             try {
                 // Send token to backend
-                const response = await fetch(API_BASE_URL, {
+                const response = await fetch(`/api/login/facebook`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

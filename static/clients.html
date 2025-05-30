@@ -743,7 +743,7 @@
         </div>
         
         <div class="sidebar-section">
-          <div class="sidebar-title">Active Users</div>
+          <div class="sidebar-title">Active</div>
           <ul class="user-list" id="user-list">
             <!-- Users will be populated here -->
           </ul>
@@ -1060,7 +1060,7 @@ class ChatApplication {
   
   showLoginModal() {
     // Create modal HTML
-    const modalHTML = `
+ const modalHTML = `
 <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content" style="border-radius: 15px; border: none; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);">
@@ -1096,8 +1096,7 @@ class ChatApplication {
     </div>
   </div>
 </div>
-`;
-    
+`;  
     // Add modal to body
     document.body.insertAdjacentHTML('beforeend', modalHTML);
     
@@ -1115,10 +1114,9 @@ class ChatApplication {
   async handleLogin() {
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
-    const httpProtocol = window.location.protocol === 'https:' ? 'https://' : 'http://';
-    const apiUrl = httpProtocol + window.location.host + '/api/login';
+    
     try {
-      const response = await fetch(apiUrl, {
+      const response = await fetch("/api/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"

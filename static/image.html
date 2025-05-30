@@ -378,10 +378,9 @@
                     body: raw,
                     redirect: "follow"
                 };
-                const httpProtocol = window.location.protocol === 'https:' ? 'https://' : 'http://';
-                const apiUrl = httpProtocol + window.location.host + '/api/chat/generate-image';
+                
                 // Make API call
-                fetch(apiUrl, requestOptions)
+                fetch("/api/chat/generate-image", requestOptions)
                     .then(response => {
                         if (!response.ok) {
                             throw new Error('Network response was not ok');
