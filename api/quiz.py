@@ -59,5 +59,5 @@ def get_quiz(quiz_id: int, db: Session = Depends(get_db)):
 def get_grouped_quizzes_for_user(user_id: int, db: Session = Depends(get_db)):
     grouped = get_user_quizzes_grouped_by_course(user_id, db)
     if not grouped:
-        raise HTTPException(status_code=404, detail="No quizzes found for this user.")
+        raise HTTPException(status_code=200, detail="No quizzes found for this user.")
     return grouped
