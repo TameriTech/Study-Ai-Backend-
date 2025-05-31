@@ -702,6 +702,319 @@
         max-width: 85%;
       }
     }
+    /* Responsive Styles for Handheld Devices */
+@media (max-width: 1200px) {
+  .chat-container {
+    margin: 0;
+    height: 100vh;
+    border-radius: 0;
+  }
+  
+  .sidebar {
+    transform: translateX(-100%);
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    z-index: 1000;
+    transition: transform 0.3s ease;
+    box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+  }
+  
+  .sidebar.show {
+    transform: translateX(0);
+  }
+  
+  .notification-dropdown {
+    width: 280px;
+    right: -10px;
+  }
+}
+
+@media (max-width: 992px) {
+  .chat-header h2 {
+    font-size: 1.3rem;
+  }
+  
+  .connection-status {
+    font-size: 0.8rem;
+    padding: 3px 8px;
+  }
+  
+  .message-content {
+    max-width: 80%;
+  }
+}
+
+@media (max-width: 768px) {
+  .chat-header {
+    padding: 1rem;
+  }
+  
+  .chat-header h2 {
+    font-size: 1.2rem;
+  }
+  
+  .header-controls {
+    gap: 10px;
+    margin-left: auto; /* Push controls to the right */
+  }
+  
+  .notification-bell {
+    width: 36px;
+    height: 36px;
+    margin-left: 0; /* Remove any negative margin */
+  }
+  
+  .chat-messages {
+    padding: 1rem;
+  }
+  
+  .message-bubble {
+    padding: 10px 14px;
+  }
+  
+  .chat-input-container {
+    padding: 0.75rem;
+  }
+  
+  .chat-input {
+    padding: 10px 14px;
+  }
+  
+  .send-btn {
+    padding: 0 15px;
+  }
+}
+
+@media (max-width: 576px) {
+  .chat-header {
+    flex-direction: row; /* Keep horizontal layout */
+    align-items: center; /* Center vertically */
+    padding: 0.75rem 1rem;
+  }
+  
+  .header-controls {
+    width: auto; /* Don't force full width */
+    margin-top: 0; /* Remove extra margin */
+    padding-top: 0; /* Remove extra padding */
+    border-top: none; /* Remove border */
+    justify-content: flex-end; /* Align items to the right */
+    margin-left: auto; /* Push controls to the right */
+  }
+  
+  .connection-status {
+    font-size: 0.75rem;
+    margin-right: auto; /* Push status to the left */
+  }
+  
+  .sidebar {
+    width: 85%;
+  }
+  
+  .message-content {
+    max-width: 90%;
+  }
+  
+  .message-bubble {
+    font-size: 0.9rem;
+  }
+  
+  .message-sender {
+    font-size: 0.8rem;
+  }
+  
+  .message-time {
+    font-size: 0.7rem;
+  }
+  
+  .notification-dropdown {
+    width: 260px;
+    max-height: 60vh;
+  }
+}
+
+@media (max-width: 480px) {
+  .chat-header h2 {
+    font-size: 1.1rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 150px;
+  }
+  
+  .chat-messages {
+    padding: 0.75rem;
+  }
+  
+  .message {
+    margin-bottom: 12px;
+  }
+  
+  .profile-pic {
+    width: 32px;
+    height: 32px;
+  }
+  
+  .message-content {
+    max-width: 85%;
+  }
+  
+  .chat-input {
+    font-size: 0.9rem;
+  }
+  
+  .send-btn {
+    min-width: 40px;
+    padding: 0 12px;
+  }
+  
+  .send-btn i {
+    font-size: 0.9rem;
+  }
+  
+  .notification-dropdown {
+    width: 240px;
+  }
+}
+
+@media (max-width: 400px) {
+  .header-controls {
+    gap: 8px;
+  }
+  
+  .connection-status {
+    display: flex; /* Keep visible */
+    padding: 2px 6px;
+  }
+  
+  .notification-bell {
+    margin-left: 0;
+  }
+}
+
+@media (max-width: 360px) {
+  .chat-header h2 {
+    font-size: 1rem;
+    max-width: 120px;
+  }
+  
+  .connection-status {
+    font-size: 0.7rem;
+  }
+  
+  .message-content {
+    max-width: 82%;
+  }
+  
+  .message-bubble {
+    padding: 8px 12px;
+    font-size: 0.85rem;
+  }
+  
+  .chat-input {
+    padding: 8px 12px;
+    font-size: 0.85rem;
+  }
+  
+  .notification-dropdown {
+    width: 220px;
+    right: -20px;
+  }
+}
+
+/* Mobile-specific enhancements */
+@media (hover: none) and (pointer: coarse) {
+  .chat-input {
+    font-size: 16px; /* Prevent iOS zoom on focus */
+  }
+  
+  .room-item, .user-item {
+    padding: 0.75rem;
+  }
+  
+  .send-btn {
+    padding: 0 1rem;
+  }
+  
+  /* Larger tap targets for mobile */
+  .notification-bell {
+    width: 44px;
+    height: 44px;
+  }
+  
+  .notification-bell i {
+    font-size: 1.3rem;
+  }
+}
+
+/* Fix for Huawei P30 and similar devices */
+@media (max-width: 400px) and (min-height: 700px) {
+  .header-controls {
+    position: static;
+    transform: none;
+  }
+  
+  .notification-bell {
+    position: relative;
+    right: 0;
+  }
+}
+
+/* Foldable devices support */
+@media (max-width: 280px) {
+  .chat-header h2 {
+    font-size: 0.9rem;
+    max-width: 100px;
+  }
+  
+  .header-controls {
+    flex-wrap: nowrap;
+  }
+  
+  .connection-status {
+    order: 0;
+    margin-top: 0;
+  }
+  
+  .message-content {
+    max-width: 78%;
+  }
+  
+  .chat-input {
+    font-size: 0.8rem;
+  }
+}
+
+/* Tablet portrait mode */
+@media (min-width: 768px) and (max-width: 1024px) and (orientation: portrait) {
+  .chat-container {
+    height: 100vh;
+  }
+  
+  .sidebar {
+    width: 220px;
+  }
+  
+  .message-content {
+    max-width: 75%;
+  }
+}
+
+/* Tablet landscape mode */
+@media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
+  .chat-container {
+    height: 100vh;
+  }
+  
+  .sidebar {
+    width: 200px;
+  }
+  
+  .chat-messages {
+    padding: 1rem;
+  }
+}
   </style>
 </head>
 <body>
