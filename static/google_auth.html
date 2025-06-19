@@ -57,7 +57,7 @@
 
     <script>
         // Your backend API base URL
-        const API_BASE_URL = 'https://study.tameri.tech';
+        const API_BASE_URL = 'http://127.0.0.1:8000/';
         // https://study.tameri.tech/
         // Load the Google API client library
         function loadGoogleAPI() {
@@ -72,7 +72,7 @@
         // Initialize Google Sign-In
         function initializeGoogleSignIn() {
             window.google.accounts.id.initialize({
-                client_id: '32030241148-thk4vl05a8h8c47sho8glfun4353il4c.apps.googleusercontent.com',
+                client_id: '117771072114-2tm3ecj8ct4k1jqc530t9uqisqo8909e.apps.googleusercontent.com',
                 callback: handleGoogleSignIn
             });
             

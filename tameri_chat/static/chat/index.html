@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tameri Chat - Test Interface</title>
+    <link rel="icon" href="/tameri_chat/static/chat/files/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="app-container">
+        <!-- Login Panel -->
+        <div class="login-panel" id="loginPanel">
+            <h1>Tameri Tech Chat</h1>
+            <div class="user-selection">
+                <div class="user-list" id="userList">
+                </div>
+                <div class="register-section">
+                  <button id="registerBtn" class="register-button">Create Account</button>
+                </div>
+            </div>
+        </div>
+        <div class="password-modal" id="passwordModal" style="display: none;">
+            <div class="modal-content">
+                <h2>Enter Your Credential:
+                    <span id="selectedUsername" style="
+            font-size: 1.5rem; 
+            font-family: Georgia, 'Times New Roman', Times, serif; 
+            background: linear-gradient(to right, #0077ffbb, #ff7b00d3);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        "></span>
+                </h2>
+                <input type="password" id="passwordInput" placeholder="Password">
+                <div class="modal-buttons">
+                    <button id="cancelPasswordBtn">Cancel</button>
+                    <button id="submitPasswordBtn">Submit</button>
+                </div>
+            </div>
+        </div>
+        <div class="register-modal" id="registerModal">
+    <div class="modal-content">
+        <h2>New Tameri User Account</h2>
+        <input type="text" id="registerUsername" placeholder="Username">
+        <input type="text" id="registerName" placeholder="Display Name">
+        <div class="modal-buttons">
+            <button id="cancelRegisterBtn">Cancel</button>
+            <button id="submitRegisterBtn">Register</button>
+        </div>
+        <div id="registerError" class="error-message"></div>
+    </div>
+</div>
+        <!-- Add this inside the main-chat div -->
+
+        <!-- Main Chat Interface (hidden until login) -->
+        <div class="chat-interface" id="chatInterface" style="display: none;">
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <div class="user-profile">
+                    <img id="userAvatar" src="" alt="User Avatar">
+                    <div>
+                        <h3 id="usernameDisplay"></h3>
+                        <small id="userStatus">Offline</small>
+                    </div>
+                </div>
+
+                <div class="group-actions">
+                    <button id="createGroupBtn">Create Group</button>
+                    <input type="text" id="groupSearch" placeholder="Search groups...">
+                </div>
+
+                <div class="group-list" id="groupList">
+                    <!-- Groups will be populated here -->
+                     <!-- In your sidebar where groups are listed -->
+         </div>
+            </div>
+            <!-- Replace the existing home-screen div with this enhanced version -->
+            <div class="home-screen" id="homeScreen" style="display: none;">
+                <div class="home-content">
+                    <div class="logo-animation">
+                        <img src="/tameri_chat/static/chat/files/logo.png" alt="Tameri Logo" class="home-logo">
+                        <div class="pulse-circle"></div>
+                        <div class="pulse-circle delay-1"></div>
+                        <div class="pulse-circle delay-2"></div>
+                    </div>
+
+                    <h2 class="typing-home">Welcome to Tameri Chat</h2>
+                    <p class="subtitle">Connecting hearts, empowering futures</p>
+
+                    <div class="mission-statement">
+                        <p>As part of Tameri Tech, we're building bridges for orphanages worldwide to access education
+                            and grants through technology.</p>
+                    </div>
+
+                    <div class="home-features">
+                        <div class="feature-card" data-aos="fade-up">
+                            <div class="feature-icon">
+                                <i class="fas fa-graduation-cap"></i>
+                            </div>
+                            <h3>Tutoring Network</h3>
+                            <p>Connect with mentors and educators worldwide</p>
+                        </div>
+
+                        <div class="feature-card" data-aos="fade-up" data-aos-delay="100">
+                            <div class="feature-icon">
+                                <i class="fas fa-hands-helping"></i>
+                            </div>
+                            <h3>Grant Access</h3>
+                            <p>Direct access to educational grants and funding</p>
+                        </div>
+
+                        <div class="feature-card" data-aos="fade-up" data-aos-delay="200">
+                            <div class="feature-icon">
+                                <i class="fas fa-globe-africa"></i>
+                            </div>
+                            <h3>Global Community</h3>
+                            <p>Join a network of supporters and beneficiaries</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="floating-orphans">
+                    <div class="floating-icon" style="left: 10%; animation-delay: 0s;">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <div class="floating-icon" style="left: 30%; animation-delay: 1s;">
+                        <i class="fas fa-laptop"></i>
+                    </div>
+                    <div class="floating-icon" style="left: 50%; animation-delay: 2s;">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <div class="floating-icon" style="left: 70%; animation-delay: 3s;">
+                        <i class="fas fa-hands-helping"></i>
+                    </div>
+                    <div class="floating-icon" style="left: 90%; animation-delay: 4s;">
+                        <i class="fas fa-globe"></i>
+                    </div>
+                </div>
+            </div>
+            <!-- Main Chat Area -->
+            <div class="main-chat" id="main_chat">
+                <div class="chat-header">
+                    <h2 id="currentGroupName">Select a group</h2>
+                    <div class="group-members" id="groupMembers">
+                        <!-- Online members will be shown here -->
+                    </div>
+                </div>
+
+                <div class="message-container" id="messageContainer">
+                    <div class="messages" id="messages">
+                        <!-- Messages will appear here -->
+                         <div id="recordingIndicators" class="recording-indicators-container" style="display: none;"></div>
+                    </div>
+
+                    <div class="message-input">
+                        <button id="emojiBtn" class="input-button">
+                            <i class="far fa-smile"></i>
+                        </button>
+                        <div class="input-container">
+                            <textarea id="messageInput" placeholder="Type a message..." rows="1" contenteditable="true"></textarea>
+                            <!-- Add this after the textarea in message-input -->
+                            <button id="recordBtn" class="voice-button" title="Record Voice Message">
+                                <i class="fas fa-microphone"></i>
+                            </button>
+                            <div id="recordingIndicator" style="display: none;">
+                                <span class="recording-dot"></span>
+                                Recording...
+                                <button id="stopRecordingBtn">Stop</button>
+                            </div>
+                        </div>
+                        <button id="sendBtn" class="send-button">Send</button>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Right Panel (for message actions) -->
+            <div class="pin-panel" id="rightPanel" style="display: none;">
+                <div class="pinned-messages" id="pinnedMessages">
+                    <h3>Pinned Messages</h3>
+                    <div class="pinned-list"></div>
+                </div>
+                <div class="message-action-trigger"></div>
+                <div class="message-actions" id="messageActions">
+                    <!-- Message actions will appear here when a message is selected -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="notification-container" style="display: none;">
+        <div id="notification-bell" class="notification-bell">
+            <i class="fas fa-bell"></i>
+            <span id="notification-badge" class="notification-badge"></span>
+        </div>
+
+        <div id="notification-dropdown" class="notification-dropdown">
+            <div class="notification-header">
+                <h4>Notifications</h4>
+                <button id="notification-clear" class="notification-clear">Clear All</button>
+            </div>
+            <ul id="notification-list" class="notification-list"></ul>
+        </div>
+    </div>
+    <script src="emoji-picker.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>

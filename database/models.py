@@ -71,12 +71,16 @@ class Course(Base):
     quiz_instruction = Column(String, nullable=True)
     summary_modules = Column(JSON)
     simplified_modules = Column(JSON)
-    simplified_current_page = Column(Integer, default=1)
-    summary_current_page = Column(Integer, default=1)
+
     simplified_module_pages = Column(Integer, default=0)
+    simplified_current_page = Column(Integer, default=1)
+    
+    summary_current_page = Column(Integer, default=1)
     summary_module_pages = Column(Integer, default=0)
+
     simplified_module_statistic = Column(Numeric(10, 2), default=0)  # 10 digits total, 2 after decimal
     summary_modules_statistic = Column(Numeric(10, 2), default=0)
+    
     has_quiz = Column(Boolean, default=False, nullable=False)
     document_id = Column(Integer, ForeignKey('Documents.id_document'), nullable=False)
     created_at = Column(DateTime, default=datetime.utcnow)
