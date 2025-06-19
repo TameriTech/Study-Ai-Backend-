@@ -1,7 +1,6 @@
 import asyncio
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
-import websockets
 from api import users, courses, documents, vocabulary, segments, feedback, quiz, comment, email, websocket
 from fastapi.middleware.cors import CORSMiddleware
 from chatbot.routers import chat, documentsegments
