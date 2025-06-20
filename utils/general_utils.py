@@ -12,10 +12,8 @@ import fitz  # PyMuPDF
 from datetime import datetime
 from sqlalchemy.orm import Session
 from PIL import Image
-import pytesseract
 from fastapi import UploadFile, HTTPException
 from PIL import Image
-import pytesseract
 
 # Load environment variables from .env file
 load_dotenv()
