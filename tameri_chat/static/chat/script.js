@@ -57,7 +57,7 @@ class NotificationManager {
         this.unreadCount = 0;
         this.notifications = [];
         this.soundEnabled = true;
-        this.browserNotificationsAllowed = false;
+        this.browsserNotificationsAllowed = false;
         this.lastNotificationTime = 0;
         this.notificationThrottle = 1000; // 1 second between notifications
 
@@ -151,7 +151,7 @@ class NotificationManager {
 
         // Handle push notification
         if (showPush && this.pushNotificationsEnabled) {
-            this.showBrowserNotification(notification);
+            this.showBrowsserNotification(notification);
             this.playSound(type);
         }
 
@@ -456,8 +456,8 @@ markAllAsRead() {
         }, 300);
     }
 
-    showBrowserNotification(notification) {
-        if (!this.browserNotificationsAllowed || document.hasFocus()) return;
+    showBrowsserNotification(notification) {
+        if (!this.browsserNotificationsAllowed || document.hasFocus()) return;
 
         const title = notification.title;
         const options = {
@@ -470,20 +470,20 @@ markAllAsRead() {
         try {
             new Notification(title, options);
         } catch (e) {
-            console.error("Browser notification error:", e);
+            console.error("Browsser notification error:", e);
         }
     }
 
     checkNotificationPermission() {
         if ('Notification' in window) {
-            this.browserNotificationsAllowed = Notification.permission === 'granted';
+            this.browsserNotificationsAllowed = Notification.permission === 'granted';
         }
     }
 
     requestNotificationPermission() {
-        if ('Notification' in window && !this.browserNotificationsAllowed) {
+        if ('Notification' in window && !this.browsserNotificationsAllowed) {
             Notification.requestPermission().then(permission => {
-                this.browserNotificationsAllowed = permission === 'granted';
+                this.browsserNotificationsAllowed = permission === 'granted';
             });
         }
     }
@@ -1636,7 +1636,7 @@ function connectWebSocket() {
     userStatus.className = 'connecting';
 
     try {
-        socket = new WebSocket(`ws://${window.location.host}/ws/${currentUser.id}`);
+        socket = new WebSocket(`wss://${window.location.host}/wss/${currentUser.id}`);
 
         socket.onopen = () => {
             console.log('WebSocket connected');
@@ -2271,8 +2271,8 @@ async function loadMessages(groupId, initialLoad = true) {
             scrollToBottom();
         } else {
             // Maintain scroll position when loading older messages
-            const newScrollHeight = messages.scrollHeight;
-            messages.scrollTop = oldScrollTop + (newScrollHeight - oldScrollHeight);
+            const newSscrollHeight = messages.scrollHeight;
+            messages.scrollTop = oldScrollTop + (newSscrollHeight - oldScrollHeight);
         }
         
         // Increment page counter for next load
