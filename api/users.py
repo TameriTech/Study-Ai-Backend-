@@ -100,9 +100,14 @@ def get_all_users(db: Session = Depends(get_db)):
 @router.get("/get-user/{id}", response_model=schemas.User, tags=["User"])
 def get_user_by_id(id: int, db: Session = Depends(get_db)):
     user_queryset = users_services.get_user(db, id)
-    if user_queryset:
-        return user_queryset
-    raise HTTPException(status_code=404, detail="Invalid user id provided!")
+    if not user_queryset:
+        raise HTTPException(status_code=404, detail="Invalid user id provided!")
+    
+    # Calculate and update the feedback statistics
+    users_services.calculate_user_feedback_statistics(db, id)
+    db.refresh(user_queryset)  # Refresh to get the updated statistic
+    
+    return user_queryset
 
 @router.put("/user/update/{id}", response_model=schemas.User, tags=["User"])
 def update_user(id: int, user: schemas.UserUpdate, db: Session = Depends(get_db)):

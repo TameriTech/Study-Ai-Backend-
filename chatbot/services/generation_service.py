@@ -97,7 +97,7 @@ class GenerationService:
             config=types.GenerateContentConfig(
                 system_instruction=GEMINI_SYSTEM_INSTRUCTION,
                 safety_settings=GEMINI_SAFETY_SETTINGS,
-                temperature=0.1
+                temperature=0.3
             )
         )
         

@@ -76,6 +76,36 @@ def get_users(db: Session):
 def get_user(db: Session, user_id:int):
     return db.query(User).filter(User.id == user_id).first()
 
+
+def calculate_user_feedback_statistics(db: Session, user_id: int):
+    """
+    Calculate the user's average rating as a percentage (0-100%)
+    based on all feedback ratings across all their courses.
+    """
+    user = db.query(User).filter(User.id == user_id).first()
+    if not user:
+        return None
+    
+    total_rating = 0
+    feedback_count = 0
+    
+    # Get all feedbacks for all courses created by this user
+    for document in user.documents:
+        for course in document.courses:
+            for feedback in course.feedbacks:
+                total_rating += feedback.rating
+                feedback_count += 1
+
+    if feedback_count == 0:
+        user.statistic = 0
+    else:
+        percentage = (total_rating / feedback_count) 
+        print("total_rating", percentage)
+        user.statistic = round(percentage, 2)
+    
+    db.commit()
+    return user.statistic
+
 def update_user(db: Session, user_data: UserUpdate, user_id: int):
     user_queryset = db.query(User).filter(User.id == user_id).first()
     if user_queryset:
@@ -177,3 +207,5 @@ async def update_user_password(db: Session, user_id: int, old_password: str, new
 
     except Exception as e:
         raise HTTPException(status_code=500, detail="An error occurred while updating the password: " + str(e))
+    
+    
