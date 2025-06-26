@@ -97,7 +97,7 @@
             statusElement.style.color = "#333";
             
             const { credential } = response;
-            print("ttttttttttttttt6666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666: ", credential)
+            console.log("6666666tttt66666666: ", credential)
             
             try {
                 const res = await fetch(`/api/login/google`, {
@@ -128,7 +128,7 @@
                 usertoken.textContent = "access token: " + data.access_token.substring(0, 30) + '...';
 
 
-                console.log("data object", data)
+                // console.log("data object", data)
                 
                 // Redirect to dashboard or home page after 1 second
                 
