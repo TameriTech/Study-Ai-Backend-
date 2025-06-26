@@ -1636,7 +1636,7 @@ function connectWebSocket() {
     userStatus.className = 'connecting';
 
     try {
-        socket = new WebSocket(`wss://${window.location.host}/wss/${currentUser.id}`);
+        socket = new WebSocket(`ws://${window.location.host}/wss/${currentUser.id}`);
 
         socket.onopen = () => {
             console.log('WebSocket connected');

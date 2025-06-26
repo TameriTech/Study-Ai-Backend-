@@ -13,7 +13,6 @@ from database.schemas import GoogleToken, PasswordResetRequest
 from database.db import get_db
 from database.schemas import FacebookToken, SocialLoginResponse
 from services.facebook_auth import FacebookAuthService
-from utils.general_utils import create_access_token
 import os
 
 

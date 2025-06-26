@@ -219,10 +219,7 @@ def get_unread_count(
     ).count()
 
 # WebSocket Endpoint
-
-
-
-@router.websocket("/wss/{user_id}")
+@router.websocket("/ws/{user_id}")
 async def websocket_endpoint(websocket: WebSocket, user_id: int, db: Session = Depends(get_db)):
     # Connect the user
     connection_id = await manager.connect(user_id, websocket)
