@@ -12,15 +12,25 @@ from database.models import User
 
 
 # Google OAuth Configuration
-GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID")
+GOOGLE_WEB_CLIENT_ID = os.getenv("GOOGLE_WEB_CLIENT_ID")
+GOOGLE_MOBILE_CLIENT_ID = os.getenv("GOOGLE_MOBILE_CLIENT_ID")
 GOOGLE_CLIENT_SECRET = os.getenv("GOOGLE_CLIENT_SECRET")
 
 async def verify_google_token(token: str) -> dict:
     try:
-        # Verify the token
-        idinfo = id_token.verify_oauth2_token(token, google_requests.Request(), GOOGLE_CLIENT_ID)
+        # List of acceptable client IDs (web and mobile)
+        accepted_client_ids = [
+            os.getenv("GOOGLE_WEB_CLIENT_ID"),
+            os.getenv("GOOGLE_MOBILE_CLIENT_ID")
+        ]
         
-        # Check that the token is valid for your app
+        # Verify the token with any of the accepted client IDs
+        idinfo = id_token.verify_oauth2_token(token, google_requests.Request())
+        
+        # Check that the token is valid for one of your apps
+        if idinfo['aud'] not in accepted_client_ids:
+            raise ValueError('Invalid client ID.')
+            
         if idinfo['iss'] not in ['accounts.google.com', 'https://accounts.google.com']:
             raise ValueError('Wrong issuer.')
         
