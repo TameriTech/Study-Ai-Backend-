@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>À propos - Godlove Empire</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Google Fonts -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:wght@300;400;500;600;700&family=Sacramento&display=swap" />
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #000000;
+      color: #FFFFFF;
+    }
+
+    .typographica {
+      font-family: 'Bebas Neue', sans-serif;
+      letter-spacing: 1px;
+    }
+.cormorant {
+      font-family: "Cormorant", serif;
+    }
+    .matchmaker {
+      font-family: 'Sacramento', cursive;
+    }
+
+    .button-hover {
+      background: linear-gradient(90deg, #A00000 0%, #D50706 100%);
+      color: #FFFFFF;
+    }
+    .button-hover:hover {
+      filter: brightness(1.2);
+      transform: translateY(-1px);
+    }
+
+    .arrow-icon {
+      transition: transform 0.2s ease;
+    }
+    .button-hover:hover .arrow-icon {
+      transform: translateX(2px);
+    }
+
+    .hero-section {
+  background: linear-gradient(
+    rgba(208, 6, 6, 0.171),
+    rgba(0, 0, 0, 0.76)
+  ),
+  url('https://images.unsplash.com/photo-1497366754035-f200968a6e72?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2069&q=80');
+  background-size: cover;
+  background-position: center;
+}
+
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -30px;
+      top: 0;
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      background: linear-gradient(90deg, #A00000 0%, #D50706 100%);
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: -24px;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: linear-gradient(180deg, #A00000, #D50706);
+    }
+
+    /* Gallery styles */
+    .gallery {
+      display: flex;
+      gap: 1rem;
+      width: 743px;
+    }
+    .gallery:hover .gallery-img {
+      flex-basis: 20%;
+      height: 300px;
+      transform: scale(0.9);
+      opacity: 0.7;
+    }
+    .gallery-img:hover {
+      flex-basis: 60% !important;
+      height: 400px !important;
+      opacity: 1 !important;
+      transform: scale(1.05) !important;
+      z-index: 10;
+    }
+    .gallery:hover {
+      flex-wrap: nowrap;
+    }
+    @media (max-width: 768px) {
+      .gallery {
+        width: 100% !important;
+        flex-wrap: wrap;
+      }
+      .gallery:hover .gallery-img {
+        flex-basis: 100% !important;
+        height: 200px !important;
+        opacity: 1 !important;
+        transform: none !important;
+      }
+    }
+  </style>
+</head>
+
+<body class="text-white">
+
+  <!-- Navigation -->
+  <header></header>
+
+  <!-- Hero Section -->
+  <section class="hero-section flex items-center justify-center text-center py-32 px-4">
+    <div class="max-w-4xl">
+      <h1 class="typographica text-6xl md:text-7xl mb-6">Notre Histoire</h1>
+      <p class="text-xl md:text-6xl mb-8 matchmaker">Découvrez la passion et la créativité derrière Godlove Empire</p>
+      <a href="#about-content" class="inline-block button-hover px-8 py-3 rounded-lg transition">
+        Découvrez Notre Parcours
+      </a>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section id="about-content" class="flex relative justify-center items-center self-stretch p-16 bg-black min-h-[528px] max-md:px-8 max-md:py-10 max-sm:px-4 max-sm:py-6">
+    <div class="flex gap-11 items-center w-full h-[400px] max-w-[1384px] max-md:flex-col max-md:gap-8 max-md:max-w-full max-md:h-auto max-sm:gap-6">
+      <article class="flex relative flex-col gap-6 justify-center items-start w-[596px] max-md:w-full max-md:max-w-[600px] max-sm:gap-5">
+        <div class="uppercase text-lg text-neutral-400 tracking-widest font-semibold">
+          À PROPOS DE NOUS
+        </div>
+        
+        <div class="flex flex-col gap-2">
+          <h1 class="typographica text-5xl leading-[64px] text-white max-md:text-5xl max-md:leading-[52px] max-sm:text-3xl max-sm:leading-10">
+            Une vision créative au cœur de chaque projet
+          </h1>
+          <p class="text-lg font-light leading-7 text-white max-sm:text-base max-sm:leading-6">
+            Godlove Empire est un studio créatif fondé par M. Godlove, dédié au design visuel depuis plus de 7 ans. Nous combinons passion, expertise et originalité pour donner vie à votre identité visuelle, quel que soit votre domaine.
+          </p>
+        </div>
+        <div class="flex flex-col gap-2.5 items-start rounded-xl">
+          <button class="flex gap-2 justify-center items-center px-5 py-4 button-hover rounded-lg transition-all cursor-pointer">
+            <span class="text-lg font-medium leading-6 text-white max-sm:text-base max-sm:leading-6">
+              Voir plus
+            </span>
+            <svg width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg" class="arrow-icon">
+              <path opacity="0.4" d="M16.19 2H7.81C4.17 2 2 4.17 2 7.81V16.18C2 19.83 4.17 22 7.81 22H16.18C19.82 22 21.99 19.83 21.99 16.19V7.81C22 4.17 19.83 2 16.19 2Z" fill="#E9E9E9"></path>
+              <path d="M18.53 11.47L14.24 7.18C13.95 6.89 13.47 6.89 13.18 7.18C12.89 7.47 12.89 7.95 13.18 8.24L16.19 11.25H6C5.59 11.25 5.25 11.59 5.25 12C5.25 12.41 5.59 12.75 6 12.75H16.19L13.18 15.76C12.89 16.05 12.89 16.53 13.18 16.82C13.33 16.97 13.52 17.04 13.71 17.04C13.9 17.04 14.09 16.97 14.24 16.82L18.53 12.53C18.67 12.39 18.75 12.2 18.75 12C18.75 11.8 18.67 11.61 18.53 11.47Z" fill="#E9E9E9"></path>
+            </svg>
+          </button>
+        </div>
+      </article>
+      
+      <div class="flex flex-col md:flex-row gap-4 w-full max-w-6xl mx-auto overflow-hidden group">
+  <!-- Left big image -->
+  <div class="w-full md:w-2/3 overflow-hidden rounded-lg">
+    <img
+      src="https://cdn.builder.io/api/v1/image/assets/TEMP/6070adb9fec183ed6f0ccfe0e13fbfa1e677092f?width=474"
+      alt="Travail créatif 1"
+      class="w-full h-[400px] object-cover rounded-lg transition-transform duration-500 ease-in-out cursor-pointer group-hover:opacity-70 hover:opacity-100 hover:scale-105"
+    />
+  </div>
+
+  <!-- Right two stacked images -->
+  <div class="flex flex-col gap-4 w-full md:w-1/3">
+    <div class="overflow-hidden rounded-lg">
+      <img
+        src="https://cdn.builder.io/api/v1/image/assets/TEMP/2f85750c545c27a1df086476f2ba72307e06b784?width=474"
+        alt="Travail créatif 2"
+        class="w-full h-[195px] object-cover rounded-lg transition-transform duration-500 ease-in-out cursor-pointer group-hover:opacity-70 hover:opacity-100 hover:scale-105"
+      />
+    </div>
+    <div class="overflow-hidden rounded-lg">
+      <img
+        src="https://cdn.builder.io/api/v1/image/assets/TEMP/20746e58a25ae6599b3fdf2b04c11d3eba796bf8?width=474"
+        alt="Travail créatif 3"
+        class="w-full h-[195px] object-cover rounded-lg transition-transform duration-500 ease-in-out cursor-pointer group-hover:opacity-70 hover:opacity-100 hover:scale-105"
+      />
+    </div>
+  </div>
+</div>
+
+    </div>
+  </section>
+
+  <!-- Founder Section -->
+  <section class="py-20 px-6 max-w-7xl mx-auto bg-black">
+    <div class="flex flex-col md:flex-row gap-12 items-center">
+      <div class="w-full md:w-1/3">
+        <img src="https://study.tameri.tech/static/blaise.jpg" alt="M. Godlove, Fondateur de Godlove Empire" class="rounded-lg shadow-xl w-full h-auto">
+      </div>
+      <div class="w-full md:w-2/3">
+        <h2 class="typographica text-4xl mb-6">Rencontrez M. Godlove</h2>
+        <p class="text-lg mb-6">
+          Avec plus de 7 ans d'expérience en design visuel, M. Godlove a fondé Godlove Empire avec la vision de créer des identités visuelles exceptionnelles qui aident les entreprises et les particuliers à se démarquer.
+        </p>
+        <p class="text-lg mb-6">
+          "Chaque projet est une opportunité de créer quelque chose d'unique et de significatif. Nous ne faisons pas que concevoir des visuels ; nous créons des identités qui racontent votre histoire et créent un lien avec votre public."
+        </p>
+        <div class="flex flex-wrap gap-4">
+          <div class="flex items-center gap-2">
+            <div class="w-10 h-10 rounded-full flex items-center justify-center text-white" style="background: linear-gradient(90deg, #A00000, #D50706);">
+              <i class="fas fa-award"></i>
+            </div>
+            <span>7+ Ans d'Expérience</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <div class="w-10 h-10 rounded-full flex items-center justify-center text-white" style="background: linear-gradient(90deg, #A00000, #D50706);">
+              <i class="fas fa-project-diagram"></i>
+            </div>
+            <span>500+ Projets</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <div class="w-10 h-10 rounded-full flex items-center justify-center text-white" style="background: linear-gradient(90deg, #A00000, #D50706);">
+              <i class="fas fa-smile"></i>
+            </div>
+            <span>300+ Clients Satisfaits</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Timeline Section -->
+  <!-- Our Journey Section -->
+<section class="py-20 px-6" style="background: linear-gradient(180deg, #111111, #1A1A1A);">
+  <div class="max-w-4xl mx-auto">
+    <h2 class="typographica text-4xl text-center mb-16">Notre Parcours</h2>
+    <div class="grid gap-12 md:grid-cols-2">
+      <div class="bg-black p-8 rounded-lg shadow-md">
+        <h3 class="typographica text-2xl mb-2 text-[#D50706]">2017</h3>
+        <h4 class="text-xl font-semibold mb-4">Les Débuts</h4>
+        <p>Godlove Empire a été fondé avec un petit studio et de grands rêves. Nos premiers projets se concentraient sur la conception de logos et des services de base en graphisme pour les entreprises locales.</p>
+      </div>
+      <div class="bg-black p-8 rounded-lg shadow-md">
+        <h3 class="typographica text-2xl mb-2 text-[#D50706]">2019</h3>
+        <h4 class="text-xl font-semibold mb-4">Extension des Services</h4>
+        <p>Nous avons élargi nos offres pour inclure la photographie et les services d'impression, établissant des partenariats avec des imprimeurs locaux pour fournir des solutions complètes à nos clients.</p>
+      </div>
+      <div class="bg-black p-8 rounded-lg shadow-md">
+        <h3 class="typographica text-2xl mb-2 text-[#D50706]">2021</h3>
+        <h4 class="text-xl font-semibold mb-4">Transformation Numérique</h4>
+        <p>Lancement de notre présence en ligne avec un site web et des plateformes de médias sociaux, nous permettant de servir des clients à l'échelle nationale. Ajout de services de design numérique incluant des graphiques pour les médias sociaux et des bannières web.</p>
+      </div>
+      <div class="bg-black p-8 rounded-lg shadow-md">
+        <h3 class="typographica text-2xl mb-2 text-[#D50706]">2023</h3>
+        <h4 class="text-xl font-semibold mb-4">Studio Tout-en-un</h4>
+        <p>Nous proposons désormais des services complets de design visuel, du branding aux habillages de véhicules. Notre équipe s'est agrandie pour inclure des spécialistes dans différentes disciplines du design, tous partageant le même engagement envers l'excellence.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+  <!-- Philosophy Section -->
+  <section class="py-20 px-6 max-w-7xl mx-auto bg-black">
+    <div class="text-center mb-16">
+      <h2 class="typographica text-4xl mb-6">Notre Philosophie</h2>
+      <p class="text-xl max-w-3xl mx-auto">
+        Chez Godlove Empire, nous croyons qu'un bon design va au-delà de l'esthétique - il s'agit de communication, d'identité et de connexion.
+      </p>
+    </div>
+    <div class="grid md:grid-cols-3 gap-8">
+      <div class="bg-[#111111] p-8 rounded-lg">
+        <div class="w-16 h-16 rounded-full flex items-center justify-center text-white text-2xl mb-6" style="background: linear-gradient(90deg, #A00000, #D50706);">
+          <i class="fas fa-lightbulb"></i>
+        </div>
+        <h3 class="typographica text-2xl mb-4">Créativité</h3>
+        <p>Nous abordons chaque projet avec un regard neuf et une pensée innovante.</p>
+      </div>
+      <div class="bg-[#111111] p-8 rounded-lg">
+        <div class="w-16 h-16 rounded-full flex items-center justify-center text-white text-2xl mb-6" style="background: linear-gradient(90deg, #A00000, #D50706);">
+          <i class="fas fa-handshake"></i>
+        </div>
+        <h3 class="typographica text-2xl mb-4">Collaboration</h3>
+        <p>Votre vision est notre point de départ. Nous travaillons en étroite collaboration pour dépasser vos attentes.</p>
+      </div>
+      <div class="bg-[#111111] p-8 rounded-lg">
+        <div class="w-16 h-16 rounded-full flex items-center justify-center text-white text-2xl mb-6" style="background: linear-gradient(90deg, #A00000, #D50706);">
+          <i class="fas fa-star"></i>
+        </div>
+        <h3 class="typographica text-2xl mb-4">Excellence</h3>
+        <p>Du concept à l'exécution, nous maintenons les normes de qualité les plus élevées.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="py-20 px-6 bg-black">
+    <div class="max-w-4xl mx-auto text-center">
+      <h2 class="typographica text-4xl mb-6">Prêt à Donner Vie à Votre Vision ?</h2>
+      <p class="text-xl mb-10 max-w-2xl mx-auto">
+        Que vous ayez besoin d'un logo percutant, de matériel marketing ou d'une identité de marque complète, nous sommes là pour vous aider.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a href="services.html" class="button-hover px-8 py-4 rounded-lg transition">
+          Découvrez Nos Services
+        </a>
+        <a href="contact.html" class="border border-[#D50706] text-[#D50706] hover:bg-[#A00000] hover:text-white px-8 py-4 rounded-lg transition">
+          Contactez-nous
+        </a>
+      </div>
+    </div>
+  </section>
+  <footer></footer>
+<script src="../assets/js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAQ - Godlove Empire</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://use.typekit.net/typography-font-id.css">
+    <!-- Replace with actual Typographica font link -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <style>
+        @font-face {
+            font-family: 'Matchmaker';
+            src: url('path-to-matchmaker-font.woff2') format('woff2');
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #000000;
+            color: #FFFFFF;
+        }
+
+        .title-font {
+            font-family: 'Typographica', serif;
+        }
+
+        .slogan-font {
+            font-family: 'Matchmaker', cursive;
+        }
+
+        .gradient-text {
+            background: linear-gradient(90deg, #A00000, #D50706);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .gradient-bg {
+            background: linear-gradient(90deg, #A00000, #D50706);
+        }
+
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            padding: 0 24px;
+            /* Keep horizontal padding */
+        }
+
+        .accordion-content.expanded {
+            max-height: 1000px;
+            /* Large enough for content */
+            padding: 16px 24px;
+            /* Add vertical padding only when expanded */
+        }
+
+        .accordion-icon {
+            transition: transform 0.3s ease;
+        }
+    </style>
+</head>
+
+<body class="bg-black text-white">
+    <!-- Navigation -->
+    <header></header>
+    <div
+        class="flex relative flex-col gap-2.5 items-start self-stretch p-16 min-h-screen max-md:px-8 max-md:py-10 max-sm:px-4 max-sm:py-6">
+        <!-- Header Section -->
+        <div class="flex relative flex-col gap-6 items-center w-full mb-12">
+            <div class=" text-lg text-neutral-400 tracking-widest font-semibold">
+                FAQs
+            </div>
+            <div class="title-font text-6xl text-center leading-tight max-md:text-5xl max-sm:text-4xl">
+                Avez-vous une question?
+            </div>
+            <div class="text-xl text-center text-neutral-300 max-w-2xl">
+                Vous trouverez ici les réponses aux questions fréquemment posées sur nos services, nos délais de
+                livraison, nos conditions de travail et nos modes de paiement.
+            </div>
+        </div>
+
+        <div
+            class="flex relative gap-9 items-start mx-auto my-0 w-full max-w-[1384px] max-md:flex-col max-md:gap-8 max-md:items-center max-sm:gap-6">
+            <!-- About Section -->
+            <div
+                class="flex relative flex-col shrink-0 gap-9 items-center w-[510px] max-md:w-full max-md:max-w-[600px] max-sm:gap-6">
+                <div
+                    class="flex relative flex-col gap-6 items-start self-stretch p-8 rounded-xl bg-neutral-900 max-sm:gap-4">
+                    <div class="title-font text-3xl gradient-text">
+                        À PROPOS
+                    </div>
+                    <div class="flex relative flex-col gap-4">
+                        <p>
+                            Fondé par Monsieur Godlove, depuis plus de 8 ans. Godlove Empire fusionne la créativité,
+                            l'expertise et l'innovation pour créer des expériences visuelles exceptionnelles qui
+                            dépassent les attentes.
+                        </p>
+                        <p>
+                            On est un label capable de transformer vos projets visuels en une réalité impactante et
+                            mémorable. Tel un aigle, avec une vision aiguisée et un savoir-faire d'excellence, on met
+                            toute notre expertise au service de vos ambitions.
+                        </p>
+                        <p class="slogan-font text-xl">
+                            Ensemble, forgeons une présence visuelle qui vous distingue et propulse votre marque au
+                            sommet.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Contact Info -->
+                <div
+                    class="flex relative flex-col gap-6 items-start self-stretch p-8 rounded-xl bg-neutral-900 max-sm:gap-4">
+                    <div class="title-font text-3xl gradient-text">
+                        ENTRER EN CONTACT
+                    </div>
+                    <div class="flex relative flex-col gap-4">
+                        <p>
+                            Une idée ? Discutons de votre projet. Une question, un projet ou un devis personnalisé ?
+                            Nous sommes à votre disposition pour discuter de vos besoins.
+                        </p>
+                        <div class="flex flex-col gap-3">
+                            <div class="flex items-center gap-3">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="#D50706">
+                                    <path
+                                        d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
+                                </svg>
+                                <span>contact@godloveempire.com</span>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="#D50706">
+                                    <path
+                                        d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56-.35-.12-.74-.03-1.01.24l-1.57 1.97c-2.83-1.35-5.48-3.9-6.89-6.83l1.95-1.66c.27-.28.35-.67.24-1.02-.37-1.11-.56-2.3-.56-3.53 0-.54-.45-.99-.99-.99H4.19C3.65 3 3 3.24 3 3.99 3 13.28 10.73 21 20.01 21c.71 0 .99-.63.99-1.18v-3.45c0-.54-.45-.99-.99-.99z" />
+                                </svg>
+                                <span>+1 234 567 890</span>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="#D50706">
+                                    <path
+                                        d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+                                </svg>
+                                <span>WhatsApp</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FAQ Section -->
+            <div class="flex relative flex-col flex-1 gap-4 items-start max-md:w-full max-md:max-w-[800px]">
+                <!-- First Accordion Item - Expanded by default -->
+                <div class="accordion-item flex relative flex-col items-start self-stretch rounded-2xl bg-neutral-900">
+                    <div
+                        class="accordion-header flex relative gap-2 items-center self-stretch p-6 rounded-2xl cursor-pointer max-sm:p-5">
+                        <div class="flex relative flex-col flex-1 gap-2 items-start">
+                            <div
+                                class="title-font relative text-2xl leading-9 text-white max-sm:text-xl max-sm:leading-7">
+                                Combien de révisions sont incluses ?
+                            </div>
+                        </div>
+                        <div>
+                            <div>
+                                <svg class="accordion-icon minus" width="36" height="36" viewBox="0 0 36 36" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    style="display: flex; width: 36px; height: 36px; justify-content: center; align-items: center; aspect-ratio: 1/1; position: relative; flex-shrink: 0;">
+                                    <path opacity="0.4"
+                                        d="M24.285 3H11.715C6.255 3 3 6.255 3 11.715V24.27C3 29.745 6.255 33 11.715 33H24.27C29.73 33 32.985 29.745 32.985 24.285V11.715C33 6.255 29.745 3 24.285 3Z"
+                                        fill="#D50706"></path>
+                                    <path
+                                        d="M24 19.125H12C11.385 19.125 10.875 18.615 10.875 18C10.875 17.385 11.385 16.875 12 16.875H24C24.615 16.875 25.125 17.385 25.125 18C25.125 18.615 24.615 19.125 24 19.125Z"
+                                        fill="#D50706"></path>
+                                </svg>
+                                <svg class="accordion-icon plus hidden" width="36" height="36" viewBox="0 0 36 36"
+                                    fill="none" xmlns="http://www.w3.org/2000/svg"
+                                    style="display: none; width: 36px; height: 36px; justify-content: center; align-items: center; aspect-ratio: 1/1; position: relative; flex-shrink: 0;">
+                                    <path opacity="0.4"
+                                        d="M24.285 3H11.715C6.255 3 3 6.255 3 11.715V24.27C3 29.745 6.255 33 11.715 33H24.27C29.73 33 32.985 29.745 32.985 24.285V11.715C33 6.255 29.745 3 24.285 3Z"
+                                        fill="#D50706"></path>
+                                    <path
+                                        d="M24 16.875H19.125V12C19.125 11.385 18.615 10.875 18 10.875C17.385 10.875 16.875 11.385 16.875 12V16.875H12C11.385 16.875 10.875 17.385 10.875 18C10.875 18.615 11.385 19.125 12 19.125H16.875V24C16.875 24.615 17.385 25.125 18 25.125C18.615 25.125 19.125 24.615 19.125 24V19.125H24C24.615 19.125 25.125 18.615 25.125 18C25.125 17.385 24.615 16.875 24 16.875Z"
+                                        fill="#D50706"></path>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        class="accordion-content flex relative gap-2.5 justify-center items-center self-stretch px-6 py-4 max-sm:px-5 max-sm:py-3">
+                        <div
+                            class="relative flex-1 text-lg leading-7 text-neutral-300 max-sm:text-base max-sm:leading-6">
+                            Nous offrons deux révisions gratuites après la proposition initiale. Des modifications
+                            supplémentaires sont possibles, mais peuvent entraîner des coûts supplémentaires en fonction
+                            du travail requis.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Second Accordion Item -->
+                <div class="accordion-item flex relative flex-col items-start self-stretch rounded-2xl bg-neutral-900">
+                    <div
+                        class="accordion-header flex relative gap-2 items-center self-stretch p-6 rounded-2xl cursor-pointer max-sm:p-5">
+                        <div class="flex relative flex-col flex-1 gap-2 items-start">
+                            <div
+                                class="title-font relative text-2xl leading-9 text-white max-sm:text-xl max-sm:leading-7">
+                                Quels types de fichiers vais-je recevoir ?
+                            </div>
+                        </div>
+                        <div>
+                            <div>
+                                <svg class="accordion-icon minus hidden" width="36" height="36" viewBox="0 0 36 36"
+                                    fill="none" xmlns="http://www.w3.org/2000/svg"
+                                    style="display: none; width: 36px; height: 36px; justify-content: center; align-items: center; aspect-ratio: 1/1; position: relative; flex-shrink: 0;">
+                                    <path opacity="0.4"
+                                        d="M24.285 3H11.715C6.255 3 3 6.255 3 11.715V24.27C3 29.745 6.255 33 11.715 33H24.27C29.73 33 32.985 29.745 32.985 24.285V11.715C33 6.255 29.745 3 24.285 3Z"
+                                        fill="#D50706"></path>
+                                    <path
+                                        d="M24 19.125H12C11.385 19.125 10.875 18.615 10.875 18C10.875 17.385 11.385 16.875 12 16.875H24C24.615 16.875 25.125 17.385 25.125 18C25.125 18.615 24.615 19.125 24 19.125Z"
+                                        fill="#D50706"></path>
+                                </svg>
+                                <svg class="accordion-icon plus" width="36" height="36" viewBox="0 0 36 36" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    style="display: flex; width: 36px; height: 36px; justify-content: center; align-items: center; aspect-ratio: 1/1; position: relative; flex-shrink: 0;">
+                                    <path opacity="0.4"
+                                        d="M24.285 3H11.715C6.255 3 3 6.255 3 11.715V24.27C3 29.745 6.255 33 11.715 33H24.27C29.73 33 32.985 29.745 32.985 24.285V11.715C33 6.255 29.745 3 24.285 3Z"
+                                        fill="#D50706"></path>
+                                    <path
+                                        d="M24 16.875H19.125V12C19.125 11.385 18.615 10.875 18 10.875C17.385 10.875 16.875 11.385 16.875 12V16.875H12C11.385 16.875 10.875 17.385 10.875 18C10.875 18.615 11.385 19.125 12 19.125H16.875V24C16.875 24.615 17.385 25.125 18 25.125C18.615 25.125 19.125 24.615 19.125 24V19.125H24C24.615 19.125 25.125 18.618 25.125 18C25.125 17.385 24.615 16.875 24 16.875Z"
+                                        fill="#D50706"></path>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        class="accordion-content flex relative gap-2.5 justify-center items-center self-stretch px-6 py-4 max-sm:px-5 max-sm:py-3">
+                        <div
+                            class="relative flex-1 text-lg leading-7 text-neutral-300 max-sm:text-base max-sm:leading-6">
+                            Vous recevrez des fichiers haute résolution dans différents formats, notamment PNG, JPG, PDF
+                            et les fichiers sources (AI, PSD) en fonction des besoins de votre projet.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Third Accordion Item -->
+                <div class="accordion-item flex relative flex-col items-start self-stretch rounded-2xl bg-neutral-900">
+                    <div
+                        class="accordion-header flex relative gap-2 items-center self-stretch p-6 rounded-2xl cursor-pointer max-sm:p-5">
+                        <div class="flex relative flex-col flex-1 gap-2 items-start">
+                            <div
+                                class="title-font relative text-2xl leading-9 text-white max-sm:text-xl max-sm:leading-7">
+                                Quels modes de paiement sont acceptés ?
+                            </div>
+                        </div>
+                        <div>
+                            <div>
+                                <svg class="accordion-icon minus hidden" width="36" height="36" viewBox="0 0 36 36"
+                                    fill="none" xmlns="http://www.w3.org/2000/svg"
+                                    style="display: none; width: 36px; height: 36px; justify-content: center; align-items: center; aspect-ratio: 1/1; position: relative; flex-shrink: 0;">
+                                    <path opacity="0.4"
+                                        d="M24.285 3H11.715C6.255 3 3 6.255 3 11.715V24.27C3 29.745 6.255 33 11.715 33H24.27C29.73 33 32.985 29.745 32.985 24.285V11.715C33 6.255 29.745 3 24.285 3Z"
+                                        fill="#D50706"></path>
+                                    <path
+                                        d="M24 19.125H12C11.385 19.125 10.875 18.615 10.875 18C10.875 17.385 11.385 16.875 12 16.875H24C24.615 16.875 25.125 17.385 25.125 18C25.125 18.615 24.615 19.125 24 19.125Z"
+                                        fill="#D50706"></path>
+                                </svg>
+                                <svg class="accordion-icon plus" width="36" height="36" viewBox="0 0 36 36" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    style="display: flex; width: 36px; height: 36px; justify-content: center; align-items: center; aspect-ratio: 1/1; position: relative; flex-shrink: 0;">
+                                    <path opacity="0.4"
+                                        d="M24.285 3H11.715C6.255 3 3 6.255 3 11.715V24.27C3 29.745 6.255 33 11.715 33H24.27C29.73 33 32.985 29.745 32.985 24.285V11.715C33 6.255 29.745 3 24.285 3Z"
+                                        fill="#D50706"></path>
+                                    <path
+                                        d="M24 16.875H19.125V12C19.125 11.385 18.615 10.875 18 10.875C17.385 10.875 16.875 11.385 16.875 12V16.875H12C11.385 16.875 10.875 17.385 10.875 18C10.875 18.615 11.385 19.125 12 19.125H16.875V24C16.875 24.615 17.385 25.125 18 25.125C18.615 25.125 19.125 24.615 19.125 24V19.125H24C24.615 19.125 25.125 18.615 25.125 18C25.125 17.385 24.615 16.875 24 16.875Z"
+                                        fill="#D50706"></path>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        class="accordion-content flex relative gap-2.5 justify-center items-center self-stretch px-6 py-4 max-sm:px-5 max-sm:py-3">
+                        <div
+                            class="relative flex-1 text-lg leading-7 text-neutral-300 max-sm:text-base max-sm:leading-6">
+                            Nous acceptons toutes les principales cartes de crédit, PayPal, virements bancaires et
+                            paiements en cryptomonnaie. Des plans de paiement sont disponibles pour les projets plus
+                            importants.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Fourth Accordion Item -->
+                <div class="accordion-item flex relative flex-col items-start self-stretch rounded-2xl bg-neutral-900">
+                    <div
+                        class="accordion-header flex relative gap-2 items-center self-stretch p-6 rounded-2xl cursor-pointer max-sm:p-5">
+                        <div class="flex relative flex-col flex-1 gap-2 items-start">
+                            <div
+                                class="title-font relative text-2xl leading-9 text-white max-sm:text-xl max-sm:leading-7">
+                                Puis-je imprimer mes visuels directement ?
+                            </div>
+                        </div>
+                        <div>
+                            <div>
+                                <svg class="accordion-icon minus hidden" width="36" height="36" viewBox="0 0 36 36"
+                                    fill="none" xmlns="http://www.w3.org/2000/svg"
+                                    style="display: none; width: 36px; height: 36px; justify-content: center; align-items: center; aspect-ratio: 1/1; position: relative; flex-shrink: 0;">
+                                    <path opacity="0.4"
+                                        d="M24.285 3H11.715C6.255 3 3 6.255 3 11.715V24.27C3 29.745 6.255 33 11.715 33H24.27C29.73 33 32.985 29.745 32.985 24.285V11.715C33 6.255 29.745 3 24.285 3Z"
+                                        fill="#D50706"></path>
+                                    <path
+                                        d="M24 19.125H12C11.385 19.125 10.875 18.615 10.875 18C10.875 17.385 11.385 16.875 12 16.875H24C24.615 16.875 25.125 17.385 25.125 18C25.125 18.615 24.615 19.125 24 19.125Z"
+                                        fill="#D50706"></path>
+                                </svg>
+                                <svg class="accordion-icon plus" width="36" height="36" viewBox="0 0 36 36" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    style="display: flex; width: 36px; height: 36px; justify-content: center; align-items: center; aspect-ratio: 1/1; position: relative; flex-shrink: 0;">
+                                    <path opacity="0.4"
+                                        d="M24.285 3H11.715C6.255 3 3 6.255 3 11.715V24.27C3 29.745 6.255 33 11.715 33H24.27C29.73 33 32.985 29.745 32.985 24.285V11.715C33 6.255 29.745 3 24.285 3Z"
+                                        fill="#D50706"></path>
+                                    <path
+                                        d="M24 16.875H19.125V12C19.125 11.385 18.615 10.875 18 10.875C17.385 10.875 16.875 11.385 16.875 12V16.875H12C11.385 16.875 10.875 17.385 10.875 18C10.875 18.615 11.385 19.125 12 19.125H16.875V24C16.875 24.615 17.385 25.125 18 25.125C18.615 25.125 19.125 24.615 19.125 24V19.125H24C24.615 19.125 25.125 18.615 25.125 18C25.125 17.385 24.615 16.875 24 16.875Z"
+                                        fill="#D50706"></path>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        class="accordion-content flex relative gap-2.5 justify-center items-center self-stretch px-6 py-4 max-sm:px-5 max-sm:py-3">
+                        <div
+                            class="relative flex-1 text-lg leading-7 text-neutral-300 max-sm:text-base max-sm:leading-6">
+                            Oui, tous les designs sont livrés dans des formats prêts à l'impression avec une résolution
+                            appropriée (300 DPI) et des profils de couleur (CMYK). Nous fournissons également des
+                            directives et des recommandations d'impression.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Add these new accordion items after your existing ones in the FAQ section -->
+
+                <!-- Sixth Accordion Item -->
+                <div class="accordion-item flex relative flex-col items-start self-stretch rounded-2xl bg-neutral-900">
+                    <div
+                        class="accordion-header flex relative gap-2 items-center self-stretch p-6 rounded-2xl cursor-pointer max-sm:p-5">
+                        <div class="flex relative flex-col flex-1 gap-2 items-start">
+                            <div
+                                class="title-font relative text-2xl leading-9 text-white max-sm:text-xl max-sm:leading-7">
+                                Combien de temps prend la réalisation d'un projet ?
+                            </div>
+                        </div>
+                        <div>
+                            <div>
+                                <svg class="accordion-icon minus hidden" width="36" height="36" viewBox="0 0 36 36"
+                                    fill="none" xmlns="http://www.w3.org/2000/svg"
+                                    style="display: none; width: 36px; height: 36px; justify-content: center; align-items: center; aspect-ratio: 1/1; position: relative; flex-shrink: 0;">
+                                    <path opacity="0.4"
+                                        d="M24.285 3H11.715C6.255 3 3 6.255 3 11.715V24.27C3 29.745 6.255 33 11.715 33H24.27C29.73 33 32.985 29.745 32.985 24.285V11.715C33 6.255 29.745 3 24.285 3Z"
+                                        fill="#D50706"></path>
+                                    <path
+                                        d="M24 19.125H12C11.385 19.125 10.875 18.615 10.875 18C10.875 17.385 11.385 16.875 12 16.875H24C24.615 16.875 25.125 17.385 25.125 18C25.125 18.615 24.615 19.125 24 19.125Z"
+                                        fill="#D50706"></path>
+                                </svg>
+                                <svg class="accordion-icon plus" width="36" height="36" viewBox="0 0 36 36" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    style="display: flex; width: 36px; height: 36px; justify-content: center; align-items: center; aspect-ratio: 1/1; position: relative; flex-shrink: 0;">
+                                    <path opacity="0.4"
+                                        d="M24.285 3H11.715C6.255 3 3 6.255 3 11.715V24.27C3 29.745 6.255 33 11.715 33H24.27C29.73 33 32.985 29.745 32.985 24.285V11.715C33 6.255 29.745 3 24.285 3Z"
+                                        fill="#D50706"></path>
+                                    <path
+                                        d="M24 16.875H19.125V12C19.125 11.385 18.615 10.875 18 10.875C17.385 10.875 16.875 11.385 16.875 12V16.875H12C11.385 16.875 10.875 17.385 10.875 18C10.875 18.615 11.385 19.125 12 19.125H16.875V24C16.875 24.615 17.385 25.125 18 25.125C18.615 25.125 19.125 24.615 19.125 24V19.125H24C24.615 19.125 25.125 18.615 25.125 18C25.125 17.385 24.615 16.875 24 16.875Z"
+                                        fill="#D50706"></path>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        class="accordion-content flex relative gap-2.5 justify-center items-center self-stretch px-6 py-4 max-sm:px-5 max-sm:py-3">
+                        <div
+                            class="relative flex-1 text-lg leading-7 text-neutral-300 max-sm:text-base max-sm:leading-6">
+                            Le délai dépend de la complexité de votre projet. En moyenne, un projet simple prend 3-5
+                            jours ouvrables, tandis que des projets plus complexes peuvent prendre 2-3 semaines. Nous
+                            fournissons toujours une estimation précise après avoir discuté de vos besoins.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Seventh Accordion Item -->
+                <div class="accordion-item flex relative flex-col items-start self-stretch rounded-2xl bg-neutral-900">
+                    <div
+                        class="accordion-header flex relative gap-2 items-center self-stretch p-6 rounded-2xl cursor-pointer max-sm:p-5">
+                        <div class="flex relative flex-col flex-1 gap-2 items-start">
+                            <div
+                                class="title-font relative text-2xl leading-9 text-white max-sm:text-xl max-sm:leading-7">
+                                Proposez-vous des services d'urgence ?
+                            </div>
+                        </div>
+                        <div>
+                            <div>
+                                <svg class="accordion-icon minus hidden" width="36" height="36" viewBox="0 0 36 36"
+                                    fill="none" xmlns="http://www.w3.org/2000/svg"
+                                    style="display: none; width: 36px; height: 36px; justify-content: center; align-items: center; aspect-ratio: 1/1; position: relative; flex-shrink: 0;">
+                                    <path opacity="0.4"
+                                        d="M24.285 3H11.715C6.255 3 3 6.255 3 11.715V24.27C3 29.745 6.255 33 11.715 33H24.27C29.73 33 32.985 29.745 32.985 24.285V11.715C33 6.255 29.745 3 24.285 3Z"
+                                        fill="#D50706"></path>
+                                    <path
+                                        d="M24 19.125H12C11.385 19.125 10.875 18.615 10.875 18C10.875 17.385 11.385 16.875 12 16.875H24C24.615 16.875 25.125 17.385 25.125 18C25.125 18.615 24.615 19.125 24 19.125Z"
+                                        fill="#D50706"></path>
+                                </svg>
+                                <svg class="accordion-icon plus" width="36" height="36" viewBox="0 0 36 36" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    style="display: flex; width: 36px; height: 36px; justify-content: center; align-items: center; aspect-ratio: 1/1; position: relative; flex-shrink: 0;">
+                                    <path opacity="0.4"
+                                        d="M24.285 3H11.715C6.255 3 3 6.255 3 11.715V24.27C3 29.745 6.255 33 11.715 33H24.27C29.73 33 32.985 29.745 32.985 24.285V11.715C33 6.255 29.745 3 24.285 3Z"
+                                        fill="#D50706"></path>
+                                    <path
+                                        d="M24 16.875H19.125V12C19.125 11.385 18.615 10.875 18 10.875C17.385 10.875 16.875 11.385 16.875 12V16.875H12C11.385 16.875 10.875 17.385 10.875 18C10.875 18.615 11.385 19.125 12 19.125H16.875V24C16.875 24.615 17.385 25.125 18 25.125C18.615 25.125 19.125 24.615 19.125 24V19.125H24C24.615 19.125 25.125 18.615 25.125 18C25.125 17.385 24.615 16.875 24 16.875Z"
+                                        fill="#D50706"></path>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        class="accordion-content flex relative gap-2.5 justify-center items-center self-stretch px-6 py-4 max-sm:px-5 max-sm:py-3">
+                        <div
+                            class="relative flex-1 text-lg leading-7 text-neutral-300 max-sm:text-base max-sm:leading-6">
+                            Oui, nous offrons des services express pour les projets urgents. Des frais supplémentaires
+                            peuvent s'appliquer en fonction du délai demandé. Contactez-nous directement pour discuter
+                            de votre projet urgent et nous ferons de notre mieux pour répondre à vos besoins dans les
+                            plus brefs délais.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Eighth Accordion Item -->
+                <div class="accordion-item flex relative flex-col items-start self-stretch rounded-2xl bg-neutral-900">
+                    <div
+                        class="accordion-header flex relative gap-2 items-center self-stretch p-6 rounded-2xl cursor-pointer max-sm:p-5">
+                        <div class="flex relative flex-col flex-1 gap-2 items-start">
+                            <div
+                                class="title-font relative text-2xl leading-9 text-white max-sm:text-xl max-sm:leading-7">
+                                Travaillez-vous avec des clients internationaux ?
+                            </div>
+                        </div>
+                        <div>
+                            <div>
+                                <svg class="accordion-icon minus hidden" width="36" height="36" viewBox="0 0 36 36"
+                                    fill="none" xmlns="http://www.w3.org/2000/svg"
+                                    style="display: none; width: 36px; height: 36px; justify-content: center; align-items: center; aspect-ratio: 1/1; position: relative; flex-shrink: 0;">
+                                    <path opacity="0.4"
+                                        d="M24.285 3H11.715C6.255 3 3 6.255 3 11.715V24.27C3 29.745 6.255 33 11.715 33H24.27C29.73 33 32.985 29.745 32.985 24.285V11.715C33 6.255 29.745 3 24.285 3Z"
+                                        fill="#D50706"></path>
+                                    <path
+                                        d="M24 19.125H12C11.385 19.125 10.875 18.615 10.875 18C10.875 17.385 11.385 16.875 12 16.875H24C24.615 16.875 25.125 17.385 25.125 18C25.125 18.615 24.615 19.125 24 19.125Z"
+                                        fill="#D50706"></path>
+                                </svg>
+                                <svg class="accordion-icon plus" width="36" height="36" viewBox="0 0 36 36" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    style="display: flex; width: 36px; height: 36px; justify-content: center; align-items: center; aspect-ratio: 1/1; position: relative; flex-shrink: 0;">
+                                    <path opacity="0.4"
+                                        d="M24.285 3H11.715C6.255 3 3 6.255 3 11.715V24.27C3 29.745 6.255 33 11.715 33H24.27C29.73 33 32.985 29.745 32.985 24.285V11.715C33 6.255 29.745 3 24.285 3Z"
+                                        fill="#D50706"></path>
+                                    <path
+                                        d="M24 16.875H19.125V12C19.125 11.385 18.615 10.875 18 10.875C17.385 10.875 16.875 11.385 16.875 12V16.875H12C11.385 16.875 10.875 17.385 10.875 18C10.875 18.615 11.385 19.125 12 19.125H16.875V24C16.875 24.615 17.385 25.125 18 25.125C18.615 25.125 19.125 24.615 19.125 24V19.125H24C24.615 19.125 25.125 18.615 25.125 18C25.125 17.385 24.615 16.875 24 16.875Z"
+                                        fill="#D50706"></path>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        class="accordion-content flex relative gap-2.5 justify-center items-center self-stretch px-6 py-4 max-sm:px-5 max-sm:py-3">
+                        <div
+                            class="relative flex-1 text-lg leading-7 text-neutral-300 max-sm:text-base max-sm:leading-6">
+                            Absolument ! Nous travaillons avec des clients du monde entier. Toutes nos communications
+                            peuvent se faire en ligne, et nous acceptons les paiements internationaux. Nous adaptons nos
+                            horaires pour faciliter les échanges avec différents fuseaux horaires.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Ninth Accordion Item -->
+                <div class="accordion-item flex relative flex-col items-start self-stretch rounded-2xl bg-neutral-900">
+                    <div
+                        class="accordion-header flex relative gap-2 items-center self-stretch p-6 rounded-2xl cursor-pointer max-sm:p-5">
+                        <div class="flex relative flex-col flex-1 gap-2 items-start">
+                            <div
+                                class="title-font relative text-2xl leading-9 text-white max-sm:text-xl max-sm:leading-7">
+                                Offrez-vous des réductions pour les projets à long terme ?
+                            </div>
+                        </div>
+                        <div>
+                            <div>
+                                <svg class="accordion-icon minus hidden" width="36" height="36" viewBox="0 0 36 36"
+                                    fill="none" xmlns="http://www.w3.org/2000/svg"
+                                    style="display: none; width: 36px; height: 36px; justify-content: center; align-items: center; aspect-ratio: 1/1; position: relative; flex-shrink: 0;">
+                                    <path opacity="0.4"
+                                        d="M24.285 3H11.715C6.255 3 3 6.255 3 11.715V24.27C3 29.745 6.255 33 11.715 33H24.27C29.73 33 32.985 29.745 32.985 24.285V11.715C33 6.255 29.745 3 24.285 3Z"
+                                        fill="#D50706"></path>
+                                    <path
+                                        d="M24 19.125H12C11.385 19.125 10.875 18.615 10.875 18C10.875 17.385 11.385 16.875 12 16.875H24C24.615 16.875 25.125 17.385 25.125 18C25.125 18.615 24.615 19.125 24 19.125Z"
+                                        fill="#D50706"></path>
+                                </svg>
+                                <svg class="accordion-icon plus" width="36" height="36" viewBox="0 0 36 36" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    style="display: flex; width: 36px; height: 36px; justify-content: center; align-items: center; aspect-ratio: 1/1; position: relative; flex-shrink: 0;">
+                                    <path opacity="0.4"
+                                        d="M24.285 3H11.715C6.255 3 3 6.255 3 11.715V24.27C3 29.745 6.255 33 11.715 33H24.27C29.73 33 32.985 29.745 32.985 24.285V11.715C33 6.255 29.745 3 24.285 3Z"
+                                        fill="#D50706"></path>
+                                    <path
+                                        d="M24 16.875H19.125V12C19.125 11.385 18.615 10.875 18 10.875C17.385 10.875 16.875 11.385 16.875 12V16.875H12C11.385 16.875 10.875 17.385 10.875 18C10.875 18.615 11.385 19.125 12 19.125H16.875V24C16.875 24.615 17.385 25.125 18 25.125C18.615 25.125 19.125 24.615 19.125 24V19.125H24C24.615 19.125 25.125 18.615 25.125 18C25.125 17.385 24.615 16.875 24 16.875Z"
+                                        fill="#D50706"></path>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        class="accordion-content flex relative gap-2.5 justify-center items-center self-stretch px-6 py-4 max-sm:px-5 max-sm:py-3">
+                        <div
+                            class="relative flex-1 text-lg leading-7 text-neutral-300 max-sm:text-base max-sm:leading-6">
+                            Oui, nous proposons des tarifs préférentiels pour les collaborations à long terme et les
+                            forfaits de plusieurs projets. Nous pouvons établir un contrat personnalisé avec des
+                            conditions avantageuses pour les clients fidèles. Contactez-nous pour discuter de vos
+                            besoins spécifiques.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer></footer>
+    <script src="../assets/js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const accordionItems = document.querySelectorAll('.accordion-item');
+
+            // First collapse all items
+            accordionItems.forEach(item => {
+                const content = item.querySelector('.accordion-content');
+                const plusIcon = item.querySelector('.accordion-icon.plus');
+                const minusIcon = item.querySelector('.accordion-icon.minus');
+
+                content.classList.remove('expanded');
+                content.style.maxHeight = "0";
+                content.style.padding = "0 24px";
+                plusIcon.style.display = 'flex';
+                minusIcon.style.display = 'none';
+            });
+
+            // Then add click handlers
+            accordionItems.forEach(item => {
+                const header = item.querySelector('.accordion-header');
+                const content = item.querySelector('.accordion-content');
+                const plusIcon = item.querySelector('.accordion-icon.plus');
+                const minusIcon = item.querySelector('.accordion-icon.minus');
+
+                header.addEventListener('click', function () {
+                    const isExpanded = content.classList.contains('expanded');
+
+                    if (isExpanded) {
+                        // Collapse
+                        content.classList.remove('expanded');
+                        content.style.maxHeight = "0";
+                        content.style.padding = "0 24px";
+                        plusIcon.style.display = 'flex';
+                        minusIcon.style.display = 'none';
+                    } else {
+                        // Expand
+                        content.classList.add('expanded');
+                        content.style.maxHeight = "1000px";
+                        content.style.padding = "16px 24px";
+                        plusIcon.style.display = 'none';
+                        minusIcon.style.display = 'flex';
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

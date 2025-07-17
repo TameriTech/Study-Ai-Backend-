@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Godlove Empire - Création Visuelle d'Excellence</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Google Fonts -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:wght@300;400;500;600;700&family=Sacramento&display=swap" />
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #000000;
+      color: #FFFFFF;
+    }
+
+    .typographica {
+      font-family: 'Bebas Neue', sans-serif;
+      letter-spacing: 1px;
+    }
+    
+    .matchmaker {
+      font-family: 'Sacramento', cursive;
+    }
+
+    .button-hover {
+      background: linear-gradient(90deg, #A00000 0%, #D50706 100%);
+      color: #FFFFFF;
+    }
+    .button-hover:hover {
+      filter: brightness(1.1);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(160, 0, 0, 0.4);
+    }
+
+    .hero-section {
+      background: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0)), 
+      url('../assets/home.jpg');
+      background-size: cover;
+      background-position: center;
+    }
+
+    .service-card {
+      background: #111111;
+      transition: all 0.3s ease;
+    }
+    .service-card:hover {
+      background: linear-gradient(135deg, #A00000, #D50706);
+      transform: translateY(-5px);
+    }
+
+    .project-card {
+      transition: all 0.3s ease;
+    }
+    .project-card:hover {
+      transform: scale(1.03);
+    }
+
+    .testimonial-card {
+      background: #111111;
+      border-left: 3px solid #D50706;
+    }
+  </style>
+</head>
+
+<body class="text-white">
+  <!-- Navigation -->
+  <header></header>
+
+<!-- Hero Section -->
+<section class="hero-section flex py-32 px-20 min-h-screen">
+  <div class="max-w-4xl mt-60"> <!-- Added mt-40 -->
+    <p class="matchmaker text-3xl md:text-5xl mb-12 text-left">Votre identité visuelle prend le pouvoir</p>
+    <div class="flex flex-col sm:flex-row gap-4 justify-start mt-8">
+      <a href="contact.html" class="button-hover px-8 py-4 rounded-lg text-lg font-medium transition-all duration-300 w-fit">
+        <span>Collaborons ensemble</span>
+      </a>
+      <a href="services.html" class="border border-[#D50706] text-[#D50706] hover:bg-[#A00000] hover:text-white px-8 py-4 rounded-lg text-lg font-medium transition-all duration-300 w-fit">
+        <span>Découvrir nos services</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+  <!-- About Section -->
+  <section class="py-20 px-4 md:px-8 lg:px-16 bg-black">
+    <div class="max-w-7xl mx-auto">
+      <div class="flex flex-col md:flex-row gap-12 items-center">
+        <div class="md:w-1/2">
+          <span class="uppercase text-[#D50706] tracking-widest">À PROPOS DE NOUS</span>
+          <h2 class="typographica text-4xl md:text-5xl mt-4 mb-6">Fondé par Monsieur Godlove depuis plus de 8 ans</h2>
+          <p class="text-lg mb-8">
+            Godlove Empire fusionne la créativité, l'expertise et l'innovation pour créer des expériences visuelles exceptionnelles qui dépassent les attentes. Nous transformons vos projets visuels en une réalité impactante et mémorable.
+          </p>
+          <a href="about.html" class="button-hover px-8 py-3 rounded-lg inline-flex items-center gap-2">
+            <span>Notre histoire</span>
+            <i class="fas fa-arrow-right"></i>
+          </a>
+        </div>
+        <div class="md:w-1/2 grid grid-cols-2 gap-4">
+          <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" 
+               alt="Projet créatif" class="rounded-lg h-64 w-full object-cover">
+          <img src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" 
+               alt="Projet créatif" class="rounded-lg h-64 w-full object-cover mt-8">
+          <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" 
+               alt="Projet créatif" class="rounded-lg h-64 w-full object-cover">
+          <img src="https://images.unsplash.com/photo-1560419015-7c427e8ae5ba?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" 
+               alt="Projet créatif" class="rounded-lg h-64 w-full object-cover mt-8">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services Section -->
+  <section class="py-20 px-4 md:px-8 lg:px-16 bg-[#111111]">
+    <div class="max-w-7xl mx-auto">
+      <div class="text-center mb-16">
+        <span class="uppercase text-[#D50706] tracking-widest">NOS SERVICES</span>
+        <h2 class="typographica text-4xl md:text-5xl mt-4">Un univers de possibilités créatives</h2>
+        <p class="max-w-2xl mx-auto mt-4">
+          Explorez nos réalisations, trouvez celles qui vous parlent
+        </p>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-8">
+        <!-- Service 1 -->
+        <div class="service-card p-8 rounded-lg">
+          <div class="text-[#D50706] text-4xl mb-4">
+            <i class="fas fa-palette"></i>
+          </div>
+          <h3 class="typographica text-2xl mb-4">Design Graphique</h3>
+          <p class="text-gray-300">
+            Des œuvres d'art photographiques sont créées pour raconter votre histoire et captiver l'objectif.
+          </p>
+        </div>
+        
+        <!-- Service 2 -->
+        <div class="service-card p-8 rounded-lg">
+          <div class="text-[#D50706] text-4xl mb-4">
+            <i class="fas fa-portrait"></i>
+          </div>
+          <h3 class="typographica text-2xl mb-4">Portrait Artistique</h3>
+          <p class="text-gray-300">
+            Nous faisons de vos photos préférées de magnifiques œuvres d'art.
+          </p>
+        </div>
+        
+        <!-- Service 3 -->
+        <div class="service-card p-8 rounded-lg">
+          <div class="text-[#D50706] text-4xl mb-4">
+            <i class="fas fa-car"></i>
+          </div>
+          <h3 class="typographica text-2xl mb-4">Habillage de Véhicule</h3>
+          <p class="text-gray-300">
+            Transformez vos véhicules en véritables ambassadeurs mobiles de votre marque.
+          </p>
+        </div>
+      </div>
+
+      <div class="text-center mt-16">
+        <a href="services.html" class="button-hover px-8 py-4 rounded-lg text-lg font-medium inline-flex items-center gap-2">
+          <span>Tous nos services</span>
+          <i class="fas fa-arrow-right"></i>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Portfolio Section -->
+  <section class="py-20 px-4 md:px-8 lg:px-16 bg-black">
+    <div class="max-w-7xl mx-auto">
+      <div class="text-center mb-16">
+        <span class="uppercase text-[#D50706] tracking-widest">NOTRE PORTFOLIO</span>
+        <h2 class="typographica text-4xl md:text-5xl mt-4">Explorez nos réalisations</h2>
+        <p class="max-w-2xl mx-auto mt-4">
+          Chaque création est une stratégie d'impact qui propulse votre message et élève votre présence.
+        </p>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-6">
+        <!-- Project 1 -->
+        <div class="project-card group overflow-hidden rounded-lg">
+          <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" 
+               alt="Projet design" class="w-full h-64 md:h-80 object-cover transition-transform duration-500 group-hover:scale-105">
+          <div class="p-6 bg-[#111111]">
+            <span class="text-[#D50706] text-sm font-medium">DESIGN GRAPHIQUE</span>
+            <h3 class="typographica text-xl mt-2">Identité visuelle Café MontRoyal</h3>
+          </div>
+        </div>
+        
+        <!-- Project 2 -->
+        <div class="project-card group overflow-hidden rounded-lg">
+          <img src="https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" 
+               alt="Projet portrait" class="w-full h-64 md:h-80 object-cover transition-transform duration-500 group-hover:scale-105">
+          <div class="p-6 bg-[#111111]">
+            <span class="text-[#D50706] text-sm font-medium">PORTRAIT ARTISTIQUE</span>
+            <h3 class="typographica text-xl mt-2">Portrait numérique Marie Lambert</h3>
+          </div>
+        </div>
+        
+        <!-- Project 3 -->
+        <div class="project-card group overflow-hidden rounded-lg">
+          <img src="https://images.unsplash.com/photo-1513151233558-d860c5398176?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" 
+               alt="Projet véhicule" class="w-full h-64 md:h-80 object-cover transition-transform duration-500 group-hover:scale-105">
+          <div class="p-6 bg-[#111111]">
+            <span class="text-[#D50706] text-sm font-medium">HABILLAGE VÉHICULE</span>
+            <h3 class="typographica text-xl mt-2">Flotte Livraison Express Québec</h3>
+          </div>
+        </div>
+      </div>
+
+      <div class="text-center mt-16">
+        <a href="projects.html" class="button-hover px-8 py-4 rounded-lg text-lg font-medium inline-flex items-center gap-2">
+          <span>Voir plus de projets</span>
+          <i class="fas fa-arrow-right"></i>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials Section -->
+  <section class="py-20 px-4 md:px-8 lg:px-16 bg-[#111111]">
+    <div class="max-w-7xl mx-auto">
+      <div class="text-center mb-16">
+        <span class="uppercase text-[#D50706] tracking-widest">TÉMOIGNAGES</span>
+        <h2 class="typographica text-4xl md:text-5xl mt-4">La satisfaction du client est notre plus grande fierté</h2>
+        <p class="max-w-2xl mx-auto mt-4">
+          Voici ce qu'ils pensent de leur expérience avec Godlove Empire.
+        </p>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-8">
+        <!-- Testimonial 1 -->
+        <div class="testimonial-card p-8 rounded-lg">
+          <div class="flex items-center mb-6">
+            <img src="https://randomuser.me/api/portraits/women/32.jpg" alt="Client" class="w-16 h-16 rounded-full mr-4">
+            <div>
+              <h4 class="typographica text-xl">Marie Dubois</h4>
+              <p class="text-gray-400">Directrice Marketing</p>
+            </div>
+          </div>
+          <p class="text-gray-300 italic">
+            "Godlove Empire a transformé notre identité visuelle. Leur approche professionnelle et créative a dépassé toutes nos attentes."
+          </p>
+          <div class="flex mt-4 text-[#D50706]">
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+          </div>
+        </div>
+        
+        <!-- Testimonial 2 -->
+        <div class="testimonial-card p-8 rounded-lg">
+          <div class="flex items-center mb-6">
+            <img src="https://randomuser.me/api/portraits/men/45.jpg" alt="Client" class="w-16 h-16 rounded-full mr-4">
+            <div>
+              <h4 class="typographica text-xl">Jean Martin</h4>
+              <p class="text-gray-400">PDG, Café MontRoyal</p>
+            </div>
+          </div>
+          <p class="text-gray-300 italic">
+            "Le logo créé par Godlove Empire capture parfaitement l'essence de notre marque. Leur travail a considérablement augmenté notre reconnaissance de marque."
+          </p>
+          <div class="flex mt-4 text-[#D50706]">
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+          </div>
+        </div>
+        
+        <!-- Testimonial 3 -->
+        <div class="testimonial-card p-8 rounded-lg">
+          <div class="flex items-center mb-6">
+            <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Client" class="w-16 h-16 rounded-full mr-4">
+            <div>
+              <h4 class="typographica text-xl">Sophie Lambert</h4>
+              <p class="text-gray-400">Artiste Indépendante</p>
+            </div>
+          </div>
+          <p class="text-gray-300 italic">
+            "Le portrait artistique qu'ils ont créé pour moi est tout simplement incroyable. C'est bien plus qu'une photo - c'est une œuvre d'art."
+          </p>
+          <div class="flex mt-4 text-[#D50706]">
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="py-32 px-4 md:px-8 lg:px-16 bg-black relative">
+    <div class="absolute inset-0 bg-[url('../assets/contact.png')] bg-cover bg-center opacity-20"></div>
+    <div class="max-w-4xl mx-auto text-center relative z-10">
+      <h2 class="typographica text-4xl md:text-5xl mb-6">Prêt à donner vie à votre vision ?</h2>
+      <p class="text-xl mb-10 max-w-2xl mx-auto">
+        Une idée ? Discutons de votre projet. Une question, un projet ou un devis personnalisé ?
+      </p>
+      <a href="contact.html" class="button-hover px-8 py-4 rounded-lg text-lg font-medium inline-flex items-center gap-2">
+        <span>Entrer en contact</span>
+        <i class="fas fa-arrow-right"></i>
+      </a>
+    </div>
+  </section>
+
+  <footer></footer>
+  <script src="../assets/js/main.js"></script>
+</body>
+</html>
