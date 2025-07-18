@@ -11,56 +11,7 @@
     <link rel="stylesheet" href="https://use.typekit.net/typography-font-id.css">
     <!-- Replace with actual Typographica font link -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-    <style>
-        @font-face {
-            font-family: 'Matchmaker';
-            src: url('path-to-matchmaker-font.woff2') format('woff2');
-        }
-
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: #000000;
-            color: #FFFFFF;
-        }
-
-        .title-font {
-            font-family: 'Typographica', serif;
-        }
-
-        .slogan-font {
-            font-family: 'Matchmaker', cursive;
-        }
-
-        .gradient-text {
-            background: linear-gradient(90deg, #A00000, #D50706);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-
-        .gradient-bg {
-            background: linear-gradient(90deg, #A00000, #D50706);
-        }
-
-        .accordion-content {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease-out;
-            padding: 0 24px;
-            /* Keep horizontal padding */
-        }
-
-        .accordion-content.expanded {
-            max-height: 1000px;
-            /* Large enough for content */
-            padding: 16px 24px;
-            /* Add vertical padding only when expanded */
-        }
-
-        .accordion-icon {
-            transition: transform 0.3s ease;
-        }
-    </style>
+      <link rel="stylesheet" href="../assets/css/style.css">
 </head>
 
 <body class="bg-black text-white">
@@ -528,52 +479,6 @@
     </div>
     <footer></footer>
     <script src="../assets/js/main.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const accordionItems = document.querySelectorAll('.accordion-item');
-
-            // First collapse all items
-            accordionItems.forEach(item => {
-                const content = item.querySelector('.accordion-content');
-                const plusIcon = item.querySelector('.accordion-icon.plus');
-                const minusIcon = item.querySelector('.accordion-icon.minus');
-
-                content.classList.remove('expanded');
-                content.style.maxHeight = "0";
-                content.style.padding = "0 24px";
-                plusIcon.style.display = 'flex';
-                minusIcon.style.display = 'none';
-            });
-
-            // Then add click handlers
-            accordionItems.forEach(item => {
-                const header = item.querySelector('.accordion-header');
-                const content = item.querySelector('.accordion-content');
-                const plusIcon = item.querySelector('.accordion-icon.plus');
-                const minusIcon = item.querySelector('.accordion-icon.minus');
-
-                header.addEventListener('click', function () {
-                    const isExpanded = content.classList.contains('expanded');
-
-                    if (isExpanded) {
-                        // Collapse
-                        content.classList.remove('expanded');
-                        content.style.maxHeight = "0";
-                        content.style.padding = "0 24px";
-                        plusIcon.style.display = 'flex';
-                        minusIcon.style.display = 'none';
-                    } else {
-                        // Expand
-                        content.classList.add('expanded');
-                        content.style.maxHeight = "1000px";
-                        content.style.padding = "16px 24px";
-                        plusIcon.style.display = 'none';
-                        minusIcon.style.display = 'flex';
-                    }
-                });
-            });
-        });
-    </script>
 </body>
 
 </html>

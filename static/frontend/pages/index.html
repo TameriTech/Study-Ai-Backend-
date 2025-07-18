@@ -13,80 +13,31 @@
 
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
-
-  <style>
-    body {
-      font-family: 'Poppins', sans-serif;
-      background-color: #000000;
-      color: #FFFFFF;
-    }
-
-    .typographica {
-      font-family: 'Bebas Neue', sans-serif;
-      letter-spacing: 1px;
-    }
-    
-    .matchmaker {
-      font-family: 'Sacramento', cursive;
-    }
-
-    .button-hover {
-      background: linear-gradient(90deg, #A00000 0%, #D50706 100%);
-      color: #FFFFFF;
-    }
-    .button-hover:hover {
-      filter: brightness(1.1);
-      transform: translateY(-2px);
-      box-shadow: 0 4px 15px rgba(160, 0, 0, 0.4);
-    }
-
-    .hero-section {
-      background: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0)), 
-      url('../assets/home.jpg');
-      background-size: cover;
-      background-position: center;
-    }
-
-    .service-card {
-      background: #111111;
-      transition: all 0.3s ease;
-    }
-    .service-card:hover {
-      background: linear-gradient(135deg, #A00000, #D50706);
-      transform: translateY(-5px);
-    }
-
-    .project-card {
-      transition: all 0.3s ease;
-    }
-    .project-card:hover {
-      transform: scale(1.03);
-    }
-
-    .testimonial-card {
-      background: #111111;
-      border-left: 3px solid #D50706;
-    }
-  </style>
+  
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="../assets/css/style.css">
 </head>
 
 <body class="text-white">
   <!-- Navigation -->
   <header></header>
 
-<!-- Hero Section -->
-<section class="hero-section flex py-32 px-20 min-h-screen">
-  <div class="max-w-4xl mt-60"> <!-- Added mt-40 -->
-    <p class="matchmaker text-3xl md:text-5xl mb-12 text-left">Votre identité visuelle prend le pouvoir</p>
-    <div class="flex flex-col sm:flex-row gap-4 justify-start mt-8">
-      <a href="contact.html" class="button-hover px-8 py-4 rounded-lg text-lg font-medium transition-all duration-300 w-fit">
-        <span>Collaborons ensemble</span>
-      </a>
-      <a href="services.html" class="border border-[#D50706] text-[#D50706] hover:bg-[#A00000] hover:text-white px-8 py-4 rounded-lg text-lg font-medium transition-all duration-300 w-fit">
-        <span>Découvrir nos services</span>
-      </a>
+<section class="hero-section flex py-20 px-8 md:px-20 min-h-[60vh]"> <!-- Reduced padding and height -->
+    <div class="max-w-4xl mt-20 md:mt-32"> <!-- Reduced top margin -->
+      <div class="mb-8 md:mb-8"> <!-- Reduced bottom margin -->
+        <span class="text-3xl md:text-5xl text-white font-bold">BIENVENUE DANS <br></span>
+        <span class="text-3xl md:text-5xl text-[#D50706] font-bold">L'AMPIRE</span>
+      </div>
+      <p class="matchmaker text-3xl md:text-5xl mb-2 text-left">Votre identité visuelle prend le pouvoir</p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-start mt-8">
+        <a href="contact-us.html" class="button-hover px-8 py-4 rounded-lg text-lg font-medium transition-all duration-300 w-fit">
+          <span>Collaborons ensemble</span>
+        </a>
+        <a href="services.html" class="border border-[#D50706] text-[#D50706] hover:bg-[#A00000] hover:text-white px-8 py-4 rounded-lg text-lg font-medium transition-all duration-300 w-fit">
+          <span>Découvrir nos services</span>
+        </a>
+      </div>
     </div>
-  </div>
 </section>
 
   <!-- About Section -->
@@ -99,7 +50,7 @@
           <p class="text-lg mb-8">
             Godlove Empire fusionne la créativité, l'expertise et l'innovation pour créer des expériences visuelles exceptionnelles qui dépassent les attentes. Nous transformons vos projets visuels en une réalité impactante et mémorable.
           </p>
-          <a href="about.html" class="button-hover px-8 py-3 rounded-lg inline-flex items-center gap-2">
+          <a href="about-us.html" class="button-hover px-8 py-3 rounded-lg inline-flex items-center gap-2">
             <span>Notre histoire</span>
             <i class="fas fa-arrow-right"></i>
           </a>
@@ -311,7 +262,7 @@
       <p class="text-xl mb-10 max-w-2xl mx-auto">
         Une idée ? Discutons de votre projet. Une question, un projet ou un devis personnalisé ?
       </p>
-      <a href="contact.html" class="button-hover px-8 py-4 rounded-lg text-lg font-medium inline-flex items-center gap-2">
+      <a href="contact-us.html" class="button-hover px-8 py-4 rounded-lg text-lg font-medium inline-flex items-center gap-2">
         <span>Entrer en contact</span>
         <i class="fas fa-arrow-right"></i>
       </a>
