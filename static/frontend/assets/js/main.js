@@ -10,7 +10,7 @@ function loadNavigation() {
     { name: "Services", path: "services.html" },
     { name: "Projets", path: "projects.html" },
     { name: "Contact", path: "contact.html" },
-    { name: "FAQ", path: "faq.html" }
+    { name: "FAQs", path: "faq.html" }
   ];
 
   const nav = `
@@ -144,7 +144,7 @@ function loadFooter() {
             <li><a href="services.html" class="hover:text-red-500 transition-colors">Services</a></li>
             <li><a href="projects.html" class="hover:text-red-500 transition-colors">Projets</a></li>
             <li><a href="contact-us.html" class="hover:text-red-500 transition-colors">Contact</a></li>
-            <li><a href="faq.html" class="hover:text-red-500 transition-colors">FAQ</a></li>
+            <li><a href="faq.html" class="hover:text-red-500 transition-colors">FAQs</a></li>
           </ul>
         </div>
 
