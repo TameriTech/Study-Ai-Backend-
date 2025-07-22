@@ -44,17 +44,17 @@
       <button class="filter-btn active px-6 py-2 rounded-full border border-[#A00000] text-white" data-filter="design">
         Design Graphique
       </button>
+      <button class="filter-btn px-6 py-2 rounded-full border border-neutral-700 text-neutral-300 hover:border-[#A00000] hover:text-white" data-filter="portrait">
+        AGRANDISSEMENT DES PORTRAITS ARTISTIQUES
+      </button>
+      <button class="filter-btn px-6 py-2 rounded-full border border-neutral-700 text-neutral-300 hover:border-[#A00000] hover:text-white" data-filter="vehicle">
+        Habillage Véhicule
+      </button>
       <button class="filter-btn px-6 py-2 rounded-full border border-neutral-700 text-neutral-300 hover:border-[#A00000] hover:text-white" data-filter="print">
         Imprimerie
       </button>
       <button class="filter-btn px-6 py-2 rounded-full border border-neutral-700 text-neutral-300 hover:border-[#A00000] hover:text-white" data-filter="photo">
         Photographie
-      </button>
-      <button class="filter-btn px-6 py-2 rounded-full border border-neutral-700 text-neutral-300 hover:border-[#A00000] hover:text-white" data-filter="vehicle">
-        Habillage Véhicule
-      </button>
-      <button class="filter-btn px-6 py-2 rounded-full border border-neutral-700 text-neutral-300 hover:border-[#A00000] hover:text-white" data-filter="portrait">
-        AGRANDISSEMENT DES PORTRAITS ARTISTIQUES
       </button>
     </div>
 
@@ -201,6 +201,36 @@
         </p>
       </div>
 
+      <!-- AGRANDISSEMENT DES PORTRAITS ARTISTIQUES Services -->
+      <div class="service-card flex flex-col gap-6 bg-cardBg rounded-lg p-6 w-[320px] max-sm:w-full cursor-pointer" data-category="portrait" style="display: none;">
+        <img
+          src="https://cdn.builder.io/api/v1/image/assets/TEMP/a373854556b0213666134d3b53c27bd632473206?width=600"
+          alt="AGRANDISSEMENT DES PORTRAITS ARTISTIQUES"
+          class="rounded object-cover h-48 w-full"
+        />
+        <h2 class="text-3xl font-bold leading-tight text-neutral-100 font-poppins">
+          Agrandissement Portraits Artistiques
+        </h2>
+        <p class="text-neutral-400 text-base leading-relaxed font-poppins">
+          Illuminez vos espaces avec de magnifiques portraits artistiques.
+        </p>
+      </div>
+
+      <!-- Habillage Véhicule Services -->
+      <div class="service-card flex flex-col gap-6 bg-cardBg rounded-lg p-6 w-[320px] max-sm:w-full cursor-pointer" data-category="vehicle" style="display: none;">
+        <img
+          src="https://images.unsplash.com/photo-1626785774573-4b799315345d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80"
+          alt="Habillage de Véhicules"
+          class="rounded object-cover h-48 w-full"
+        />
+        <h2 class="text-3xl font-bold leading-tight text-neutral-100 font-poppins">
+          Habillage de Véhicule
+        </h2>
+        <p class="text-neutral-400 text-base leading-relaxed font-poppins">
+          Lettrage, semi-wrap ou wrap complet, nous créons des designs attractifs qui transforment vos véhicules en ambassadeurs mobiles de votre marque.
+        </p>
+      </div>
+
       <!-- Imprimerie Services -->
       <div class="service-card flex flex-col gap-6 bg-cardBg rounded-lg p-6 w-[320px] max-sm:w-full cursor-pointer" data-category="print" style="display: none;">
         <img
@@ -256,36 +286,6 @@
         </h2>
         <p class="text-neutral-400 text-base leading-relaxed font-poppins">
           Une amélioration minutieuse de vos images, pour sublimer chaque détail et garantir un rendu professionnel impeccable.
-        </p>
-      </div>
-
-      <!-- Habillage Véhicule Services -->
-      <div class="service-card flex flex-col gap-6 bg-cardBg rounded-lg p-6 w-[320px] max-sm:w-full cursor-pointer" data-category="vehicle" style="display: none;">
-        <img
-          src="https://images.unsplash.com/photo-1626785774573-4b799315345d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80"
-          alt="Habillage de Véhicules"
-          class="rounded object-cover h-48 w-full"
-        />
-        <h2 class="text-3xl font-bold leading-tight text-neutral-100 font-poppins">
-          Habillage de Véhicule
-        </h2>
-        <p class="text-neutral-400 text-base leading-relaxed font-poppins">
-          Lettrage, semi-wrap ou wrap complet, nous créons des designs attractifs qui transforment vos véhicules en ambassadeurs mobiles de votre marque.
-        </p>
-      </div>
-
-      <!-- AGRANDISSEMENT DES PORTRAITS ARTISTIQUES Services -->
-      <div class="service-card flex flex-col gap-6 bg-cardBg rounded-lg p-6 w-[320px] max-sm:w-full cursor-pointer" data-category="portrait" style="display: none;">
-        <img
-          src="https://cdn.builder.io/api/v1/image/assets/TEMP/a373854556b0213666134d3b53c27bd632473206?width=600"
-          alt="AGRANDISSEMENT DES PORTRAITS ARTISTIQUES"
-          class="rounded object-cover h-48 w-full"
-        />
-        <h2 class="text-3xl font-bold leading-tight text-neutral-100 font-poppins">
-          Agrandissement Portraits Artistiques
-        </h2>
-        <p class="text-neutral-400 text-base leading-relaxed font-poppins">
-          Illuminez vos espaces avec de magnifiques portraits artistiques.
         </p>
       </div>
     </div>
@@ -344,12 +344,12 @@
           <option value="Covers de Livre">Covers de Livre</option>
           <option value="Étiquettes">Étiquettes</option>
           <option value="Social Media">Social Media</option>
+          <option value="Agrandissement Portraits Artistiques">Agrandissement Portraits Artistiques</option>
+          <option value="Habillage de Véhicule">Habillage de Véhicule</option>
           <option value="Imprimerie">Imprimerie</option>
           <option value="Shooting Indoor">Shooting Indoor</option>
           <option value="Shooting Outdoor">Shooting Outdoor</option>
           <option value="Retouche Photo">Retouche Photo</option>
-          <option value="Habillage de Véhicule">Habillage de Véhicule</option>
-          <option value="Agrandissement Portraits Artistiques">Agrandissement Portraits Artistiques</option>
         </select>
       </div>
 
@@ -375,7 +375,7 @@
     const closeQuoteModal = document.getElementById('close-quote-modal');
 
     // Open modal
-    openQuoteModal.addEventListener('click', () => {
+    openQuoteModal?.addEventListener('click', () => {
       quoteModal.classList.remove('hidden');
       document.body.style.overflow = 'hidden'; // Prevent scrolling when modal is open
     });
