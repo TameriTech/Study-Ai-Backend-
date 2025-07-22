@@ -19,7 +19,7 @@ function loadNavigation() {
         <div class="flex items-center justify-between h-20">
           <div class="flex-shrink-0">
             <a href="index.html" aria-label="Godlove Empire Accueil">
-              <img class="w-[158px] h-[90px]" src="https://cdn.builder.io/api/v1/image/assets/TEMP/ad855b78a94778349eb54c38c40e26157a7a8e38?width=158" alt="Logo Godlove">
+              <img class="w-[158px] h-[90px]" src="https://study.tameri.tech/static/logo-godlove.png" alt="Logo Godlove">
             </a>
           </div>
 
@@ -112,7 +112,7 @@ function loadFooter() {
         <!-- Godlove Empire Section -->
         <div class="md:col-span-1 flex flex-col items-center md:items-start">
           <a href="index.html" class="mb-5">
-            <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/ad855b78a94778349eb54c38c40e26157a7a8e38?width=158" alt="Godlove Empire Logo" class="w-[158px] h-[90px]">
+            <img src="https://study.tameri.tech/static/logo-godlove.png" alt="Godlove Empire Logo" class="w-[158px] h-[90px]">
           </a>
           <p class="mb-6 leading-relaxed max-w-xs text-center md:text-left">
             LABEL DE CRÉATION VISUELLE & ARTISTIQUE.
@@ -121,11 +121,17 @@ function loadFooter() {
             <a href="#" aria-label="Facebook" class="w-10 h-10 rounded-full bg-stone-700 flex items-center justify-center hover:bg-red-700 transition-colors">
               <i class="fab fa-facebook-f"></i>
             </a>
-            <a href="#" aria-label="Twitter" class="w-10 h-10 rounded-full bg-stone-700 flex items-center justify-center hover:bg-red-700 transition-colors">
-              <i class="fab fa-twitter"></i>
-            </a>
             <a href="#" aria-label="Instagram" class="w-10 h-10 rounded-full bg-stone-700 flex items-center justify-center hover:bg-red-700 transition-colors">
               <i class="fab fa-instagram"></i>
+            </a>
+            <a href="#" aria-label="LinkedIn" class="w-10 h-10 rounded-full bg-stone-700 flex items-center justify-center hover:bg-red-700 transition-colors">
+              <i class="fab fa-linkedin-in"></i>
+            </a>
+            <a href="#" aria-label="TikTok" class="w-10 h-10 rounded-full bg-stone-700 flex items-center justify-center hover:bg-red-700 transition-colors">
+              <i class="fab fa-tiktok"></i>
+            </a>
+            <a href="#" aria-label="YouTube" class="w-10 h-10 rounded-full bg-stone-700 flex items-center justify-center hover:bg-red-700 transition-colors">
+              <i class="fab fa-youtube"></i>
             </a>
           </div>
         </div>
@@ -146,10 +152,10 @@ function loadFooter() {
         <div class="flex flex-col items-center md:items-start">
           <h4 class="text-xl font-semibold mb-5 text-center md:text-left">Services</h4>
           <ul class="space-y-3 font-medium text-center md:text-left">
-            <li><a href="services.html#design" class="hover:text-red-500 transition-colors">Branding</a></li>
-            <li><a href="services.html#photo" class="hover:text-red-500 transition-colors">Photographie</a></li>
-            <li><a href="services.html#print" class="hover:text-red-500 transition-colors">Impression</a></li>
             <li><a href="services.html#design" class="hover:text-red-500 transition-colors">Design Graphique</a></li>
+            <li><a href="services.html#vehicle" class="hover:text-red-500 transition-colors">Habilage de Véhicule</a></li>
+            <li><a href="services.html#portrait" class="hover:text-red-500 transition-colors">Portrait Artistique</a></li>
+            <li><a href="services.html#print" class="hover:text-red-500 transition-colors">Imprimerie</a></li>
           </ul>
         </div>
 
@@ -157,9 +163,11 @@ function loadFooter() {
         <div class="flex flex-col items-center md:items-start">
           <h4 class="text-xl font-semibold mb-5 text-center md:text-left">Contact</h4>
           <div class="text-center md:text-left">
+            <p class="mb-2 font-medium">Gatineau, Québec (Canada)</p>
             <p class="mb-2 font-medium">Douala, Cameroun</p>
-            <p class="mb-2 font-medium">+237 650 000 000</p>
-            <p class="font-medium">info@godloveempire.com</p>
+            <p class="mb-2 font-medium">WhatsApp: <a href="https://wa.me/237659005100" target="_blank" class="hover:text-red-500">+237 659 00 51 00</a></p>
+            <p class="mb-2 font-medium">Canada: +1 613 621 9870</p>
+            <p class="font-medium">Email: <a href="mailto:gadloveempire@gmail.com" class="hover:text-red-500">gadloveempire@gmail.com</a></p>
           </div>
         </div>
       </div>

@@ -163,6 +163,20 @@ body {
               url('../home.jpg');
   background-size: cover;
   background-position: center;
+  background-repeat: no-repeat;
+  min-height: 100vh; /* Use viewport height for full screen */
+  width: 100%;
+  
+  /* Add responsive adjustments */
+  @media (max-width: 768px) {
+    min-height: 70vh; /* Smaller height on mobile */
+    background-attachment: scroll; /* Disable parallax on mobile */
+    background-position: top center; /* Adjust position for mobile */
+  }
+  
+  @media (max-width: 480px) {
+    min-height: 60vh; /* Even smaller for very small devices */
+  }
 }
 .hero-section1 {
       background: linear-gradient(rgba(208, 6, 6, 0.171),

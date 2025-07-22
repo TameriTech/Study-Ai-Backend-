@@ -38,7 +38,7 @@
 
             
             <!-- Contact Methods -->
-            <div class="flex flex-col gap-6 mt-16 w-full max-md:mt-10 max-md:max-w-full">
+            <!-- <div class="flex flex-col gap-6 mt-16 w-full max-md:mt-10 max-md:max-w-full">
                 <h2 class="text-3xl font-bold leading-10 text-center text-white max-md:max-w-full">
                     Moyens de contact
                 </h2>
@@ -135,7 +135,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> -->
 
             <!-- Contact Section -->
             <div class="flex flex-wrap gap-6 mt-9 w-full max-md:max-w-full">
@@ -305,56 +305,64 @@
             </div>
 
             <!-- Payment Methods Section -->
-<div class="flex flex-col gap-6 mt-16 w-full max-md:mt-10 max-md:max-w-full">
-    <h2 class="text-3xl font-bold leading-10 text-center text-white max-md:max-w-full">
-        Méthodes de paiement acceptées
-    </h2>
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mt-8">
-        <!-- Orange Money -->
-        <div class="flex flex-col items-center p-6 rounded-lg bg-neutral-900 hover:bg-neutral-800 transition-colors">
-            <div class="w-24 h-24 mb-4 flex items-center justify-center bg-white p-2 rounded-lg">
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR1quBvk9UZ0_67OKGgkAVJb3oxo5UKz8HD5_BSxwv8VeqWH_jnex3GcwutgCINOpTL-O0&usqp=CAU" 
-                     alt="Orange Money" 
-                     class="max-w-full max-h-full object-contain">
+            <div class="flex flex-col gap-6 mt-16 w-full max-md:mt-10 max-md:max-w-full">
+                <h2 class="text-3xl font-bold leading-10 text-center text-white max-md:max-w-full">
+                    Méthodes de paiement acceptées
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-8">
+                    <!-- Orange Money -->
+                    <div class="flex flex-col items-center p-6 rounded-xl bg-neutral-900 hover:bg-neutral-800 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg">
+                        <div class="w-16 h-16 mb-4 flex items-center justify-center bg-orange-100 p-2 rounded-full">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-10 h-10 text-orange-500">
+                                <path fill="currentColor" d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10a10 10 0 0 0 10-10A10 10 0 0 0 12 2m0 2a8 8 0 0 1 8 8a8 8 0 0 1-8 8a8 8 0 0 1-8-8a8 8 0 0 1 8-8m-1 3v8h1.5V16H15V7h-4m1.5 1.5H13v5h1.5v-5Z"/>
+                            </svg>
+                        </div>
+                        <div class="text-xl font-bold text-white">Orange Money</div>
+                        <div class="text-lg text-neutral-300 mt-2 font-mono">+237 659 00 51 00</div>
+                        <div class="text-sm text-neutral-400 mt-2">Paiements instantanés</div>
+                    </div>
+                    
+                    <!-- MTN Mobile Money -->
+                    <div class="flex flex-col items-center p-6 rounded-xl bg-neutral-900 hover:bg-neutral-800 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg">
+                        <div class="w-16 h-16 mb-4 flex items-center justify-center bg-yellow-100 p-2 rounded-full">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-10 h-10 text-yellow-600">
+                                <path fill="currentColor" d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10a10 10 0 0 0 10-10A10 10 0 0 0 12 2m0 2a8 8 0 0 1 8 8a8 8 0 0 1-8 8a8 8 0 0 1-8-8a8 8 0 0 1 8-8m-1 3v8h1.5V16H15V7h-4m1.5 1.5H13v5h1.5v-5Z"/>
+                            </svg>
+                        </div>
+                        <div class="text-xl font-bold text-white">MTN Mobile Money</div>
+                        <div class="text-lg text-neutral-300 mt-2 font-mono">+237 652 436 888</div>
+                        <div class="text-sm text-neutral-400 mt-2">Transferts sécurisés</div>
+                    </div>
+                    
+                    <!-- PayPal -->
+                    <div class="flex flex-col items-center p-6 rounded-xl bg-neutral-900 hover:bg-neutral-800 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg">
+                        <div class="w-16 h-16 mb-4 flex items-center justify-center bg-blue-100 p-2 rounded-full">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-10 h-10 text-blue-500">
+                                <path fill="currentColor" d="M7.5 7.5h4.13c1.67 0 3.19.8 3.78 2.12c.72 1.54.05 3.25-1.41 4.03c-.81.42-1.72.6-2.62.6H8.53L7.5 15.5H4.77l1.26-8.5H7.5m.76-3h4.13c1.67 0 3.19.8 3.78 2.12c.72 1.54.05 3.25-1.41 4.03c-.81.42-1.72.6-2.62.6H8.53l-.27 1.5H4.77l1.26-8.5H7.5l-.24 1.5Z"/>
+                            </svg>
+                        </div>
+                        <div class="text-xl font-bold text-white">PayPal</div>
+                        <div class="text-lg text-neutral-300 mt-2">contact@godloveempire.com</div>
+                        <div class="text-sm text-neutral-400 mt-2">Paiements internationaux</div>
+                    </div>
+                    
+                    <!-- Interac & Bank Transfer -->
+                    <div class="flex flex-col items-center p-6 rounded-xl bg-neutral-900 hover:bg-neutral-800 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg">
+                        <div class="w-16 h-16 mb-4 flex items-center justify-center bg-green-100 p-2 rounded-full">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-10 h-10 text-green-600">
+                                <path fill="currentColor" d="M20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2m0 14H4v-6h16v6m0-10H4V6h16v2Z"/>
+                            </svg>
+                        </div>
+                        <div class="text-xl font-bold text-white">Virement Bancaire</div>
+                        <div class="text-lg text-neutral-300 mt-2">Interac & Transferts</div>
+                        <div class="text-sm text-neutral-400 mt-2">Détails sur demande</div>
+                    </div>
+                </div>
+                
+                <div class="text-center text-neutral-400 mt-6">
+                    <p>Pour les virements bancaires, veuillez nous contacter pour obtenir nos coordonnées bancaires complètes.</p>
+                </div>
             </div>
-            <div class="text-lg font-medium text-white">Orange Money</div>
-            <div class="text-sm text-neutral-400 mt-1">+237 6XX XXX XXX</div>
-        </div>
-        
-        <!-- MTN Mobile Money -->
-        <div class="flex flex-col items-center p-6 rounded-lg bg-neutral-900 hover:bg-neutral-800 transition-colors">
-            <div class="w-24 h-24 mb-4 flex items-center justify-center bg-white p-2 rounded-lg">
-                <img src="https://i0.wp.com/www.digitalbusiness.africa/wp-content/uploads/2019/04/mtn-Mobile-Money-750x406.jpg?resize=750%2C406&ssl=1" 
-                     alt="MTN Mobile Money" 
-                     class="max-w-full max-h-full object-contain">
-            </div>
-            <div class="text-lg font-medium text-white">MTN Mobile Money</div>
-            <div class="text-sm text-neutral-400 mt-1">+237 6XX XXX XXX</div>
-        </div>
-        
-        <!-- PayPal -->
-        <div class="flex flex-col items-center p-6 rounded-lg bg-neutral-900 hover:bg-neutral-800 transition-colors">
-            <div class="w-24 h-24 mb-4 flex items-center justify-center bg-white p-2 rounded-lg">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" 
-                     alt="PayPal" 
-                     class="max-w-full max-h-full object-contain">
-            </div>
-            <div class="text-lg font-medium text-white">PayPal</div>
-            <div class="text-sm text-neutral-400 mt-1">contact@godloveempire.com</div>
-        </div>
-        
-        <!-- Interac -->
-        <div class="flex flex-col items-center p-6 rounded-lg bg-neutral-900 hover:bg-neutral-800 transition-colors">
-            <div class="w-24 h-24 mb-4 flex items-center justify-center bg-white p-2 rounded-lg">
-                <img src="https://i.ebayimg.com/images/g/ZPsAAOxy63FS398h/s-l1200.jpg" 
-                     alt="Interac" 
-                     class="max-w-full max-h-full object-contain">
-            </div>
-            <div class="text-lg font-medium text-white">Interac</div>
-            <div class="text-sm text-neutral-400 mt-1">contact@godloveempire.com</div>
-        </div>
-    </div>
-</div>
             
         </div>
     </div>

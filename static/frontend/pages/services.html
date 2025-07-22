@@ -18,265 +18,279 @@
   <!-- Navigation -->
   <header></header>
 
-  <main class="flex flex-col gap-12 items-center px-16 py-16 max-md:px-8 max-md:py-12 max-sm:px-4 max-sm:py-8">
-    <div class="max-w-[1384px] w-full flex flex-col gap-8 items-center text-center max-md:max-w-[900px]">
-      <!-- Section Header -->
-      <div class="flex flex-col gap-4 max-w-[720px]">
-        <div class="uppercase text-lg text-neutral-400 tracking-widest font-semibold">
-          NOS SERVICES
-        </div>
-        <h1 class="text-5xl font-bold leading-tight text-neutral-100 max-md:text-4xl max-sm:text-3xl max-sm:leading-snug">
-          Nos services en un coup d'œil
-        </h1>
-         <p class="text-lg text-neutral-300 max-sm:text-base max-sm:leading-relaxed">
-          De la conception de logos à la photographie professionnelle, nous vous accompagnons à chaque étape de votre projet visuel. Découvrez nos divers services créatifs conçus pour élever l'identité de votre marque.
+<main class="flex flex-col gap-12 items-center px-16 py-16 max-md:px-8 max-md:py-12 max-sm:px-4 max-sm:py-8">
+  <div class="max-w-[1384px] w-full flex flex-col gap-8 items-center text-center max-md:max-w-[900px]">
+    <!-- Section Header -->
+    <div class="flex flex-col gap-4 max-w-[720px]">
+      <div class="uppercase text-lg text-neutral-400 tracking-widest font-semibold">
+        NOS SERVICES
+      </div>
+      <h1 class="text-5xl font-bold leading-tight text-neutral-100 max-md:text-4xl max-sm:text-3xl max-sm:leading-snug">
+        Pas de superflu. Que des résultats !
+      </h1>
+      <p class="text-lg text-neutral-300 max-sm:text-base max-sm:leading-relaxed">
+        Attirer l'attention et susciter l'intérêt de vos clients. Voilà l'objectif de nos services. Quand l'effort et le plaisir s'entremêlent, les projets ne sont que meilleurs.
+      </p>
+    </div>
+
+    <!-- Brand Vision / Intro -->
+    <div class="max-w-[720px] text-center text-neutral-400 italic font-medium cormorant text-1xl">
+      "Godlove Empire fusionne créativité, expertise et innovation pour créer des expériences visuelles qui captivent et renforcent la présence de votre marque."
+    </div>
+    </div>
+
+    <!-- Category Filter Buttons -->
+    <div class="flex flex-wrap justify-center gap-3 mb-8 animate-fadeIn" style="animation-delay: 0.2s;">
+      <button class="filter-btn active px-6 py-2 rounded-full border border-[#A00000] text-white" data-filter="design">
+        Design Graphique
+      </button>
+      <button class="filter-btn px-6 py-2 rounded-full border border-neutral-700 text-neutral-300 hover:border-[#A00000] hover:text-white" data-filter="print">
+        Imprimerie
+      </button>
+      <button class="filter-btn px-6 py-2 rounded-full border border-neutral-700 text-neutral-300 hover:border-[#A00000] hover:text-white" data-filter="photo">
+        Photographie
+      </button>
+      <button class="filter-btn px-6 py-2 rounded-full border border-neutral-700 text-neutral-300 hover:border-[#A00000] hover:text-white" data-filter="vehicle">
+        Habillage Véhicule
+      </button>
+      <button class="filter-btn px-6 py-2 rounded-full border border-neutral-700 text-neutral-300 hover:border-[#A00000] hover:text-white" data-filter="portrait">
+        Portrait Artistique
+      </button>
+    </div>
+
+    <!-- Services grid -->
+    <div class="flex flex-wrap gap-6 justify-center max-md:gap-4 max-sm:gap-6 max-sm:flex-col" id="services-container">
+      <!-- Design Graphique Services -->
+      <div class="service-card flex flex-col gap-6 bg-cardBg rounded-lg p-6 w-[320px] max-sm:w-full cursor-pointer" data-category="design">
+        <img
+          src="https://cdn.builder.io/api/v1/image/assets/TEMP/0aa98395df6b9a41e41c97eeb491ef7a32afbc69?width=600"
+          alt="Conception de logo"
+          class="rounded object-cover h-48 w-full"
+        />
+        <h2 class="text-3xl font-bold leading-tight text-neutral-100 font-poppins">
+          Conception de Logo
+        </h2>
+        <p class="text-neutral-400 text-base leading-relaxed font-poppins">
+          Création de logos distinctifs qui incarnent l'essence de votre marque.
         </p>
       </div>
 
-      <!-- Brand Vision / Intro -->
-      <div class="max-w-[720px] text-center text-neutral-400 italic font-medium cormorant text-1xl">
-        "Godlove Empire fusionne créativité, expertise et innovation pour créer des expériences visuelles qui captivent et renforcent la présence de votre marque."
-      </div>
+      <div class="service-card flex flex-col gap-6 bg-cardBg rounded-lg p-6 w-[320px] max-sm:w-full cursor-pointer" data-category="design">
+        <img
+          src="https://images.unsplash.com/photo-1584824486539-53bb4646bdbc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80"
+          alt="Identité visuelle"
+          class="rounded object-cover h-48 w-full"
+        />
+        <h2 class="text-3xl font-bold leading-tight text-neutral-100 font-poppins">
+          Identité Visuelle
+        </h2>
+        <p class="text-neutral-400 text-base leading-relaxed font-poppins">
+          L'image est l'élément qui fait le plus vendre. Elle permet d'attirer l'attention et de susciter l'intérêt de la clientèle.
+        </p>
       </div>
 
-      <!-- Category Filter Buttons -->
-      <div class="flex flex-wrap justify-center gap-3 mb-8 animate-fadeIn" style="animation-delay: 0.2s;">
-        <button class="filter-btn active px-6 py-2 rounded-full border border-[#A00000] text-white" data-filter="design">
-          Design Graphique
-        </button>
-        <button class="filter-btn px-6 py-2 rounded-full border border-neutral-700 text-neutral-300 hover:border-[#A00000] hover:text-white" data-filter="print">
+      <div class="service-card flex flex-col gap-6 bg-cardBg rounded-lg p-6 w-[320px] max-sm:w-full cursor-pointer" data-category="design">
+        <img
+          src="https://cdn.builder.io/api/v1/image/assets/TEMP/8d7f641b8420d914a1a4a0fe7f20f7149b397b04?width=600"
+          alt="Affiches et Flyers"
+          class="rounded object-cover h-48 w-full"
+        />
+        <h2 class="text-3xl font-bold leading-tight text-neutral-100 font-poppins">
+          Affiches / Flyers
+        </h2>
+        <p class="text-neutral-400 text-base leading-relaxed font-poppins">
+          Affiches et flyers accrocheurs conçus pour promouvoir efficacement votre message.
+        </p>
+      </div>
+
+      <div class="service-card flex flex-col gap-6 bg-cardBg rounded-lg p-6 w-[320px] max-sm:w-full cursor-pointer" data-category="design">
+        <img
+          src="https://images.unsplash.com/photo-1551434678-e076c223a692?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80"
+          alt="Roll Up"
+          class="rounded object-cover h-48 w-full"
+        />
+        <h2 class="text-3xl font-bold leading-tight text-neutral-100 font-poppins">
+          Roll Up
+        </h2>
+        <p class="text-neutral-400 text-base leading-relaxed font-poppins">
+          Des roll-up imposants, assurant une visibilité maximale lors de vos événements.
+        </p>
+      </div>
+
+      <div class="service-card flex flex-col gap-6 bg-cardBg rounded-lg p-6 w-[320px] max-sm:w-full cursor-pointer" data-category="design">
+        <img
+          src="https://images.unsplash.com/photo-1563986768609-322da13575f3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80"
+          alt="Bannières"
+          class="rounded object-cover h-48 w-full"
+        />
+        <h2 class="text-3xl font-bold leading-tight text-neutral-100 font-poppins">
+          Bannières
+        </h2>
+        <p class="text-neutral-400 text-base leading-relaxed font-poppins">
+          Des bannières percutantes, créées pour attirer les regards et renforcer votre présence en ligne ou hors ligne.
+        </p>
+      </div>
+
+      <div class="service-card flex flex-col gap-6 bg-cardBg rounded-lg p-6 w-[320px] max-sm:w-full cursor-pointer" data-category="design">
+        <img
+          src="https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80"
+          alt="Brochures"
+          class="rounded object-cover h-48 w-full"
+        />
+        <h2 class="text-3xl font-bold leading-tight text-neutral-100 font-poppins">
+          Brochures
+        </h2>
+        <p class="text-neutral-400 text-base leading-relaxed font-poppins">
+          Brochures détaillées et élégantes, invitant à la découverte approfondie de vos offres et de votre histoire.
+        </p>
+      </div>
+
+      <div class="service-card flex flex-col gap-6 bg-cardBg rounded-lg p-6 w-[320px] max-sm:w-full cursor-pointer" data-category="design">
+        <img
+          src="https://cdn.builder.io/api/v1/image/assets/TEMP/fbdf2c3568508c52a3b2d5f6f6b9dda880406839?width=600"
+          alt="Covers musique & film"
+          class="rounded object-cover h-48 w-full"
+        />
+        <h2 class="text-3xl font-bold leading-tight text-neutral-100 font-poppins">
+          Covers Musique & Film
+        </h2>
+        <p class="text-neutral-400 text-base leading-relaxed font-poppins">
+          Conception de pochettes uniques pour vos projets musicaux et cinématographiques.
+        </p>
+      </div>
+
+      <div class="service-card flex flex-col gap-6 bg-cardBg rounded-lg p-6 w-[320px] max-sm:w-full cursor-pointer" data-category="design">
+        <img
+          src="https://images.unsplash.com/photo-1544947950-fa07a98d237f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80"
+          alt="Covers de livre"
+          class="rounded object-cover h-48 w-full"
+        />
+        <h2 class="text-3xl font-bold leading-tight text-neutral-100 font-poppins">
+          Covers de Livre
+        </h2>
+        <p class="text-neutral-400 text-base leading-relaxed font-poppins">
+          Des couvertures qui révèlent l'âme de votre œuvre littéraire et captivent vos lecteurs.
+        </p>
+      </div>
+
+      <div class="service-card flex flex-col gap-6 bg-cardBg rounded-lg p-6 w-[320px] max-sm:w-full cursor-pointer" data-category="design">
+        <img
+          src="https://images.unsplash.com/photo-1605000797499-95a51c5269ae?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80"
+          alt="Étiquettes"
+          class="rounded object-cover h-48 w-full"
+        />
+        <h2 class="text-3xl font-bold leading-tight text-neutral-100 font-poppins">
+          Étiquettes
+        </h2>
+        <p class="text-neutral-400 text-base leading-relaxed font-poppins">
+          Des étiquettes design, sublimant vos produits et communiquant leur qualité et leur distinction.
+        </p>
+      </div>
+
+      <div class="service-card flex flex-col gap-6 bg-cardBg rounded-lg p-6 w-[320px] max-sm:w-full cursor-pointer" data-category="design">
+        <img
+          src="https://images.unsplash.com/photo-1611162616475-46b635cb6868?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80"
+          alt="Social Media"
+          class="rounded object-cover h-48 w-full"
+        />
+        <h2 class="text-3xl font-bold leading-tight text-neutral-100 font-poppins">
+          Social Media
+        </h2>
+        <p class="text-neutral-400 text-base leading-relaxed font-poppins">
+          Des visuels dynamiques et adaptés, pour optimiser votre présence et engager votre communauté sur les réseaux sociaux.
+        </p>
+      </div>
+
+      <!-- Imprimerie Services -->
+      <div class="service-card flex flex-col gap-6 bg-cardBg rounded-lg p-6 w-[320px] max-sm:w-full cursor-pointer" data-category="print" style="display: none;">
+        <img
+          src="https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80"
+          alt="Brochures"
+          class="rounded object-cover h-48 w-full"
+        />
+        <h2 class="text-3xl font-bold leading-tight text-neutral-100 font-poppins">
           Imprimerie
-        </button>
-        <button class="filter-btn px-6 py-2 rounded-full border border-neutral-700 text-neutral-300 hover:border-[#A00000] hover:text-white" data-filter="photo">
-          Photographie
-        </button>
-        <button class="filter-btn px-6 py-2 rounded-full border border-neutral-700 text-neutral-300 hover:border-[#A00000] hover:text-white" data-filter="vehicle">
-          Habillage Véhicule
-        </button>
-        <button class="filter-btn px-6 py-2 rounded-full border border-neutral-700 text-neutral-300 hover:border-[#A00000] hover:text-white" data-filter="portrait">
-          Portrait Artistique
-        </button>
+        </h2>
+        <p class="text-neutral-400 text-base leading-relaxed font-poppins">
+          Matérialisation de vos idées avec des impressions qui font la différence, sur chaque support.
+        </p>
       </div>
 
-      <!-- Services grid -->
-      <div class="flex flex-wrap gap-6 justify-center max-md:gap-4 max-sm:gap-6 max-sm:flex-col" id="services-container">
-        <!-- Design Graphique Services -->
-        <div class="service-card flex flex-col gap-6 bg-cardBg rounded-lg p-6 w-[320px] max-sm:w-full cursor-pointer" data-category="design">
-          <img
-            src="https://cdn.builder.io/api/v1/image/assets/TEMP/0aa98395df6b9a41e41c97eeb491ef7a32afbc69?width=600"
-            alt="Conception de logo"
-            class="rounded object-cover h-48 w-full"
-          />
-          <h2 class="text-3xl font-bold leading-tight text-neutral-100 font-poppins">
-            Conception de Logo
-          </h2>
-          <p class="text-neutral-400 text-base leading-relaxed font-poppins">
-            Création de logos distinctifs qui incarnent l'essence de votre marque.
-          </p>
-        </div>
+      <!-- Photographie Services -->
+      <div class="service-card flex flex-col gap-6 bg-cardBg rounded-lg p-6 w-[320px] max-sm:w-full cursor-pointer" data-category="photo" style="display: none;">
+        <img
+          src="https://images.unsplash.com/photo-1493863641943-9b68992a8d07?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80"
+          alt="Shooting Indoor"
+          class="rounded object-cover h-48 w-full"
+        />
+        <h2 class="text-3xl font-bold leading-tight text-neutral-100 font-poppins">
+          Shooting Indoor
+        </h2>
+        <p class="text-neutral-400 text-base leading-relaxed font-poppins">
+          Des séances photo en intérieur, pour capturer des images intimes et professionnelles dans une atmosphère maîtrisée.
+        </p>
+      </div>
 
-        <div class="service-card flex flex-col gap-6 bg-cardBg rounded-lg p-6 w-[320px] max-sm:w-full cursor-pointer" data-category="design">
-          <img
-            src="https://cdn.builder.io/api/v1/image/assets/TEMP/8d7f641b8420d914a1a4a0fe7f20f7149b397b04?width=600"
-            alt="Affiches et Flyers"
-            class="rounded object-cover h-48 w-full"
-          />
-          <h2 class="text-3xl font-bold leading-tight text-neutral-100 font-poppins">
-            Affiches / Flyers
-          </h2>
-          <p class="text-neutral-400 text-base leading-relaxed font-poppins">
-            Affiches et flyers accrocheurs conçus pour promouvoir efficacement votre message.
-          </p>
-        </div>
+      <div class="service-card flex flex-col gap-6 bg-cardBg rounded-lg p-6 w-[320px] max-sm:w-full cursor-pointer" data-category="photo" style="display: none;">
+        <img
+          src="https://images.unsplash.com/photo-1554080353-a576cf803bda?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80"
+          alt="Shooting Outdoor"
+          class="rounded object-cover h-48 w-full"
+        />
+        <h2 class="text-3xl font-bold leading-tight text-neutral-100 font-poppins">
+          Shooting Outdoor
+        </h2>
+        <p class="text-neutral-400 text-base leading-relaxed font-poppins">
+          Des prises de vue en extérieur, pour immortaliser des moments authentiques dans des décors naturels et dynamiques.
+        </p>
+      </div>
 
-        <div class="service-card flex flex-col gap-6 bg-cardBg rounded-lg p-6 w-[320px] max-sm:w-full cursor-pointer" data-category="design">
-          <img
-            src="https://cdn.builder.io/api/v1/image/assets/TEMP/fbdf2c3568508c52a3b2d5f6f6b9dda880406839?width=600"
-            alt="Pochettes"
-            class="rounded object-cover h-48 w-full"
-          />
-          <h2 class="text-3xl font-bold leading-tight text-neutral-100 font-poppins">
-            Pochettes
-          </h2>
-          <p class="text-neutral-400 text-base leading-relaxed font-poppins">
-            Magnifiques pochettes pour vos projets artistiques et créatifs.
-          </p>
-        </div>
+      <div class="service-card flex flex-col gap-6 bg-cardBg rounded-lg p-6 w-[320px] max-sm:w-full cursor-pointer" data-category="photo" style="display: none;">
+        <img
+          src="https://images.unsplash.com/photo-1516035069371-29a1b244cc32?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80"
+          alt="Retouche photo"
+          class="rounded object-cover h-48 w-full"
+        />
+        <h2 class="text-3xl font-bold leading-tight text-neutral-100 font-poppins">
+          Retouche Photo
+        </h2>
+        <p class="text-neutral-400 text-base leading-relaxed font-poppins">
+          Une amélioration minutieuse de vos images, pour sublimer chaque détail et garantir un rendu professionnel impeccable.
+        </p>
+      </div>
 
-        <!-- Imprimerie Services -->
-        <div class="service-card flex flex-col gap-6 bg-cardBg rounded-lg p-6 w-[320px] max-sm:w-full cursor-pointer" data-category="print" style="display: none;">
-          <img
-            src="https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80"
-            alt="Brochures"
-            class="rounded object-cover h-48 w-full"
-          />
-          <h2 class="text-3xl font-bold leading-tight text-neutral-100 font-poppins">
-            Brochures
-          </h2>
-          <p class="text-neutral-400 text-base leading-relaxed font-poppins">
-            Création de brochures professionnelles pour votre marque.
-          </p>
-        </div>
+      <!-- Habillage Véhicule Services -->
+      <div class="service-card flex flex-col gap-6 bg-cardBg rounded-lg p-6 w-[320px] max-sm:w-full cursor-pointer" data-category="vehicle" style="display: none;">
+        <img
+          src="https://images.unsplash.com/photo-1626785774573-4b799315345d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80"
+          alt="Habillage de Véhicules"
+          class="rounded object-cover h-48 w-full"
+        />
+        <h2 class="text-3xl font-bold leading-tight text-neutral-100 font-poppins">
+          Habillage de Véhicule
+        </h2>
+        <p class="text-neutral-400 text-base leading-relaxed font-poppins">
+          Lettrage, semi-wrap ou wrap complet, nous créons des designs attractifs qui transforment vos véhicules en ambassadeurs mobiles de votre marque.
+        </p>
+      </div>
 
-        <div class="service-card flex flex-col gap-6 bg-cardBg rounded-lg p-6 w-[320px] max-sm:w-full cursor-pointer" data-category="print" style="display: none;">
-          <img
-            src="https://images.unsplash.com/photo-1601784551446-20c9e07cdbdb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80"
-            alt="Cartes de Visite"
-            class="rounded object-cover h-48 w-full"
-          />
-          <h2 class="text-3xl font-bold leading-tight text-neutral-100 font-poppins">
-            Cartes de Visite
-          </h2>
-          <p class="text-neutral-400 text-base leading-relaxed font-poppins">
-            Conceptions élégantes et mémorables de cartes de visite.
-          </p>
-        </div>
-
-        <div class="service-card flex flex-col gap-6 bg-cardBg rounded-lg p-6 w-[320px] max-sm:w-full cursor-pointer" data-category="print" style="display: none;">
-          <img
-            src="https://images.unsplash.com/photo-1544947950-fa07a98d237f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80"
-            alt="Étiquettes et Emballages"
-            class="rounded object-cover h-48 w-full"
-          />
-          <h2 class="text-3xl font-bold leading-tight text-neutral-100 font-poppins">
-            Étiquettes & Emballages
-          </h2>
-          <p class="text-neutral-400 text-base leading-relaxed font-poppins">
-            Conception d'étiquettes et emballages attractifs pour vos produits.
-          </p>
-        </div>
-
-        <div class="service-card flex flex-col gap-6 bg-cardBg rounded-lg p-6 w-[320px] max-sm:w-full cursor-pointer" data-category="print" style="display: none;">
-          <img
-            src="https://www.digilor.fr/wp-content/uploads/2023/05/panneau-numerique-led-affichage-dynamique-mairie.jpg.webp"
-            alt="Panneaux Publicitaires"
-            class="rounded object-cover h-48 w-full"
-          />
-          <h2 class="text-3xl font-bold leading-tight text-neutral-100 font-poppins">
-            Panneaux Publicitaires
-          </h2>
-          <p class="text-neutral-400 text-base leading-relaxed font-poppins">
-            Conception et impression de panneaux publicitaires percutants.
-          </p>
-        </div>
-
-        <!-- Photographie Services -->
-        <div class="service-card flex flex-col gap-6 bg-cardBg rounded-lg p-6 w-[320px] max-sm:w-full cursor-pointer" data-category="photo" style="display: none;">
-          <img
-            src="https://images.unsplash.com/photo-1493863641943-9b68992a8d07?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80"
-            alt="Photographie Professionnelle"
-            class="rounded object-cover h-48 w-full"
-          />
-          <h2 class="text-3xl font-bold leading-tight text-neutral-100 font-poppins">
-            Photographie
-          </h2>
-          <p class="text-neutral-400 text-base leading-relaxed font-poppins">
-            Capture de moments avec des visuels époustouflants.
-          </p>
-        </div>
-
-        <div class="service-card flex flex-col gap-6 bg-cardBg rounded-lg p-6 w-[320px] max-sm:w-full cursor-pointer" data-category="photo" style="display: none;">
-          <img
-            src="https://images.unsplash.com/photo-1554080353-a576cf803bda?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80"
-            alt="Photographie Produit"
-            class="rounded object-cover h-48 w-full"
-          />
-          <h2 class="text-3xl font-bold leading-tight text-neutral-100 font-poppins">
-            Photographie Produit
-          </h2>
-          <p class="text-neutral-400 text-base leading-relaxed font-poppins">
-            Mise en valeur professionnelle de vos produits.
-          </p>
-        </div>
-
-        <div class="service-card flex flex-col gap-6 bg-cardBg rounded-lg p-6 w-[320px] max-sm:w-full cursor-pointer" data-category="photo" style="display: none;">
-          <img
-            src="https://images.unsplash.com/photo-1516035069371-29a1b244cc32?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80"
-            alt="Photographie Événementielle"
-            class="rounded object-cover h-48 w-full"
-          />
-          <h2 class="text-3xl font-bold leading-tight text-neutral-100 font-poppins">
-            Photographie Événementielle
-          </h2>
-          <p class="text-neutral-400 text-base leading-relaxed font-poppins">
-            Capturer l'essence et les émotions de vos événements.
-          </p>
-        </div>
-
-        <!-- Habillage Véhicule Services -->
-        <div class="service-card flex flex-col gap-6 bg-cardBg rounded-lg p-6 w-[320px] max-sm:w-full cursor-pointer" data-category="vehicle" style="display: none;">
-          <img
-            src="https://images.unsplash.com/photo-1626785774573-4b799315345d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80"
-            alt="Habillage de Véhicules"
-            class="rounded object-cover h-48 w-full"
-          />
-          <h2 class="text-3xl font-bold leading-tight text-neutral-100 font-poppins">
-            Habillage Véhicule
-          </h2>
-          <p class="text-neutral-400 text-base leading-relaxed font-poppins">
-            Transformez vos véhicules en ambassadeurs mobiles de votre marque.
-          </p>
-        </div>
-
-        <div class="service-card flex flex-col gap-6 bg-cardBg rounded-lg p-6 w-[320px] max-sm:w-full cursor-pointer" data-category="vehicle" style="display: none;">
-          <img
-            src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80"
-            alt="Vitrophanie"
-            class="rounded object-cover h-48 w-full"
-          />
-          <h2 class="text-3xl font-bold leading-tight text-neutral-100 font-poppins">
-            Vitrophanie
-          </h2>
-          <p class="text-neutral-400 text-base leading-relaxed font-poppins">
-            Solutions de vitrophanie professionnelle pour vos vitrines et véhicules.
-          </p>
-        </div>
-
-        <!-- Portrait Artistique Services -->
-        <div class="service-card flex flex-col gap-6 bg-cardBg rounded-lg p-6 w-[320px] max-sm:w-full cursor-pointer" data-category="portrait" style="display: none;">
-          <img
-            src="https://cdn.builder.io/api/v1/image/assets/TEMP/a373854556b0213666134d3b53c27bd632473206?width=600"
-            alt="Portrait Artistique"
-            class="rounded object-cover h-48 w-full"
-          />
-          <h2 class="text-3xl font-bold leading-tight text-neutral-100 font-poppins">
-            Portrait Artistique
-          </h2>
-          <p class="text-neutral-400 text-base leading-relaxed font-poppins">
-            Transformation de vos photos en œuvres d'art uniques.
-          </p>
-        </div>
-
-        <div class="service-card flex flex-col gap-6 bg-cardBg rounded-lg p-6 w-[320px] max-sm:w-full cursor-pointer" data-category="portrait" style="display: none;">
-          <img
-            src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80"
-            alt="Retouche Photo"
-            class="rounded object-cover h-48 w-full"
-          />
-          <h2 class="text-3xl font-bold leading-tight text-neutral-100 font-poppins">
-            Retouche Photo
-          </h2>
-          <p class="text-neutral-400 text-base leading-relaxed font-poppins">
-            Perfectionnement et amélioration de vos photos professionnelles.
-          </p>
-        </div>
-
-        <div class="service-card flex flex-col gap-6 bg-cardBg rounded-lg p-6 w-[320px] max-sm:w-full cursor-pointer" data-category="portrait" style="display: none;">
-          <img
-            src="https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80"
-            alt="Montage Artistique"
-            class="rounded object-cover h-48 w-full"
-          />
-          <h2 class="text-3xl font-bold leading-tight text-neutral-100 font-poppins">
-            Montage Artistique
-          </h2>
-          <p class="text-neutral-400 text-base leading-relaxed font-poppins">
-            Créations artistiques uniques à partir de vos photos.
-          </p>
-        </div>
+      <!-- Portrait Artistique Services -->
+      <div class="service-card flex flex-col gap-6 bg-cardBg rounded-lg p-6 w-[320px] max-sm:w-full cursor-pointer" data-category="portrait" style="display: none;">
+        <img
+          src="https://cdn.builder.io/api/v1/image/assets/TEMP/a373854556b0213666134d3b53c27bd632473206?width=600"
+          alt="Portrait Artistique"
+          class="rounded object-cover h-48 w-full"
+        />
+        <h2 class="text-3xl font-bold leading-tight text-neutral-100 font-poppins">
+          Agrandissement Portraits Artistiques
+        </h2>
+        <p class="text-neutral-400 text-base leading-relaxed font-poppins">
+          Illuminez vos espaces avec de magnifiques portraits artistiques.
+        </p>
       </div>
     </div>
-  </main>
+  </div>
+</main>
 
   <footer></footer>
   <script src="../assets/js/main.js"></script>
