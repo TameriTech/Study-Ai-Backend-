@@ -19,7 +19,7 @@ function loadNavigation() {
         <div class="flex items-center justify-between h-20">
           <div class="flex-shrink-0">
             <a href="index.html" aria-label="Godlove Empire Accueil">
-              <img class="w-[158px] h-[90px]" src="https://study.tameri.tech/static/logo-godlove.png" alt="Logo Godlove">
+              <img class="w-[120px] h-[60px]" src="https://study.tameri.tech/static/logo-godlove.png" alt="Logo Godlove">
             </a>
           </div>
 

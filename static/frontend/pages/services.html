@@ -289,10 +289,152 @@
         </p>
       </div>
     </div>
+
+    <!-- Single "Demander un devis" Button -->
+    <button id="open-quote-modal" class="bg-[#A00000] hover:bg-[#800000] text-white font-semibold py-3 px-8 rounded-full transition-colors duration-300 text-lg mt-8">
+      Demander un devis
+    </button>
   </div>
 </main>
 
+<!-- Modal backdrop -->
+<div id="quote-modal" class="fixed inset-0 flex items-center justify-center z-50 hidden overflow-y-auto bg-black bg-opacity-80">
+  <!-- Modal box -->
+<div class="bg-neutral-900 rounded-2xl p-8 w-full max-w-2xl mx-4 my-8 max-h-[90vh] overflow-y-auto shadow-2xl border border-neutral-700 relative">    
+    <!-- Close Button -->
+    <button id="close-quote-modal" class="absolute top-4 right-4 text-neutral-400 hover:text-white">
+      <i class="fas fa-times text-2xl"></i>
+    </button>
+
+    <!-- Title -->
+    <h2 class="text-3xl font-bold text-neutral-100 mb-6 text-center">Demander un devis</h2>
+
+    <!-- Form -->
+    <form id="quote-form" class="flex flex-col gap-4">
+      
+      <div class="flex flex-col gap-1">
+        <label for="name" class="text-neutral-300">Nom complet</label>
+        <input type="text" id="name" name="name" required class="bg-neutral-800 border border-neutral-700 rounded px-4 py-2 text-neutral-200 focus:border-[#A00000] focus:outline-none">
+      </div>
+
+      <div class="flex flex-col gap-1">
+        <label for="email" class="text-neutral-300">Email</label>
+        <input type="email" id="email" name="email" required class="bg-neutral-800 border border-neutral-700 rounded px-4 py-2 text-neutral-200 focus:border-[#A00000] focus:outline-none">
+      </div>
+
+      <div class="flex flex-col gap-1">
+        <label for="phone" class="text-neutral-300">Téléphone</label>
+        <input type="tel" id="phone" name="phone" class="bg-neutral-800 border border-neutral-700 rounded px-4 py-2 text-neutral-200 focus:border-[#A00000] focus:outline-none">
+      </div>
+
+      <div class="flex flex-col gap-1">
+        <label for="service" class="text-neutral-300">Service intéressé</label>
+        <select id="service" name="service" required class="bg-neutral-800 border border-neutral-700 rounded px-4 py-2 text-neutral-200 focus:border-[#A00000] focus:outline-none">
+          <option value="">Sélectionnez un service</option>
+          <option value="Conception de Logo">Conception de Logo</option>
+          <option value="Identité Visuelle">Identité Visuelle</option>
+          <option value="Affiches / Flyers">Affiches / Flyers</option>
+          <option value="Roll Up">Roll Up</option>
+          <option value="Bannières">Bannières</option>
+          <option value="Brochures">Brochures</option>
+          <option value="Covers Musique & Film">Covers Musique & Film</option>
+          <option value="Covers de Livre">Covers de Livre</option>
+          <option value="Étiquettes">Étiquettes</option>
+          <option value="Social Media">Social Media</option>
+          <option value="Imprimerie">Imprimerie</option>
+          <option value="Shooting Indoor">Shooting Indoor</option>
+          <option value="Shooting Outdoor">Shooting Outdoor</option>
+          <option value="Retouche Photo">Retouche Photo</option>
+          <option value="Habillage de Véhicule">Habillage de Véhicule</option>
+          <option value="Agrandissement Portraits Artistiques">Agrandissement Portraits Artistiques</option>
+        </select>
+      </div>
+
+      <div class="flex flex-col gap-1">
+        <label for="message" class="text-neutral-300">Détails du projet</label>
+        <textarea id="message" name="message" rows="4" required class="bg-neutral-800 border border-neutral-700 rounded px-4 py-2 text-neutral-200 focus:border-[#A00000] focus:outline-none"></textarea>
+      </div>
+
+      <button type="submit" class="bg-[#A00000] hover:bg-[#800000] text-white font-semibold py-3 px-6 rounded transition-colors duration-300 mt-4">
+        Envoyer la demande
+      </button>
+    </form>
+  </div>
+</div>
+
+
   <footer></footer>
   <script src="../assets/js/main.js"></script>
+  <script>
+    // Modal functionality
+    const quoteModal = document.getElementById('quote-modal');
+    const openQuoteModal = document.getElementById('open-quote-modal');
+    const closeQuoteModal = document.getElementById('close-quote-modal');
+
+    // Open modal
+    openQuoteModal.addEventListener('click', () => {
+      quoteModal.classList.remove('hidden');
+      document.body.style.overflow = 'hidden'; // Prevent scrolling when modal is open
+    });
+
+    // Close modal
+    closeQuoteModal.addEventListener('click', () => {
+      quoteModal.classList.add('hidden');
+      document.body.style.overflow = ''; // Re-enable scrolling
+    });
+
+    // Close modal when clicking outside
+    quoteModal.addEventListener('click', (e) => {
+      if (e.target === quoteModal) {
+        quoteModal.classList.add('hidden');
+        document.body.style.overflow = '';
+      }
+    });
+
+    // Handle form submission
+    document.getElementById('quote-form')?.addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      // Get form data
+      const formData = new FormData(this);
+      const data = Object.fromEntries(formData);
+      
+      // Here you would normally send the data to your server
+      console.log('Quote request submitted:', data);
+      
+      // Show success message
+      alert('Merci pour votre demande de devis ! Nous vous contacterons sous peu pour discuter de votre projet.');
+      
+      // Reset form and close modal
+      this.reset();
+      quoteModal.classList.add('hidden');
+      document.body.style.overflow = '';
+    });
+
+    // Service filtering functionality
+    document.querySelectorAll('.filter-btn').forEach(button => {
+      button.addEventListener('click', function() {
+        // Update active button
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+          btn.classList.remove('active', 'text-white', 'border-[#A00000]');
+          btn.classList.add('border-neutral-700', 'text-neutral-300');
+        });
+        
+        this.classList.add('active', 'text-white', 'border-[#A00000]');
+        this.classList.remove('border-neutral-700', 'text-neutral-300');
+        
+        const filter = this.getAttribute('data-filter');
+        
+        // Filter services
+        document.querySelectorAll('.service-card').forEach(card => {
+          if (filter === 'all' || card.getAttribute('data-category') === filter) {
+            card.style.display = 'flex';
+          } else {
+            card.style.display = 'none';
+          }
+        });
+      });
+    });
+  </script>
 </body>
 </html>
