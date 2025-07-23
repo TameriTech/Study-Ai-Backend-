@@ -9,7 +9,7 @@ function loadNavigation() {
     { name: "À Propos", path: "about.html" },
     { name: "Services", path: "services.html" },
     { name: "Projets", path: "projects.html" },
-    { name: "Contact", path: "contact.html" },
+    { name: "Contacts", path: "contact.html" },
     { name: "FAQs", path: "faq.html" }
   ];
 
@@ -140,7 +140,7 @@ function loadFooter() {
             <li><a href="about-us.html" class="hover:text-red-500 transition-colors">À Propos</a></li>
             <li><a href="services.html" class="hover:text-red-500 transition-colors">Services</a></li>
             <li><a href="projects.html" class="hover:text-red-500 transition-colors">Projets</a></li>
-            <li><a href="contact-us.html" class="hover:text-red-500 transition-colors">Contact</a></li>
+            <li><a href="contact-us.html" class="hover:text-red-500 transition-colors">Contacts</a></li>
             <li><a href="faq.html" class="hover:text-red-500 transition-colors">FAQs</a></li>
           </ul>
         </div>
@@ -177,7 +177,7 @@ function loadFooter() {
             </p>
             <p>
   <i class="fas fa-envelope text-red-500 mr-2"></i>
-  Email: <a href="mailto:gadloveempire@gmail.com" class="hover:text-red-500">gadloveempire@gmail.com</a>
+  <a href="mailto:gadloveempire@gmail.com" class="hover:text-red-500">gadloveempire@gmail.com</a>
 </p>
           </div>
         </div>
