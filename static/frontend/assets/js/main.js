@@ -114,9 +114,7 @@ function loadFooter() {
           <a href="index.html" class="mb-5">
             <img src="https://study.tameri.tech/static/footer.png" alt="Godlove Empire Logo" class="w-[158px] h-[90px]">
           </a>
-          <p class="mb-6 leading-relaxed max-w-xs text-center md:text-left">
-            LABEL DE CRÉATION VISUELLE & ARTISTIQUE.
-          </p>
+          
           <div class="flex gap-4 justify-center md:justify-start">
             <a href="#" aria-label="Facebook" class="w-10 h-10 rounded-full bg-stone-700 flex items-center justify-center hover:bg-red-700 transition-colors">
               <i class="fab fa-facebook-f"></i>
