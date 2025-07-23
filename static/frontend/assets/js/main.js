@@ -112,7 +112,7 @@ function loadFooter() {
         <!-- Godlove Empire Section -->
         <div class="md:col-span-1 flex flex-col items-center md:items-start">
           <a href="index.html" class="mb-5">
-            <img src="https://study.tameri.tech/static/footer.png" alt="Godlove Empire Logo" class="w-[158px] h-[90px]">
+            <img src="https://study.tameri.tech/static/footer.png" alt="Godlove Empire Logo" class="w-[248px] h-[150px]">
           </a>
           
           <div class="flex gap-4 justify-center md:justify-start">
