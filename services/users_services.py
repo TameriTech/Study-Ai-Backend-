@@ -8,6 +8,7 @@ from utils.general_utils import verify_password
 from utils.email import send_email  # you'll need to implement this
 from fastapi import HTTPException, status
 import logging
+from utils.i18n import translate
 
 def authenticate_user(db: Session, email: str, password: str):
     user = db.query(User).filter(User.email == email).first()
@@ -15,16 +16,19 @@ def authenticate_user(db: Session, email: str, password: str):
         return user
     return None
 
-async def create_user(db: Session, data: UserCreate):
-    # Check if email already exists
+def error_response(code: str, message: str, status_code: int = 400):
+    raise HTTPException(
+        status_code=status_code,
+        detail={"code": code, "message": message}
+    )
+
+async def create_user(db: Session, data: UserCreate, lang: str = "en"):
+    # Check if the user already exists
     existing_user = db.query(User).filter(User.email == data.email).first()
     if existing_user:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="A user with this email already exists"
-        )
+        error_response("registration_error", translate("email_exists", lang))
 
-    # If not, create the user
+    # Hash password and create user instance
     hashed_pwd = hash_password(data.password)
     user_instance = User(
         fullName=data.fullName,
@@ -36,11 +40,12 @@ async def create_user(db: Session, data: UserCreate):
         academic_level=data.academic_level,
         statistic=data.statistic
     )
+
     db.add(user_instance)
     db.commit()
     db.refresh(user_instance)
 
-    # Send welcome email (in background if possible)
+    # Prepare welcome email
     welcome_subject = f"🎉 Welcome to Tameri Study AI, {data.fullName.split()[0]}!"
     
     welcome_body = f"""
@@ -68,6 +73,7 @@ async def create_user(db: Session, data: UserCreate):
     )
 
     return user_instance
+
 
 
 def get_users(db: Session):
@@ -138,6 +144,7 @@ async def reset_and_email_password(db: Session, email: str):
         user = db.query(User).filter(User.email == email).first()
         if not user:
             raise HTTPException(status_code=404, detail="User not found")
+            
 
         new_password = generate_random_password()
         user.password = hash_password(new_password)
