@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Godlove Empire - Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;700&family=Cormorant:wght@700&display=swap" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+      <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body class="bg-black text-white">
+    <!-- Navigation -->
+  <header></header>
+    <!-- Projects Gallery Page -->
+    <section id="projects-gallery" class="py-16 px-4 sm:px-8 md:px-16 lg:px-24 xl:px-32">
+        <div class="container mx-auto">
+            <!-- Section Header -->
+            <div class="text-center mb-16 animate-fadeIn" style="animation-delay: 0.1s;">
+                <div class="uppercase text-lg text-neutral-400 tracking-widest font-semibold">
+NOTRE PORTFOLIO
+        </div>
+<h2 class="title-font text-4xl md:text-5xl lg:text-6xl mb-6 uppercase">Explorez nos réalisations</h2>
+                <p class="max-w-2xl mx-auto text-neutral-300">
+                  <div class="text-xl md:text-3xl mb-8 matchmaker"> Préparez-vous à l’effet Wow !</div> <br>
+Chaque création est une stratégie d’impact qui propulse votre message et élève votre présence. Trouvez celle qui vous parlent
+                </p>
+            </div>
+            
+            <!-- Filter Buttons -->
+            <div class="flex flex-wrap justify-center gap-3 mb-16 animate-fadeIn" style="animation-delay: 0.2s;">
+                <button class="filter-btn active px-6 py-2 rounded-full border border-[#A00000] text-white" data-filter="all">
+                    Tous
+                </button>
+                <button class="filter-btn px-6 py-2 rounded-full border border-neutral-700 text-neutral-300 hover:border-[#A00000] hover:text-white" data-filter="design">
+                    Design Graphique
+                </button>
+                <button class="filter-btn px-6 py-2 rounded-full border border-neutral-700 text-neutral-300 hover:border-[#A00000] hover:text-white" data-filter="portrait">
+                    Agrandissement des Portraits Artistiques
+                </button>
+                <button class="filter-btn px-6 py-2 rounded-full border border-neutral-700 text-neutral-300 hover:border-[#A00000] hover:text-white" data-filter="print">
+                    Imprimerie
+                </button>
+                <button class="filter-btn px-6 py-2 rounded-full border border-neutral-700 text-neutral-300 hover:border-[#A00000] hover:text-white" data-filter="photo">
+                    Photographie
+                </button>
+                <button class="filter-btn px-6 py-2 rounded-full border border-neutral-700 text-neutral-300 hover:border-[#A00000] hover:text-white" data-filter="vehicle">
+                    Habillage Véhicule
+                </button>
+            </div>
+            
+            <!-- Projects Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16" id="projects-container">
+                <!-- Project 1 -->
+                <div class="project-card relative rounded-lg overflow-hidden animate-fadeIn" style="animation-delay: 0.3s;" 
+                     data-category="design" data-id="1" onclick="showProjectDetail(1)">
+                    <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1064&q=80" 
+                         alt="Logo Design Project" class="w-full h-80 object-cover">
+                    <div class="project-overlay">
+                        <h3 class="text-xl font-bold mb-2">Logo Design</h3>
+                        <p class="text-neutral-300 mb-4">Création d'identité visuelle pour une marque de café premium.</p>
+                        <span class="inline-block px-3 py-1 rounded-full text-sm bg-[#A00000]">Design Graphique</span>
+                    </div>
+                </div>
+                
+                <!-- Project 2 -->
+                <div class="project-card relative rounded-lg overflow-hidden animate-fadeIn" style="animation-delay: 0.4s;" 
+                     data-category="portrait" data-id="2" onclick="showProjectDetail(2)">
+                    <img src="https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1064&q=80" 
+                         alt="Artistic Portrait" class="w-full h-80 object-cover">
+                    <div class="project-overlay">
+                        <h3 class="text-xl font-bold mb-2">Agrandissement des Portraits Artistiques</h3>
+                        <p class="text-neutral-300 mb-4">Transformation de photo en œuvre d'art numérique.</p>
+                        <span class="inline-block px-3 py-1 rounded-full text-sm bg-[#A00000]">Agrandissement des Portraits Artistiques</span>
+                    </div>
+                </div>
+                
+                <!-- Project 3 -->
+                <div class="project-card relative rounded-lg overflow-hidden animate-fadeIn" style="animation-delay: 0.5s;" 
+                     data-category="vehicle" data-id="3" onclick="showProjectDetail(3)">
+                    <img src="https://images.unsplash.com/photo-1513151233558-d860c5398176?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1064&q=80" 
+                         alt="Vehicle Wrapping" class="w-full h-80 object-cover">
+                    <div class="project-overlay">
+                        <h3 class="text-xl font-bold mb-2">Habillage de Véhicule</h3>
+                        <p class="text-neutral-300 mb-4">Design et installation pour une flotte de livraison.</p>
+                        <span class="inline-block px-3 py-1 rounded-full text-sm bg-[#A00000]">Habillage Véhicule</span>
+                    </div>
+                </div>
+                
+                <!-- Project 4 -->
+                <div class="project-card relative rounded-lg overflow-hidden animate-fadeIn" style="animation-delay: 0.6s;" 
+                     data-category="print" data-id="4" onclick="showProjectDetail(4)">
+                    <img src="https://images.unsplash.com/photo-1585771724684-38269d6639fd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1064&q=80" 
+                         alt="Printing Project" class="w-full h-80 object-cover">
+                    <div class="project-overlay">
+                        <h3 class="text-xl font-bold mb-2">Brochure d'Entreprise</h3>
+                        <p class="text-neutral-300 mb-4">Conception et impression de matériel marketing premium.</p>
+                        <span class="inline-block px-3 py-1 rounded-full text-sm bg-[#A00000]">Imprimerie</span>
+                    </div>
+                </div>
+                
+                <!-- Project 5 -->
+                <div class="project-card relative rounded-lg overflow-hidden animate-fadeIn" style="animation-delay: 0.7s;" 
+                     data-category="design" data-id="5" onclick="showProjectDetail(5)">
+                    <img src="https://images.unsplash.com/photo-1469371670807-013ccf25f16a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1064&q=80" 
+                         alt="Music Cover" class="w-full h-80 object-cover">
+                    <div class="project-overlay">
+                        <h3 class="text-xl font-bold mb-2">Cover Album</h3>
+                        <p class="text-neutral-300 mb-4">Design de pochette pour un artiste de hip-hop local.</p>
+                        <span class="inline-block px-3 py-1 rounded-full text-sm bg-[#A00000]">Design Graphique</span>
+                    </div>
+                </div>
+                
+                <!-- Project 6 -->
+                <div class="project-card relative rounded-lg overflow-hidden animate-fadeIn" style="animation-delay: 0.8s;" 
+                     data-category="photo" data-id="6" onclick="showProjectDetail(6)">
+                    <img src="https://images.unsplash.com/photo-1554080353-a576cf803bda?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1064&q=80" 
+                         alt="Photography Project" class="w-full h-80 object-cover">
+                    <div class="project-overlay">
+                        <h3 class="text-xl font-bold mb-2">Séance Photo</h3>
+                        <p class="text-neutral-300 mb-4">Photographie professionnelle pour une campagne de mode.</p>
+                        <span class="inline-block px-3 py-1 rounded-full text-sm bg-[#A00000]">Photographie</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Project Detail Page (initially hidden) -->
+    <section id="project-detail" class="hidden py-16 px-4 sm:px-8 md:px-16 lg:px-24 xl:px-32">
+        <div class="container mx-auto">
+            <!-- Back Button -->
+            <button onclick="hideProjectDetail()" class="back-button mb-8 flex items-center text-[#A00000] hover:text-[#D50706]">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+                Retour au portfolio
+            </button>
+            
+            <!-- Project Detail Content -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                <!-- Project Images -->
+                <div>
+                    <div class="mb-8 rounded-lg overflow-hidden">
+                        <img id="detail-main-image" src="" alt="" class="project-detail-image w-full h-auto rounded-lg shadow-xl">
+                    </div>
+                    <div class="grid grid-cols-3 gap-4">
+                        <div class="cursor-pointer" onclick="changeDetailImage('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1064&q=80')">
+                            <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1064&q=80" 
+                                 alt="Thumbnail 1" class="w-full h-24 object-cover rounded-lg">
+                        </div>
+                        <div class="cursor-pointer" onclick="changeDetailImage('https://images.unsplash.com/photo-1513151233558-d860c5398176?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1064&q=80')">
+                            <img src="https://images.unsplash.com/photo-1513151233558-d860c5398176?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1064&q=80" 
+                                 alt="Thumbnail 2" class="w-full h-24 object-cover rounded-lg">
+                        </div>
+                        <div class="cursor-pointer" onclick="changeDetailImage('https://images.unsplash.com/photo-1581094271901-8022df4466f9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1064&q=80')">
+                            <img src="https://images.unsplash.com/photo-1581094271901-8022df4466f9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1064&q=80" 
+                                 alt="Thumbnail 3" class="w-full h-24 object-cover rounded-lg">
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Project Info -->
+                <div>
+                    <span id="detail-category" class="inline-block px-3 py-1 rounded-full text-sm bg-[#A00000] mb-4">Design Graphique</span>
+                    <h2 id="detail-title" class="title-font text-3xl md:text-4xl lg:text-5xl mb-6">Logo Design</h2>
+                    <p id="detail-description" class="text-lg text-neutral-300 mb-8">
+                        Création d'identité visuelle pour une marque de café premium. Ce projet incluait le design du logo, 
+                        la palette de couleurs, la typographie et les guidelines de marque. Le client voulait une identité 
+                        qui reflète le caractère artisanal de ses produits tout en ayant une touche moderne.
+                    </p>
+                    
+                    <div class="mb-8">
+                        <h3 class="text-xl font-bold mb-4 text-[#D50706]">Détails du Projet</h3>
+                        <ul class="space-y-3">
+                            <li class="flex items-start">
+                                <svg class="h-5 w-5 text-[#A00000] mr-2 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                </svg>
+                                <span><strong>Client:</strong> <span id="detail-client">Café Artisanal MontRoyal</span></span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg class="h-5 w-5 text-[#A00000] mr-2 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                </svg>
+                                <span><strong>Date:</strong> <span id="detail-date">Mai 2023</span></span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg class="h-5 w-5 text-[#A00000] mr-2 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                </svg>
+                                <span><strong>Service:</strong> <span id="detail-service">Design Graphique</span></span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg class="h-5 w-5 text-[#A00000] mr-2 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                </svg>
+                                <span><strong>Durée:</strong> <span id="detail-duration">3 semaines</span></span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="mb-8">
+                        <h3 class="text-xl font-bold mb-4 text-[#D50706]">Technologies Utilisées</h3>
+                        <div class="flex flex-wrap gap-3">
+                            <span class="px-3 py-1 rounded-full text-sm bg-neutral-800">Adobe Illustrator</span>
+                            <span class="px-3 py-1 rounded-full text-sm bg-neutral-800">Adobe Photoshop</span>
+                            <span class="px-3 py-1 rounded-full text-sm bg-neutral-800">Brand Guidelines</span>
+                        </div>
+                    </div>
+                    
+                    <button class="btn-red px-8 py-4 rounded-lg text-lg font-bold flex items-center gap-3">
+                        Demander un projet similaire
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Testimonial -->
+            <div class="mt-16 p-8 bg-neutral-900 rounded-lg">
+                <div class="max-w-3xl mx-auto text-center">
+                    <svg class="h-8 w-8 text-[#A00000] mx-auto mb-4" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
+                    </svg>
+                    <p id="detail-testimonial" class="text-xl italic mb-6">
+                        "Godlove Empire a parfaitement capturé l'essence de notre marque dans ce logo. Leur approche professionnelle 
+                        et leur attention aux détails ont dépassé nos attentes. Nous recommandons vivement leurs services!"
+                    </p>
+                    <div class="flex items-center justify-center">
+                        <img id="detail-client-avatar" src="https://randomuser.me/api/portraits/men/32.jpg" alt="Client" class="h-12 w-12 rounded-full mr-4">
+                        <div>
+                            <p id="detail-client-name" class="font-bold">Jean Dupont</p>
+                            <p id="detail-client-position" class="text-neutral-400 text-sm">PDG, Café Artisanal MontRoyal</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+<footer></footer>
+    <script src="../assets/js/main.js"></script>
+</body>
+</html>
