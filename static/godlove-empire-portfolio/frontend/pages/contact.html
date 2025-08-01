@@ -224,20 +224,16 @@
                             </div>
                         </div>
 
-                        <!-- Service Selection -->
-                        <div class="gap-2 mt-4 w-full max-md:max-w-full">
-                            <div class="font-medium leading-none text-white max-md:max-w-full">
-                                Service demandé*
-                            </div>
-                            <div
-                                class="flex flex-col justify-center px-0 py-0.5 mt-2 w-full font-light leading-loose rounded-lg bg-white text-neutral-600 max-md:max-w-full">
-                                <div
-                                    class="flex gap-4 items-center px-4 py-3.5 w-full rounded-[96px] max-md:max-w-full">
-                                    <select
-                                        class="flex-1 shrink self-stretch my-auto basis-0 text-neutral-800 max-md:max-w-full bg-transparent border-none outline-none w-full"
-                                        required>
-                                        <option value="" disabled selected>Sélectionnez un service</option>
-                                        <option value="design">Design Graphique</option>
+                        <div class="flex flex-col gap-1 mt-4 w-full max-md:max-w-full">
+  <div class="font-medium leading-none text-white max-md:max-w-full">
+    Service demandé*
+  </div>
+  <div class="flex flex-col justify-center px-0 py-0.5 mt-2 w-full font-light leading-loose rounded-lg bg-white text-neutral-600 max-md:max-w-full">
+    <div class="flex gap-4 items-center px-4 py-3.5 w-full rounded-[96px] max-md:max-w-full">
+      <select class="flex-1 shrink self-stretch my-auto basis-0 text-neutral-800 max-md:max-w-full bg-transparent border-none outline-none w-full" required>
+        <option value="" disabled selected>Sélectionnez un service</option>
+        <option value="other">Autre (précisez ci-dessous)</option>
+         <option value="design">Design Graphique</option>
                                         <option value="portrait">Agrandissement des Portraits Artistiques</option>
                                         <option value="printing">Imprimerie</option>
                                         <option value="photography">Photographie</option>
@@ -249,10 +245,11 @@
                                         <option value="brochure">Brochure</option>
                                         <option value="business-card">Carte d'affaire</option>
                                         <option value="roll-up">Roll-up</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
+      </select>
+    </div>
+  </div>
+</div>
+
 
                         <!-- Message Input -->
                         <div class="gap-2 mt-4 w-full min-h-[243px] max-md:max-w-full">
@@ -349,26 +346,28 @@
 
                     <!-- Orange Money -->
                     <div class="flex flex-col items-center p-6 rounded-xl bg-neutral-900 hover:bg-neutral-800 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg">
-                        <div class="w-16 h-16 mb-4 flex items-center justify-center bg-orange-100 p-2 rounded-full">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-10 h-10 text-orange-500">
-                                <path fill="currentColor" d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10a10 10 0 0 0 10-10A10 10 0 0 0 12 2m0 2a8 8 0 0 1 8 8a8 8 0 0 1-8 8a8 8 0 0 1-8-8a8 8 0 0 1 8-8m-1 3v8h1.5V16H15V7h-4m1.5 1.5H13v5h1.5v-5Z"/>
-                            </svg>
-                        </div>
-                        <div class="text-xl font-bold text-white">Orange Money</div>
-                        <div class="text-lg text-neutral-300 mt-2 font-mono">+237 659 00 51 00</div>
-                        <div class="text-sm text-neutral-400 mt-2">Paiements instantanés</div>
-                    </div>
+    <div class="w-16 h-16 mb-4 flex items-center justify-center bg-orange-100 p-2 rounded-full">
+<img
+  src="https://download.logo.wine/logo/Orange_Money/Orange_Money-Logo.wine.png"
+  alt="Logo Orange Money" 
+  class="h-50 w-auto object-contain"
+> </div>
+    <div class="text-xl font-bold text-white">Orange Money</div>
+    <div class="text-lg text-neutral-300 mt-2 font-mono">+237 659 00 51 00</div>
+    <div class="text-sm text-neutral-400 mt-2">Paiements instantanés</div>
+  </div>
                     
                     <!-- MTN Mobile Money -->
-                    <div class="flex flex-col items-center p-6 rounded-xl bg-neutral-900 hover:bg-neutral-800 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg">
-                        <div class="w-16 h-16 mb-4 flex items-center justify-center bg-yellow-100 p-2 rounded-full">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-10 h-10 text-yellow-600">
-                                <path fill="currentColor" d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10a10 10 0 0 0 10-10A10 10 0 0 0 12 2m0 2a8 8 0 0 1 8 8a8 8 0 0 1-8 8a8 8 0 0 1-8-8a8 8 0 0 1 8-8m-1 3v8h1.5V16H15V7h-4m1.5 1.5H13v5h1.5v-5Z"/>
-                            </svg>
-                        </div>
-                        <div class="text-xl font-bold text-white">MTN Mobile Money</div>
-                        <div class="text-lg text-neutral-300 mt-2 font-mono">+237 652 436 888</div>
-                        <div class="text-sm text-neutral-400 mt-2">Transferts sécurisés</div>
+                      <div class="flex flex-col items-center p-6 rounded-xl bg-neutral-900 hover:bg-neutral-800 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg">
+    <div class="w-16 h-16 mb-4 flex items-center justify-center bg-yellow-100 p-2 rounded-full">
+<img
+  src="https://www.kindpng.com/picc/m/151-1514348_mtn-momo-logo-mobile-money-logo-png-transparent.png"
+  alt="Logo MTN Mobile Money"
+  class="h-30 w-auto object-contain"
+> </div>
+    <div class="text-xl font-bold text-white">MTN Mobile Money</div>
+    <div class="text-lg text-neutral-300 mt-2 font-mono">+237 652 43 68 88</div>
+    <div class="text-sm text-neutral-400 mt-2">Paiements sécurisés</div>
                     </div>
                 </div>
                 

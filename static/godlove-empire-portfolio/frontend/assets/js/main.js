@@ -14,14 +14,15 @@ function loadNavigation() {
   ];
 
   const nav = `
-    <nav class="bg-stone-950 text-neutral-100 font-poppins shadow-lg">
-      <div class="max-w-[1384px] mx-auto px-6 sm:px-8 lg:px-10">
-        <div class="flex items-center justify-between h-20">
-          <div class="flex-shrink-0">
-            <a href="index.html" aria-label="Godlove Empire Accueil">
-              <img class="w-[120px] h-[60px]" src="https://study.tameri.tech/static/logo-godlove.png" alt="Logo Godlove">
-            </a>
-          </div>
+  <nav class="bg-stone-950 text-neutral-100 font-poppins shadow-lg">
+    <div class="max-w-[1384px] mx-auto px-6 sm:px-8 lg:px-10">
+      <div class="flex items-center justify-between h-20">
+        <div class="flex-shrink-0">
+          <a href="index.html" aria-label="Godlove Empire Accueil" class="flex items-center">
+            <!-- Updated logo with proper aspect ratio -->
+            <img class="h-12 w-auto object-contain" src="https://study.tameri.tech/static/logo-godlove.png" alt="Logo Godlove">
+          </a>
+        </div>
 
           <!-- Desktop Menu -->
           <div class="hidden md:flex space-x-6">
@@ -106,88 +107,97 @@ function loadNavigation() {
 
 function loadFooter() {
   const footer = `
-  <footer class="bg-stone-900 text-neutral-200 font-poppins py-12 px-6">
-    <div class="max-w-6xl mx-auto">
-      <div class="grid grid-cols-1 md:grid-cols-4 gap-8 md:gap-12 lg:gap-16">
-        <!-- Godlove Empire Section -->
-        <div class="md:col-span-1 flex flex-col items-center">
-          <a href="index.html" class="mb-5">
-            <img src="https://study.tameri.tech/static/footer.png" alt="Godlove Empire Logo" class="w-[258px] h-[150px] object-contain mx-auto">
+<footer class="bg-stone-900 text-neutral-200 font-poppins py-12 px-6">
+  <div class="max-w-6xl mx-auto">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-8 md:gap-12 lg:gap-16">
+      <!-- Godlove Empire Logo and Social Media -->
+      <div class="md:col-span-1 flex flex-col items-center">
+        <a href="index.html" class="mb-5">
+          <img src="https://study.tameri.tech/static/footer.png" alt="Godlove Empire Logo" class="h-24 w-auto object-contain mx-auto">
+        </a>
+        <div class="flex gap-4 justify-center">
+          <!-- Social media icons with proper links -->
+          <a href="https://www.facebook.com/share/1BrDqhVNe7/" aria-label="Facebook" target="_blank" class="w-10 h-10 rounded-full bg-stone-700 flex items-center justify-center hover:bg-[#D50706] transition-colors">
+            <i class="fab fa-facebook-f text-white hover:text-white"></i>
           </a>
-          <div class="flex gap-4 justify-center">
-            <a href="#" aria-label="Facebook" class="w-10 h-10 rounded-full bg-stone-700 flex items-center justify-center hover:bg-red-700 transition-colors">
-              <i class="fab fa-facebook-f"></i>
-            </a>
-            <a href="#" aria-label="Instagram" class="w-10 h-10 rounded-full bg-stone-700 flex items-center justify-center hover:bg-red-700 transition-colors">
-              <i class="fab fa-instagram"></i>
-            </a>
-            <a href="#" aria-label="LinkedIn" class="w-10 h-10 rounded-full bg-stone-700 flex items-center justify-center hover:bg-red-700 transition-colors">
-              <i class="fab fa-linkedin-in"></i>
-            </a>
-            <a href="#" aria-label="TikTok" class="w-10 h-10 rounded-full bg-stone-700 flex items-center justify-center hover:bg-red-700 transition-colors">
-              <i class="fab fa-tiktok"></i>
-            </a>
-            <a href="#" aria-label="YouTube" class="w-10 h-10 rounded-full bg-stone-700 flex items-center justify-center hover:bg-red-700 transition-colors">
-              <i class="fab fa-youtube"></i>
-            </a>
-          </div>
-        </div>
-
-        <!-- Entreprise Section -->
-        <div class="flex flex-col items-center md:items-start">
-          <h4 class="text-xl font-semibold mb-5 text-center md:text-left">Entreprise</h4>
-          <ul class="space-y-3 font-medium text-center md:text-left">
-            <li><a href="about-us.html" class="hover:text-red-500 transition-colors">À Propos</a></li>
-            <li><a href="services.html" class="hover:text-red-500 transition-colors">Services</a></li>
-            <li><a href="projects.html" class="hover:text-red-500 transition-colors">Projets</a></li>
-            <li><a href="contact-us.html" class="hover:text-red-500 transition-colors">Contacts</a></li>
-            <li><a href="faq.html" class="hover:text-red-500 transition-colors">FAQs</a></li>
-          </ul>
-        </div>
-
-        <!-- Services Section -->
-        <div class="flex flex-col items-center md:items-start">
-          <h4 class="text-xl font-semibold mb-5 text-center md:text-left">Services</h4>
-          <ul class="space-y-3 font-medium text-center md:text-left">
-            <li><a href="services.html#design" class="hover:text-red-500 transition-colors">Design Graphique</a></li>
-                        <li><a href="services.html#portrait" class="hover:text-red-500 transition-colors">Agrandissement des Portraits Artistiques</a></li>
-            <li><a href="services.html#vehicle" class="hover:text-red-500 transition-colors">Habillage de Véhicule</a></li>
-            <li><a href="services.html#print" class="hover:text-red-500 transition-colors">Imprimerie</a></li>
-            <li><a href="services.html#print" class="hover:text-red-500 transition-colors">Photographie</a></li>
-          </ul>
-        </div>
-
-        <!-- Contact Section -->
-        <div class="flex flex-col items-center md:items-start">
-          <h4 class="text-xl font-semibold mb-5 text-center md:text-left">Contacts</h4>
-          <div class="text-center md:text-left space-y-2 font-medium">
-            <p>
-              <i class="fas fa-map-marker-alt text-red-500 mr-2"></i> Gatineau, Québec (Canada)
-            </p>
-            <p>
-              <i class="fas fa-map-marker-alt text-red-500 mr-2"></i> Douala, Cameroun
-            </p>
-            <p>
-              <img src="https://flagcdn.com/w20/cm.png" alt="Cameroon Flag" class="inline w-5 h-4 mr-1"> 
-              <i class="fab fa-whatsapp text-green-500 mr-2"></i> 
-              <a href="https://wa.me/237659005100" target="_blank" class="hover:text-red-500">+237 659 00 51 00</a>
-            </p>
-            <p>
-              <img src="https://flagcdn.com/w20/ca.png" alt="Canada Flag" class="inline w-5 h-4 mr-1"> +1 613 621 9870
-            </p>
-            <p>
-  <i class="fas fa-envelope text-red-500 mr-2"></i>
-  <a href="mailto:gadloveempire@gmail.com" class="hover:text-red-500">gadloveempire@gmail.com</a>
-</p>
-          </div>
+          <a href="https://www.instagram.com/godlove_empire_?igsh=M205Mnl3MHk5aWRq" aria-label="Instagram" target="_blank" class="w-10 h-10 rounded-full bg-stone-700 flex items-center justify-center hover:bg-[#D50706] transition-colors">
+            <i class="fab fa-instagram text-white hover:text-white"></i>
+          </a>
+          <a href="https://www.linkedin.com/in/godlove-empire-25ab71198" aria-label="LinkedIn" target="_blank" class="w-10 h-10 rounded-full bg-stone-700 flex items-center justify-center hover:bg-[#D50706] transition-colors">
+            <i class="fab fa-linkedin-in text-white hover:text-white"></i>
+          </a>
+          <a href="https://www.tiktok.com/@monsieur.godlove?_t=ZM-8yGVq1ANZI8&_r=1" aria-label="TikTok" target="_blank" class="w-10 h-10 rounded-full bg-stone-700 flex items-center justify-center hover:bg-[#D50706] transition-colors">
+            <i class="fab fa-tiktok text-white hover:text-white"></i>
+          </a>
+          <a href="http://www.youtube.com/@godloveempire" aria-label="YouTube" target="_blank" class="w-10 h-10 rounded-full bg-stone-700 flex items-center justify-center hover:bg-[#D50706] transition-colors">
+            <i class="fab fa-youtube text-white hover:text-white"></i>
+          </a>
+          <a href="https://wa.me/c/237659005100" aria-label="WhatsApp" target="_blank" class="w-10 h-10 rounded-full bg-stone-700 flex items-center justify-center hover:bg-[#D50706] transition-colors">
+            <i class="fab fa-whatsapp text-white hover:text-white"></i>
+          </a>
         </div>
       </div>
 
-      <div class="mt-14 text-center text-neutral-400 text-sm select-none">
-        &copy; ${new Date().getFullYear()} Godlove Empire. Tous droits réservés.
+      <!-- Contact Information with Flags -->
+      <div class="flex flex-col items-center md:items-start">
+        <h4 class="text-xl font-semibold mb-5 text-center md:text-left">Contacts</h4>
+        <div class="text-center md:text-left space-y-3 font-medium">
+          <p class="flex items-center justify-center md:justify-start">
+            <img src="https://flagcdn.com/w20/ca.png" alt="Canada Flag" class="w-5 h-4 mr-2">
+            <i class="fas fa-phone text-[#D50706] mr-2 w-5 text-center"></i> 
+            <a href="tel:+16136219870" class="hover:text-[#D50706] transition-colors">+1 613 621 9870</a>
+          </p>
+          <p class="flex items-center justify-center md:justify-start">
+            <img src="https://flagcdn.com/w20/cm.png" alt="Cameroon Flag" class="w-5 h-4 mr-2">
+            <i class="fab fa-whatsapp text-[#D50706] mr-2 w-5 text-center"></i> 
+            <a href="https://wa.me/237659005100" target="_blank" class="hover:text-[#D50706] transition-colors">+237 659 00 51 00</a>
+          </p>
+          <p class="flex items-center justify-center md:justify-start">
+            <i class="fas fa-envelope text-[#D50706] mr-2 w-5 text-center"></i>
+            <a href="mailto:godloveempire@gmail.com" class="hover:text-[#D50706] transition-colors">godloveempire@gmail.com</a>
+          </p>
+          <p class="flex items-center justify-center md:justify-start">
+            <img src="https://flagcdn.com/w20/ca.png" alt="Canada Flag" class="w-5 h-4 mr-2">
+            <i class="fas fa-map-marker-alt text-[#D50706] mr-2 w-5 text-center"></i> Gatineau, Québec (Canada)
+          </p>
+          <p class="flex items-center justify-center md:justify-start">
+            <img src="https://flagcdn.com/w20/cm.png" alt="Cameroon Flag" class="w-5 h-4 mr-2">
+            <i class="fas fa-map-marker-alt text-[#D50706] mr-2 w-5 text-center"></i> Douala, Cameroun
+          </p>
+        </div>
+      </div>
+
+      <!-- Company Links -->
+      <div class="flex flex-col items-center md:items-start">
+        <h4 class="text-xl font-semibold mb-5 text-center md:text-left">Entreprise</h4>
+        <ul class="space-y-3 font-medium text-center md:text-left">
+          <li><a href="about.html" class="hover:text-[#D50706] transition-colors">À Propos</a></li>
+          <li><a href="services.html" class="hover:text-[#D50706] transition-colors">Services</a></li>
+          <li><a href="projects.html" class="hover:text-[#D50706] transition-colors">Projets</a></li>
+          <li><a href="contact.html" class="hover:text-[#D50706] transition-colors">Contacts</a></li>
+          <li><a href="faq.html" class="hover:text-[#D50706] transition-colors">FAQs</a></li>
+        </ul>
+      </div>
+
+      <!-- Services Links -->
+      <div class="flex flex-col items-center md:items-start">
+        <h4 class="text-xl font-semibold mb-5 text-center md:text-left">Services</h4>
+        <ul class="space-y-3 font-medium text-center md:text-left">
+          <li><a href="services.html#design" class="hover:text-[#D50706] transition-colors">Design Graphique</a></li>
+          <li><a href="services.html#portrait" class="hover:text-[#D50706] transition-colors">Portraits Artistiques</a></li>
+          <li><a href="services.html#print" class="hover:text-[#D50706] transition-colors">Imprimerie</a></li>
+          <li><a href="services.html#photo" class="hover:text-[#D50706] transition-colors">Photographie</a></li>
+          <li><a href="services.html#design" class="hover:text-[#D50706] transition-colors">Habillage Véhicule</a></li>
+        </ul>
       </div>
     </div>
-  </footer>
+
+    <!-- Copyright -->
+    <div class="mt-14 text-center text-neutral-400 text-sm select-none">
+      &copy; <span id="current-year">2023</span> Godlove Empire. Tous droits réservés.
+    </div>
+  </div>
+</footer>
   `;
   document.querySelector('footer').innerHTML = footer;
 }
