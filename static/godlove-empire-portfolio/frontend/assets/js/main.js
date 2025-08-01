@@ -194,7 +194,7 @@ function loadFooter() {
 
     <!-- Copyright -->
     <div class="mt-14 text-center text-neutral-400 text-sm select-none">
-      &copy; <span id="current-year">2023</span> Godlove Empire. Tous droits réservés.
+      &copy; <span id="current-year">2025</span> Godlove Empire. Tous droits réservés.
     </div>
   </div>
 </footer>
