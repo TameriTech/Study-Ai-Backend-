@@ -27,8 +27,8 @@ function loadNavigation() {
           <!-- Desktop Menu -->
           <div class="hidden md:flex space-x-6">
             ${pages.map(({ name, path }) => {
-              const isActive = currentPage === path.toLowerCase();
-              return `
+    const isActive = currentPage === path.toLowerCase();
+    return `
               <a href="${path}" 
                  class="px-4 py-2 rounded-md text-lg font-medium transition-colors duration-200
                  ${isActive ? 'text-red-500 border-b-2 border-red-600 font-semibold' : 'text-neutral-300 hover:text-red-400 hover:bg-red-900/20'}"
@@ -36,7 +36,7 @@ function loadNavigation() {
                 ${name}
               </a>
               `;
-            }).join("")}
+  }).join("")}
           </div>
 
           <!-- Language Switcher -->
@@ -80,15 +80,15 @@ function loadNavigation() {
       <!-- Mobile Menu -->
       <div id="mobile-menu" class="md:hidden hidden px-6 pb-6 space-y-1 bg-stone-950">
         ${pages.map(({ name, path }) => {
-          const isActive = currentPage === path.toLowerCase();
-          return `
+    const isActive = currentPage === path.toLowerCase();
+    return `
           <a href="${path}" class="block px-4 py-2 rounded-md w-fit text-lg font-medium transition-colors duration-200
             ${isActive ? 'text-red-500 border-b-2 border-red-600 font-semibold' : 'text-neutral-300 hover:text-red-400 hover:bg-red-900/20'}"
             aria-current="${isActive ? 'page' : undefined}">
             ${name}
           </a>
           `;
-        }).join("")}
+  }).join("")}
       </div>
     </nav>
   `;
@@ -249,32 +249,32 @@ function setupProjectGallery() {
       ]
     },
     3: {
-  title: "Agrandissement des Portraits Artistiques",
-  category: "portrait",  // Changed to match the data-category
-  description: "Transformation de photo en œuvre d'art numérique. Nous avons utilisé des techniques avancées de retouche et de peinture numérique pour créer des portraits uniques qui capturent la personnalité des sujets.",
-  client: "Client Privé",
-  date: "Novembre 2022",
-  service: "Agrandissement des Portraits Artistiques",
-  duration: "6 semaines",
-  technologies: ["Adobe Photoshop", "Procreate", "Retouche photo avancée"],
-  testimonial: "\"Les portraits agrandis créés par Godlove Empire sont absolument magnifiques. Chaque détail est mis en valeur, créant des œuvres d'art uniques que nous chérirons pour toujours.\"",
-  clientName: "Sophie Tremblay",
-  clientPosition: "Client Privé",
-  clientAvatar: "https://randomuser.me/api/portraits/women/65.jpg",
-  mainImage: "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1064&q=80",
-  thumbnails: [
-    "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1064&q=80",
-    "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1064&q=80",
-    "https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1064&q=80"
-  ]
-}
+      title: "Agrandissement des Portraits Artistiques",
+      category: "portrait",  // Changed to match the data-category
+      description: "Transformation de photo en œuvre d'art numérique. Nous avons utilisé des techniques avancées de retouche et de peinture numérique pour créer des portraits uniques qui capturent la personnalité des sujets.",
+      client: "Client Privé",
+      date: "Novembre 2022",
+      service: "Agrandissement des Portraits Artistiques",
+      duration: "6 semaines",
+      technologies: ["Adobe Photoshop", "Procreate", "Retouche photo avancée"],
+      testimonial: "\"Les portraits agrandis créés par Godlove Empire sont absolument magnifiques. Chaque détail est mis en valeur, créant des œuvres d'art uniques que nous chérirons pour toujours.\"",
+      clientName: "Sophie Tremblay",
+      clientPosition: "Client Privé",
+      clientAvatar: "https://randomuser.me/api/portraits/women/65.jpg",
+      mainImage: "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1064&q=80",
+      thumbnails: [
+        "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1064&q=80",
+        "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1064&q=80",
+        "https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1064&q=80"
+      ]
+    }
   };
 
   // Show project detail
   function showProjectDetail(projectId) {
     const project = projects[projectId];
     if (!project) return;
-    
+
     // Update detail page content
     document.getElementById('detail-title').textContent = project.title;
     document.getElementById('detail-category').textContent = project.category;
@@ -288,11 +288,11 @@ function setupProjectGallery() {
     document.getElementById('detail-client-position').textContent = project.clientPosition;
     document.getElementById('detail-client-avatar').src = project.clientAvatar;
     document.getElementById('detail-main-image').src = project.mainImage;
-    
+
     // Show detail page and hide gallery
     document.getElementById('projects-gallery').classList.add('hidden');
     document.getElementById('project-detail').classList.remove('hidden');
-    
+
     // Scroll to top
     window.scrollTo(0, 0);
   }
@@ -322,7 +322,7 @@ function setupProjectGallery() {
 
   // Attach event listeners to thumbnail images
   document.querySelectorAll('[onclick^="changeDetailImage"]').forEach(thumb => {
-    thumb.addEventListener('click', function(e) {
+    thumb.addEventListener('click', function (e) {
       e.stopPropagation();
       const src = this.getAttribute('onclick').match(/'([^']+)'/)[1];
       changeDetailImage(src);
@@ -332,18 +332,18 @@ function setupProjectGallery() {
   // Filter functionality
   const filterButtons = document.querySelectorAll('.filter-btn');
   const projectsContainer = document.getElementById('projects-container');
-  
+
   if (filterButtons.length && projectsContainer) {
     filterButtons.forEach(button => {
-      button.addEventListener('click', function() {
+      button.addEventListener('click', function () {
         const filter = this.getAttribute('data-filter');
-        
+
         // Update active button
         filterButtons.forEach(btn => btn.classList.remove('active', 'text-white', 'border-[#A00000]'));
         filterButtons.forEach(btn => btn.classList.add('border-neutral-700', 'text-neutral-300'));
         this.classList.add('active', 'text-white', 'border-[#A00000]');
         this.classList.remove('border-neutral-700', 'text-neutral-300');
-        
+
         // Filter projects
         document.querySelectorAll('.project-card').forEach(project => {
           const category = project.getAttribute('data-category');
@@ -364,7 +364,7 @@ function setupServicesFilter() {
 
   const filterButtons = document.querySelectorAll('.filter-btn');
   const services = document.querySelectorAll('.service-card');
-  
+
   // Show only design services by default
   services.forEach(service => {
     const category = service.getAttribute('data-category');
@@ -374,17 +374,17 @@ function setupServicesFilter() {
       service.style.display = 'none';
     }
   });
-  
+
   filterButtons.forEach(button => {
-    button.addEventListener('click', function() {
+    button.addEventListener('click', function () {
       const filter = this.getAttribute('data-filter');
-      
+
       // Update active button
       filterButtons.forEach(btn => btn.classList.remove('active', 'text-white', 'border-[#A00000]'));
       filterButtons.forEach(btn => btn.classList.add('border-neutral-700', 'text-neutral-300'));
       this.classList.add('active', 'text-white', 'border-[#A00000]');
       this.classList.remove('border-neutral-700', 'text-neutral-300');
-      
+
       // Filter services
       services.forEach(service => {
         const category = service.getAttribute('data-category');
@@ -425,7 +425,7 @@ function setupFAQAccordion() {
     const minusIcon = item.querySelector('.accordion-icon.minus');
 
     if (header) {
-      header.addEventListener('click', function() {
+      header.addEventListener('click', function () {
         const isExpanded = content.classList.contains('expanded');
 
         if (isExpanded) {
@@ -453,19 +453,19 @@ function setupContactForm() {
   const contactForm = document.querySelector('form');
   if (!contactForm) return;
 
-  contactForm.addEventListener('submit', function(e) {
+  contactForm.addEventListener('submit', function (e) {
     e.preventDefault();
-    
+
     // Basic form validation
     const name = this.querySelector('input[type="text"]').value.trim();
     const email = this.querySelector('input[type="email"]').value.trim();
     const message = this.querySelector('textarea').value.trim();
-    
+
     if (!name || !email || !message) {
       alert('Veuillez remplir tous les champs obligatoires.');
       return;
     }
-    
+
     // Here you would typically send the form data to a server
     console.log('Form submitted:', { name, email, message });
     alert('Merci pour votre message! Nous vous contacterons bientôt.');
@@ -475,14 +475,14 @@ function setupContactForm() {
   // File upload styling
   const fileUpload = document.querySelector('.file-upload-area');
   if (fileUpload) {
-    fileUpload.addEventListener('click', function() {
+    fileUpload.addEventListener('click', function () {
       document.getElementById('fileInput').click();
     });
   }
 }
 
 // Initialize all functionality when DOM is loaded
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
   loadNavigation();
   loadFooter();
   setupProjectGallery();
