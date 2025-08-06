@@ -99,8 +99,6 @@ body {
   background: #111111;
   border-left: 3px solid #D50706;
 }
-
-
         .mix-blend-luminosity {
             mix-blend-mode: luminosity;
         }
@@ -157,25 +155,30 @@ body {
             /* keep it on top */
         }
 
-/* Hero Sections */
+/* Hero Section */
 .hero-section {
   background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.5)), 
               url('../home.jpg');
   background-size: cover;
-  background-position: top center;
+  background-position: center;
   background-repeat: no-repeat;
-  min-height: 100vh;
+  min-height: 115vh;
   width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 40vh; /* This pushes content up from the bottom */
   
   /* Responsive adjustments */
   @media (max-width: 768px) {
-    min-height: 70vh;
+    min-height: 80vh;
     background-attachment: scroll;
-    background-position: top center;
+    padding-bottom: 5vh;
   }
   
   @media (max-width: 480px) {
-    min-height: 60vh;
+    min-height: 70vh;
+    padding-bottom: 3vh;
   }
 }
 

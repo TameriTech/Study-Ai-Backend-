@@ -108,7 +108,7 @@ function loadNavigation() {
 function loadFooter() {
   const footer = `
 <footer class="bg-stone-900 text-neutral-200 font-poppins py-12 px-6">
-  <div class="max-w-6xl mx-auto">
+  <div class="max-w-7xl mx-auto">
     <div class="grid grid-cols-1 md:grid-cols-4 gap-8 md:gap-12 lg:gap-16">
       <!-- Godlove Empire Logo and Social Media -->
       <div class="md:col-span-1 flex flex-col items-center">
@@ -156,13 +156,15 @@ function loadFooter() {
             <i class="fas fa-envelope text-[#D50706] mr-2 w-5 text-center"></i>
             <a href="mailto:godloveempire@gmail.com" class="hover:text-[#D50706] transition-colors">godloveempire@gmail.com</a>
           </p>
-          <p class="flex items-center justify-center md:justify-start">
-            <img src="https://flagcdn.com/w20/ca.png" alt="Canada Flag" class="w-5 h-4 mr-2">
-            <i class="fas fa-map-marker-alt text-[#D50706] mr-2 w-5 text-center"></i> Gatineau, Québec (Canada)
+          <p class="flex items-center justify-center md:justify-start gap-2">
+            <img src="https://flagcdn.com/w20/ca.png" alt="Canada Flag" class="w-5 h-4 flex-shrink-0">
+            <i class="fas fa-map-marker-alt text-[#D50706] w-5 flex-shrink-0"></i>
+            <span class="whitespace-nowrap">Gatineau, Québec (Canada)</span>
           </p>
-          <p class="flex items-center justify-center md:justify-start">
-            <img src="https://flagcdn.com/w20/cm.png" alt="Cameroon Flag" class="w-5 h-4 mr-2">
-            <i class="fas fa-map-marker-alt text-[#D50706] mr-2 w-5 text-center"></i> Douala, Cameroun
+          <p class="flex items-center justify-center md:justify-start gap-2">
+            <img src="https://flagcdn.com/w20/cm.png" alt="Cameroon Flag" class="w-5 h-4 flex-shrink-0">
+            <i class="fas fa-map-marker-alt text-[#D50706] w-5 flex-shrink-0"></i>
+            <span class="whitespace-nowrap">Douala, Cameroun</span>
           </p>
         </div>
       </div>
@@ -184,10 +186,9 @@ function loadFooter() {
         <h4 class="text-xl font-semibold mb-5 text-center md:text-left">Services</h4>
         <ul class="space-y-3 font-medium text-center md:text-left">
           <li><a href="services.html#design" class="hover:text-[#D50706] transition-colors">Design Graphique</a></li>
-          <li><a href="services.html#portrait" class="hover:text-[#D50706] transition-colors">Portraits Artistiques</a></li>
+          <li><a href="services.html#portrait" class="hover:text-[#D50706] transition-colors">Agrandissement des Portraits Artistiques</a></li>
           <li><a href="services.html#print" class="hover:text-[#D50706] transition-colors">Imprimerie</a></li>
           <li><a href="services.html#photo" class="hover:text-[#D50706] transition-colors">Photographie</a></li>
-          <li><a href="services.html#design" class="hover:text-[#D50706] transition-colors">Habillage Véhicule</a></li>
         </ul>
       </div>
     </div>
@@ -201,7 +202,6 @@ function loadFooter() {
   `;
   document.querySelector('footer').innerHTML = footer;
 }
-
 
 // Project Gallery Functionality
 function setupProjectGallery() {
@@ -249,25 +249,25 @@ function setupProjectGallery() {
       ]
     },
     3: {
-      title: "Habillage de Véhicule",
-      category: "Habillage Véhicule",
-      description: "Design et installation d'habillage complet pour une flotte de véhicules de livraison. Le projet incluait la conception graphique, l'impression sur vinyle haute qualité et l'installation professionnelle sur 12 véhicules.",
-      client: "Livraison Express Québec",
-      date: "Novembre 2022",
-      service: "Habillage Véhicule",
-      duration: "6 semaines",
-      technologies: ["Adobe Illustrator", "Impression grand format", "Installation vinyle"],
-      testimonial: "\"Nos véhicules habillés par Godlove Empire sont devenus de véritables ambassadeurs mobiles de notre marque. Le design est accrocheur et professionnel, et le travail d'installation a été impeccable.\"",
-      clientName: "Pierre Gagnon",
-      clientPosition: "Directeur Marketing, Livraison Express Québec",
-      clientAvatar: "https://randomuser.me/api/portraits/men/22.jpg",
-      mainImage: "https://images.unsplash.com/photo-1513151233558-d860c5398176?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1064&q=80",
-      thumbnails: [
-        "https://images.unsplash.com/photo-1513151233558-d860c5398176?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1064&q=80",
-        "https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1064&q=80",
-        "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1064&q=80"
-      ]
-    }
+  title: "Agrandissement des Portraits Artistiques",
+  category: "portrait",  // Changed to match the data-category
+  description: "Transformation de photo en œuvre d'art numérique. Nous avons utilisé des techniques avancées de retouche et de peinture numérique pour créer des portraits uniques qui capturent la personnalité des sujets.",
+  client: "Client Privé",
+  date: "Novembre 2022",
+  service: "Agrandissement des Portraits Artistiques",
+  duration: "6 semaines",
+  technologies: ["Adobe Photoshop", "Procreate", "Retouche photo avancée"],
+  testimonial: "\"Les portraits agrandis créés par Godlove Empire sont absolument magnifiques. Chaque détail est mis en valeur, créant des œuvres d'art uniques que nous chérirons pour toujours.\"",
+  clientName: "Sophie Tremblay",
+  clientPosition: "Client Privé",
+  clientAvatar: "https://randomuser.me/api/portraits/women/65.jpg",
+  mainImage: "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1064&q=80",
+  thumbnails: [
+    "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1064&q=80",
+    "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1064&q=80",
+    "https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1064&q=80"
+  ]
+}
   };
 
   // Show project detail

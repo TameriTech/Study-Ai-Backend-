@@ -47,9 +47,6 @@
       <button class="filter-btn px-6 py-2 rounded-full border border-neutral-700 text-neutral-300 hover:border-[#A00000] hover:text-white" data-filter="portrait">
         Agrandissement des Portraits Artistiques
       </button>
-      <button class="filter-btn px-6 py-2 rounded-full border border-neutral-700 text-neutral-300 hover:border-[#A00000] hover:text-white" data-filter="vehicle">
-        Habillage Véhicule
-      </button>
       <button class="filter-btn px-6 py-2 rounded-full border border-neutral-700 text-neutral-300 hover:border-[#A00000] hover:text-white" data-filter="print">
         Imprimerie
       </button>
@@ -201,6 +198,20 @@
         </p>
       </div>
 
+      <div class="service-card flex flex-col gap-6 bg-cardBg rounded-lg p-6 w-[320px] max-sm:w-full cursor-pointer" data-category="design">
+        <img
+          src="https://images.unsplash.com/photo-1626785774573-4b799315345d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80"
+          alt="Habillage de Véhicules"
+          class="rounded object-cover h-48 w-full"
+        />
+        <h2 class="text-3xl font-bold leading-tight text-neutral-100 font-poppins">
+          Habillage de Véhicule
+        </h2>
+        <p class="text-neutral-400 text-base leading-relaxed font-poppins">
+          Lettrage, semi-wrap ou wrap complet, nous créons des designs attractifs qui transforment vos véhicules en ambassadeurs mobiles de votre marque.
+        </p>
+      </div>
+
       <!-- Agrandissement des Portraits Artistiques Services -->
       <div class="service-card flex flex-col gap-6 bg-cardBg rounded-lg p-6 w-[320px] max-sm:w-full cursor-pointer" data-category="portrait" style="display: none;">
         <img
@@ -213,21 +224,6 @@
         </h2>
         <p class="text-neutral-400 text-base leading-relaxed font-poppins">
           Illuminez vos espaces avec de magnifiques portraits artistiques.
-        </p>
-      </div>
-
-      <!-- Habillage Véhicule Services -->
-      <div class="service-card flex flex-col gap-6 bg-cardBg rounded-lg p-6 w-[320px] max-sm:w-full cursor-pointer" data-category="vehicle" style="display: none;">
-        <img
-          src="https://images.unsplash.com/photo-1626785774573-4b799315345d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80"
-          alt="Habillage de Véhicules"
-          class="rounded object-cover h-48 w-full"
-        />
-        <h2 class="text-3xl font-bold leading-tight text-neutral-100 font-poppins">
-          Habillage de Véhicule
-        </h2>
-        <p class="text-neutral-400 text-base leading-relaxed font-poppins">
-          Lettrage, semi-wrap ou wrap complet, nous créons des designs attractifs qui transforment vos véhicules en ambassadeurs mobiles de votre marque.
         </p>
       </div>
 
@@ -292,11 +288,7 @@
 
     <div class="text-center text-neutral-400 mt-6">
   <p><strong>Vos idées vont au-delà ?</strong> Contactez-nous et discutons de vos besoins spécifiques.</p>                
-    <!-- Single "Demander un devis" Button -->
-    <!-- <button id="open-quote-modal" class="bg-[#A00000] hover:bg-[#800000] text-white font-semibold py-3 px-8 rounded-full transition-colors duration-300 text-lg mt-8">
-      Demander un devis
-    </button> -->
-  </div>
+    </div>
 </main>
 
 <!-- Modal backdrop -->
@@ -343,8 +335,8 @@
           <option value="Covers de Livre">Covers de Livre</option>
           <option value="Étiquettes">Étiquettes</option>
           <option value="Social Media">Social Media</option>
-          <option value="Agrandissement Portraits Artistiques">Agrandissement Portraits Artistiques</option>
           <option value="Habillage de Véhicule">Habillage de Véhicule</option>
+          <option value="Agrandissement Portraits Artistiques">Agrandissement Portraits Artistiques</option>
           <option value="Imprimerie">Imprimerie</option>
           <option value="Shooting Indoor">Shooting Indoor</option>
           <option value="Shooting Outdoor">Shooting Outdoor</option>
