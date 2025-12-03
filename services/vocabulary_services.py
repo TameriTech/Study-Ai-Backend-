@@ -8,7 +8,6 @@ from database import models, schemas
 from utils.gemini_api import generate_gemini_response
 from fastapi import HTTPException
 
-
 def create_vocabulary_entry(course_id: int, db: Session) -> schemas.Vocabulary:
     course = db.query(models.Course).filter(models.Course.id_course == course_id).first()
     if not course:
