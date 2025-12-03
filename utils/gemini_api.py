@@ -31,7 +31,7 @@ def generate_gemini_response(
         config = types.GenerateContentConfig(**config_params) if config_params else None
         
         response = client.models.generate_content(
-            model="gemini-2.5-flash-preview-05-20",
+            model="gemini-2.5-flash",
             contents=[prompt],
             config=config
         )
@@ -45,7 +45,7 @@ def extract_text_from_image(image: Image.Image) -> str:
     try:
         client = genai.Client(api_key=GOOGLE_API_KEY)
         response = client.models.generate_content(
-            model="gemini-2.5-flash-preview-05-20",
+            model="gemini-2.5-flash",
             contents=["Extract all text from this image:", image]
         )
         return response.text.strip()

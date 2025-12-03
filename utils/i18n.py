@@ -11,7 +11,6 @@ def load_translations():
         path = os.path.join(BASE_PATH, f"../translations/{lang}.json")
         with open(path, encoding="utf-8") as f:
             TRANSLATIONS[lang] = json.load(f)
-
 load_translations()
 
 def translate(key: str, lang: str = "en") -> str:

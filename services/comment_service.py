@@ -19,7 +19,7 @@ def create_comment(db: Session, comment_data: CommentCreate) -> CommentModel:
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail="course_not_found"
             )
-    
+        
     db_comment = CommentModel(
         user_id=comment_data.user_id,
         quiz_id=None,
