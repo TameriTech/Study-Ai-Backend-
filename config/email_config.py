@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 class EmailSettings(BaseSettings):
-    SMTP_HOST: str = os.getenv("SMTP_HOST", "smtp.gmail.com")  # Default if not found
+    SMTP_HOST: str = os.getenv("SMTP_HOST", "smtp.gmail.com")
     SMTP_PORT: int = os.getenv("SMTP_PORT", 587)
     SMTP_USERNAME: str = os.getenv("SMTP_USERNAME")
     SMTP_PASSWORD: str = os.getenv("SMTP_PASSWORD")
