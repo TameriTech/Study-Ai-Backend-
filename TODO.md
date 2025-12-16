@@ -28,8 +28,8 @@ Here's a reorganized and comprehensive TODO list for your StudyAI backend projec
 
 ## 🧠 **3. AI Processing Core**
 ### **Text Transformation**
-- [x] Summary generation (Ollama)
-- [x] Simplification (Ollama)
+- [x] Summary generation (Gemini)
+- [x] Simplification (Gemini)
 - [x] Key concept extraction
 - [x] Prerequisite identification
 
@@ -80,8 +80,8 @@ graph TD
     B -->|Image| D[Pytesseract]
     B -->|Video| E[FFmpeg+Whisper]
     C/D/E --> F[Text Processing]
-    F --> G[Ollama Summary]
-    F --> H[Ollama Simplification]
+    F --> G[Gemini Summary]
+    F --> H[Gemini Simplification]
     G --> I[Quiz Generator]
     H --> I
     F --> J[Vocabulary Builder]
@@ -93,7 +93,7 @@ graph TD
 - `Pytesseract` - OCR for images
 - `FFmpeg` - Video frame extraction
 - `Whisper` - Audio transcription
-- `Ollama` - All text generation tasks
+- `Gemini` - All text generation tasks
 - `SentenceTransformers` - Vector embeddings
 
 Would you like me to prioritize these tasks or elaborate on any specific section?

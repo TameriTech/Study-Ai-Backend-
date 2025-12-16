@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tameri Study AI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- MathJax Configuration -->
+<script>
+  window.MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$', '$$'], ['\\[', '\\]']],
+      processEscapes: true,
+      packages: {'[+]': ['color']}
+    },
+    options: {
+      skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+      ignoreHtmlClass: 'tex2jax_ignore'
+    },
+    loader: {load: ['[tex]/color']}
+  };
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" id="MathJax-script"></script>
+    <style>
+    :root {
+        --primary: #4361ee;
+        --secondary: #3f37c9;
+        --accent: #4895ef;
+        --light: #f8f9fa;
+        --dark: #212529;
+        --success: #4cc9f0;
+        --danger: #f72585;
+        --warning: #f8961e;
+        --info: #560bad;
+    }
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+        background-color: #f5f7fb;
+        color: var(--dark);
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .container {
+        max-width: 1200px;
+        min-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    header {
+        text-align: center;
+        padding: 20px 0;
+        margin-bottom: 30px;
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        color: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(67, 97, 238, 0.2);
+    }
+
+    header h1 {
+        font-size: 2.5rem;
+        margin-bottom: 10px;
+    }
+
+    header p {
+        font-size: 1.1rem;
+        opacity: 0.9;
+    }
+
+    .chat-section {
+        height: 585px;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        min-height: 0;
+        background: white;
+        border-radius: 12px;
+        padding: 25px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    }
+
+    .section-title {
+        font-size: 1.5rem;
+        margin-bottom: 20px;
+        color: var(--primary);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .section-title i {
+        font-size: 1.3rem;
+    }
+
+    .chat-container {
+        display: flex;
+        flex-direction: column;
+        height: 80%;
+    }
+
+    .chat-messages {
+        height: 100%;
+        overflow-y: auto;
+        scroll-behavior: smooth;
+        padding: 15px;
+        margin-bottom: 20px;
+        border-radius: 8px;
+        background-color: #f8f9fa;
+        animation: fadeIn 0.3s ease-in-out;
+    }
+
+    .message {
+        display: flex;
+        margin-bottom: 10px;
+        max-width: 100%;
+    }
+
+    .message-user-container {
+        justify-content: flex-end;
+        margin-left: auto;
+    }
+
+    .message-ai-container {
+        justify-content: flex-start;
+        margin-right: auto;
+    }
+
+    .message-content {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .message-user-content {
+        align-items: flex-end;
+    }
+
+    .message-ai-content {
+        align-items: flex-start;
+    }
+
+    .message-avatar {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin: 0 10px;
+    }
+
+    .message-avatar-user {
+        order: 1;
+    }
+
+    .message-avatar-ai {
+        order: 0;
+    }
+
+    .message-bubble {
+        padding: 12px 16px;
+        border-radius: 18px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        position: relative;
+        word-wrap: break-word;
+        max-width: 100%;
+        text-align: left;
+        line-height: 1.5;
+    }
+
+    .message-bubble *:first-child {
+        margin-top: 0;
+    }
+
+    .message-bubble *:last-child {
+        margin-bottom: 0;
+    }
+
+    .message-bubble-user {
+        background-color: var(--primary);
+        color: white;
+        border-radius: 18px 0 18px 18px;
+    }
+
+    .message-bubble-ai {
+        background-color: #e9ecef;
+        color: var(--dark);
+        border-radius: 0 18px 18px 18px;
+    }
+
+    .message-info {
+        display: flex;
+        align-items: center;
+        margin-bottom: 5px;
+        gap: 8px;
+    }
+
+    .message-sender {
+        font-weight: 600;
+        font-size: 0.9rem;
+    }
+
+    .message-time {
+        font-size: 0.75rem;
+        color: #6b7280;
+    }
+
+    .message-text {
+        line-height: 1.5;
+    }
+
+    /* Formatting styles for AI responses */
+    .message-bubble-ai h3 {
+        font-size: 1.2rem;
+        font-weight: 600;
+        margin: 15px 0 10px 0;
+        color: var(--primary);
+    }
+
+    .message-bubble-ai h4 {
+        font-size: 1.1rem;
+        font-weight: 500;
+        margin: 4px 0 2px 0;
+        color: var(--secondary);
+    }
+
+    .message-bubble-ai strong {
+        font-weight: 600;
+        color: var(--dark);
+    }
+
+    .message-bubble-ai em {
+        font-style: italic;
+    }
+
+    .message-bubble-ai ul,
+    .message-bubble-ai ol {
+        margin: 10px 0 10px 20px;
+        padding-left: 15px;
+    }
+
+    .message-bubble-ai li {
+        margin-bottom: 5px;
+        line-height: 1.4;
+    }
+
+    .message-bubble-ai br {
+        content: "";
+        display: block;
+        margin: 8px 0;
+    }
+
+    .message-sources {
+        font-size: 0.85rem;
+        margin-top: 10px;
+    }
+
+    .sources-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 5px;
+        margin-top: 5px;
+    }
+
+    .source-badge {
+        background-color: rgba(72, 149, 239, 0.1);
+        padding: 3px 8px;
+        border-radius: 12px;
+        font-size: 0.7rem;
+        color: var(--accent);
+    }
+
+    .chat-input-container {
+        display: flex;
+        gap: 10px;
+        margin-top: auto;
+        position: relative;
+    }
+
+    #chat-input {
+        flex: 1;
+        padding: 15px 50px 15px 50px;
+        border: 1px solid #d1d5db;
+        border-radius: 8px;
+        font-size: 1rem;
+        outline: none;
+        transition: all 0.3s ease;
+    }
+
+    #chat-input:focus {
+        border-color: var(--accent);
+        box-shadow: 0 0 0 3px rgba(72, 149, 239, 0.2);
+    }
+
+    #send-btn {
+        background-color: var(--primary);
+        color: white;
+        border: none;
+        padding: 0 20px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 1.2rem;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    #send-btn:hover {
+        background-color: var(--secondary);
+    }
+
+    .typing-indicator {
+        display: none;
+        padding: 10px 15px;
+        background-color: #e9ecef;
+        border-radius: 18px;
+        margin-bottom: 15px;
+        align-self: flex-start;
+        max-width: 80%;
+    }
+
+    .typing-dots {
+        display: flex;
+        gap: 5px;
+    }
+
+    .typing-dot {
+        width: 8px;
+        height: 8px;
+        background-color: #6b7280;
+        border-radius: 50%;
+        animation: typingAnimation 1.4s infinite ease-in-out;
+    }
+
+    .typing-dot:nth-child(1) { animation-delay: 0s; }
+    .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+    .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+    @keyframes typingAnimation {
+        0%, 60%, 100% { transform: translateY(0); }
+        30% { transform: translateY(-5px); }
+    }
+
+    .confidence-indicator {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 0.8rem;
+        color: #6b7280;
+        margin-top: 5px;
+    }
+
+    .confidence-bar {
+        height: 4px;
+        border-radius: 2px;
+        background-color: #e9ecef;
+        flex: 1;
+        overflow: hidden;
+    }
+
+    .confidence-fill {
+        height: 100%;
+        background-color: var(--success);
+        width: 0%;
+    }
+
+    footer {
+        text-align: center;
+        padding: 20px;
+        margin-top: 30px;
+        color: #6b7280;
+        font-size: 0.9rem;
+    }
+
+    /* Document upload button */
+    .upload-btn-container {
+        position: absolute;
+        left: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 10;
+    }
+
+    .upload-btn-chat {
+        background: none;
+        border: none;
+        color: var(--accent);
+        cursor: pointer;
+        font-size: 1.2rem;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+    }
+
+    .upload-btn-chat:hover {
+        background-color: rgba(72, 149, 239, 0.1);
+        color: var(--primary);
+    }
+
+    .file-input-chat {
+        display: none;
+    }
+
+    /* Document list in chat */
+    .document-chip {
+        display: inline-flex;
+        align-items: center;
+        background-color: rgba(72, 149, 239, 0.1);
+        padding: 6px 12px;
+        border-radius: 20px;
+        margin: 5px;
+        font-size: 0.85rem;
+        color: var(--accent);
+    }
+
+    .document-chip i {
+        margin-right: 6px;
+        font-size: 0.9rem;
+    }
+
+    .document-chip-close {
+        margin-left: 8px;
+        cursor: pointer;
+        opacity: 0.7;
+        transition: opacity 0.2s;
+    }
+
+    .document-chip-close:hover {
+        opacity: 1;
+    }
+
+    .documents-container {
+        display: flex;
+        flex-wrap: wrap;
+        margin-bottom: 10px;
+        padding: 5px;
+        border-radius: 8px;
+        background-color: rgba(72, 149, 239, 0.05);
+    }
+
+    /* Scrollbar styling */
+    ::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: var(--accent);
+        border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: var(--primary);
+    }
+
+    /* Mobile-first responsive adjustments */
+    @media (max-width: 1200px) {
+        .container {
+            min-width: 100%;
+            max-width: 100%;
+            padding: 15px;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .chat-section {
+            height: auto;
+            min-height: 400px;
+            padding: 15px;
+        }
+        
+        header h1 {
+            font-size: 1.8rem;
+        }
+        
+        header p {
+            font-size: 0.9rem;
+        }
+        
+        .section-title {
+            font-size: 1.2rem;
+        }
+        
+        .message {
+            max-width: 85%;
+        }
+        
+        #chat-input {
+            padding: 12px 40px 12px 40px;
+        }
+        
+        #send-btn {
+            padding: 0 15px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .container {
+            padding: 10px;
+        }
+        
+        header {
+            padding: 15px 0;
+            margin-bottom: 20px;
+        }
+        
+        header h1 {
+            font-size: 1.5rem;
+        }
+        
+        .chat-section {
+            padding: 15px;
+        }
+        
+        .message-bubble {
+            padding: 10px 12px;
+            font-size: 0.9rem;
+        }
+        
+        .message-avatar {
+            width: 30px;
+            height: 30px;
+        }
+        
+        .upload-btn-chat {
+            width: 30px;
+            height: 30px;
+            font-size: 1rem;
+        }
+    }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-graduation-cap"></i>Tameri Study AI Assistant</h1>
+            <p>Upload your documents and chat with them using AI</p>
+        </header>
+
+        <div class="app-container">
+            <div class="chat-section">
+                <h2 class="section-title"><i class="fas fa-comments"></i> Chat Bot</h2>
+                <div class="documents-container" id="documents-container"></div>
+                <div class="chat-container">
+                    <div class="chat-messages" id="chat-messages">
+
+                        <!-- Messages will appear here -->
+                        <div class="message message-ai-container" style="display: none;">
+                            <img src="" alt="AI Avatar" class="message-avatar message-avatar-ai">
+                            <div class="message-content message-ai-content">
+                                <div class="message-info">
+                                    <span class="message-sender"></span>
+                                    <span class="message-time"></span>
+                                </div>
+                                <div class="message-bubble message-bubble-ai">
+                                    <div class="message-text"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="typing-indicator" id="typing-indicator">
+                        <div class="typing-dots">
+                            <div class="typing-dot"></div>
+                            <div class="typing-dot"></div>
+                            <div class="typing-dot"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="chat-input-container">
+                        <div class="upload-btn-container">
+                            <button class="upload-btn-chat" id="upload-btn" title="Upload document">
+                                <i class="fas fa-paperclip"></i>
+                            </button>
+                            <input type="file" id="file-input" class="file-input-chat" accept=".pdf,.txt,.doc,.docx,.ppt,.pptx">
+                        </div>
+                        <input type="text" id="chat-input" placeholder="Ask me anything about your document...">
+                        <button id="send-btn"><i class="fas fa-paper-plane"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>Tameri Study AI Assistant &copy; 2025</p>
+    </footer>
+
+    <script>
+        window.addEventListener('beforeunload', function() {
+        localStorage.removeItem('uploadedDocuments');
+        localStorage.removeItem('lastUsedDocumentId');
+    });
+    // Element references
+    const fileInput = document.getElementById('file-input');
+    const uploadBtn = document.getElementById('upload-btn');
+    const chatMessages = document.getElementById('chat-messages');
+    const chatInput = document.getElementById('chat-input');
+    const sendBtn = document.getElementById('send-btn');
+    const typingIndicator = document.getElementById('typing-indicator');
+    const documentsContainer = document.getElementById('documents-container');
+
+    let currentDocumentId = null;
+    let currentUserId = 9;
+
+    // Avatars
+    const AI_AVATAR = "logo.png";
+    const USER_AVATAR = "blaise.jpg";
+    const AI_NAME = "Study AI";
+    const USER_NAME = "You";
+
+    
+    // Uploaded Documents (loaded from localStorage)
+    let uploadedDocuments = [];
+
+    // Event listeners
+    uploadBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        fileInput.click();
+    });
+    
+    fileInput.addEventListener('change', handleFileUpload);
+    
+    chatInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') sendMessage();
+    });
+    
+    sendBtn.addEventListener('click', sendMessage);
+document.addEventListener('DOMContentLoaded', function() {
+        addMessage('ai', 'Welcome to Tameri Study AI! Upload a document to get started or ask me a question.');
+        
+        // Load any previously uploaded documents
+        loadDocuments();
+    });
+
+    // Load documents from storage or API
+    function loadDocuments() {
+        // Fetch saved documents from localStorage
+    const savedDocuments = JSON.parse(localStorage.getItem('uploadedDocuments')) || [];
+    uploadedDocuments = savedDocuments;
+
+    // Get the last used document ID from localStorage
+    const lastUsedDocId = localStorage.getItem('lastUsedDocumentId');
+    
+    // Render documents and highlight the last used document
+    renderDocuments(lastUsedDocId);
+    }
+
+    // Render document chips
+    function renderDocuments(lastUsedDocId) {
+    documentsContainer.innerHTML = '';
+
+    if (uploadedDocuments.length === 0) {
+        documentsContainer.style.display = 'none';
+        return;
+    }
+
+    documentsContainer.style.display = 'flex';
+
+    uploadedDocuments.forEach(doc => {
+        const docElement = document.createElement('div');
+        docElement.className = 'document-chip';
+        docElement.innerHTML = `
+            <i class="fas fa-file-alt"></i>
+            <span>${doc.name}</span>
+            <span class="document-chip-close" data-id="${doc.id}">&times;</span>
+        `;
+        
+        // If this document is the last used, highlight it in rgb(117, 255, 117)
+        if (doc.id === lastUsedDocId) {
+            docElement.style.backgroundColor = 'rgb(117, 255, 117)';
+        } else {
+            docElement.style.backgroundColor = 'rgba(72, 149, 239, 0.1)'; // Lighter blue for others
+        }
+
+        documentsContainer.appendChild(docElement);
+
+        // Add click handler to select or remove document
+        docElement.addEventListener('click', (e) => {
+            if (e.target.classList.contains('document-chip-close')) {
+                e.stopPropagation();
+                removeDocument(doc.id);
+            } else {
+                selectDocument(doc.id);
+            }
+        });
+    });
+}
+    
+    // Select a document
+    function selectDocument(docId) {
+    currentDocumentId = docId;
+    const doc = uploadedDocuments.find(d => d.id === docId);
+
+    // Save the last used document ID in localStorage
+    localStorage.setItem('lastUsedDocumentId', docId);
+
+    // Highlight the selected document in rgb(117, 255, 117)
+    document.querySelectorAll('.document-chip').forEach(chip => {
+        if (chip.dataset.id === docId) {
+            chip.style.backgroundColor = 'rgb(117, 255, 117)';
+        } else {
+            chip.style.backgroundColor = 'rgba(72, 149, 239, 0.1)'; // Light blue for unselected docs
+        }
+    });
+
+    addMessage('ai', `Now using document: "${doc.name}". Ask me anything about it!`);
+}
+
+// Remove a document
+   function removeDocument(docId) {
+    uploadedDocuments = uploadedDocuments.filter(doc => doc.id !== docId);
+    localStorage.setItem('uploadedDocuments', JSON.stringify(uploadedDocuments));
+
+    // If the removed document is the current one, clear the current document ID
+    if (currentDocumentId === docId) {
+        currentDocumentId = null;
+        localStorage.removeItem('lastUsedDocumentId'); // Clear last used document
+    }
+
+    renderDocuments();
+}
+    
+
+// Upload function
+    function handleFileUpload() {
+    const file = fileInput.files[0];
+    if (!file) return;
+
+    // Show uploading status in chat
+    uploadBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+    uploadBtn.disabled = true;
+
+    const formData = new FormData();
+    formData.append("file", file);
+
+    // Send the file to the server using an actual API
+    fetch(`/api/documents/?user_id=${currentUserId}&title=${encodeURIComponent(file.name)}&type_document=pdf`, {
+        method: "POST",
+        body: formData
+    })
+    .then(response => {
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+        return response.json();  // Parse the response to get document data
+    })
+    .then(data => {
+        // Use the API response to update the document info
+        const newDoc = {
+            id: data.id_document,
+            name: file.name,
+            type: file.type,
+            size: file.size,
+            uploadedAt: new Date().toISOString()
+        };
+
+        // Add the new document to the uploadedDocuments array
+        uploadedDocuments.push(newDoc);
+        localStorage.setItem('uploadedDocuments', JSON.stringify(uploadedDocuments));
+
+        // Set the current document ID as the last uploaded document
+        currentDocumentId = newDoc.id;
+        localStorage.setItem('lastUsedDocumentId', newDoc.id);
+
+        // Render the documents list and highlight the uploaded document
+        renderDocuments(newDoc.id);
+
+        // Add success message to chat
+        // addMessage('ai', `Document "${file.name}" uploaded successfully. Ask me anything about it!`);
+    })
+    .catch(error => {
+        console.error('Upload error:', error);
+        addMessage('ai', 'Failed to upload document. Please try again.');
+    })
+    .finally(() => {
+        // Reset the upload button and input field
+        uploadBtn.innerHTML = '<i class="fas fa-paperclip"></i>';
+        uploadBtn.disabled = false;
+        fileInput.value = '';  // Clear file input field
+    });
+}
+
+    // Chat send function
+    function sendMessage() {
+        const message = chatInput.value.trim();
+        if (!message) return;
+
+        addMessage('user', message);
+        chatInput.value = '';
+        
+        // Scroll immediately after adding user message
+        setTimeout(() => {
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }, 0);
+
+        typingIndicator.style.display = 'block';
+
+        fetch('/api/chat/ask', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ question: message, document_id: currentDocumentId })
+        })
+        .then(response => {
+            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+            return response.json();
+        })
+        .then(data => {
+            addMessage('ai', data.answer);
+        })
+        .catch(error => {
+            console.error('Chat error:', error);
+            addMessage('ai', 'Sorry, I encountered an error processing your question.');
+        })
+        .finally(() => {
+            typingIndicator.style.display = 'none';
+        });
+    }
+
+
+    // Message function
+    function addMessage(sender, content) {
+        const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        const messageDiv = document.createElement('div');
+
+        const formattedContent = formatContent(content);
+
+        if (sender === 'user') {
+            messageDiv.className = 'message message-user-container';
+            messageDiv.innerHTML = `
+                <div class="message-content message-user-content">
+                    <div class="message-info">
+                        <span class="message-sender">${USER_NAME}</span>
+                        <span class="message-time">${time}</span>
+                    </div>
+                    <div class="message-bubble message-bubble-user">
+                        <div class="message-text">${formattedContent}</div>
+                    </div>
+                </div>
+                <img src="${USER_AVATAR}" alt="User Avatar" class="message-avatar message-avatar-user">
+            `;
+        } else {
+            messageDiv.className = 'message message-ai-container';
+            messageDiv.innerHTML = `
+                <img src="${AI_AVATAR}" alt="AI Avatar" class="message-avatar message-avatar-ai">
+                <div class="message-content message-ai-content">
+                    <div class="message-info">
+                        <span class="message-sender">${AI_NAME}</span>
+                        <span class="message-time">${time}</span>
+                    </div>
+                    <div class="message-bubble message-bubble-ai">
+                        <div class="message-text">${formattedContent}</div>
+                    </div>
+                </div>
+            `;
+        }
+
+        chatMessages.appendChild(messageDiv);
+        
+        // Process MathJax after a slight delay to ensure DOM is ready
+        setTimeout(() => {
+            if (typeof MathJax !== 'undefined') {
+                MathJax.typesetPromise([messageDiv]).catch((err) => {
+                    console.log('MathJax typeset error:', err);
+                    // Fallback for any unprocessed math
+                    const mathElements = messageDiv.querySelectorAll('.message-text');
+                    mathElements.forEach(el => {
+                        el.innerHTML = el.innerHTML
+                            .replace(/\\(\((.*?)\\)/g, '<span class="math-inline">$1</span>')
+                            .replace(/\\\[(.*?)\\\]/g, '<div class="math-display">$1</div>');
+                    });
+                });
+            }
+        }, 100);
+        
+        setTimeout(() => {
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }, 0);
+    }
+
+    // Function to format the content with HTML tags
+    function formatContent(content) {
+        // Preserve math blocks first
+        content = content.replace(/\$\$(.*?)\$\$/gs, 'MATH_DISPLAY_BLOCK$1MATH_DISPLAY_BLOCK');
+        content = content.replace(/\$(.*?)\$/g, 'MATH_INLINE$1MATH_INLINE');
+
+        // Basic formatting
+        content = content.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+        content = content.replace(/\*(.*?)\*/g, '<em>$1</em>');
+        
+        // Lists
+        content = content.replace(/^\s*•\s(.*$)/gm, '<li>$1</li>');
+        content = content.replace(/(<li>.*<\/li>)+/g, '<ul>$&</ul>');
+        content = content.replace(/^\s*\d+\.\s(.*$)/gm, '<li>$1</li>');
+        content = content.replace(/(<li>.*<\/li>)+/g, '<ol>$&</ol>');
+        
+        // Headings
+        content = content.replace(/^##\s(.*$)/gm, '<h3>$1</h3>');
+        content = content.replace(/^###\s(.*$)/gm, '<h4>$1</h4>');
+        
+        // Line breaks
+        content = content.replace(/\n/g, '<br>');
+        
+        // Restore math blocks
+        content = content.replace(/MATH_DISPLAY_BLOCK(.*?)MATH_DISPLAY_BLOCK/gs, '$$$1$$');
+        content = content.replace(/MATH_INLINE(.*?)MATH_INLINE/g, '\\($1\\)');
+        
+        return content;
+    }
+    
+    // Initialize MathJax on page load
+    document.addEventListener('DOMContentLoaded', function() {
+        if (typeof MathJax !== 'undefined') {
+            MathJax.startup.document.state(0);
+            MathJax.typesetPromise();
+        }
+        
+        // Reprocess any existing messages
+        const messages = document.querySelectorAll('.message-bubble-ai .message-text');
+        messages.forEach(msg => {
+            msg.innerHTML = formatContent(msg.textContent);
+            if (typeof MathJax !== 'undefined') {
+                MathJax.typesetPromise([msg.parentElement]);
+            }
+        });
+    });
+    </script>
+</body>
+</html>

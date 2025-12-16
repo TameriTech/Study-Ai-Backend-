@@ -5,19 +5,23 @@ psycopg2-binary
 pydantic 
 werkzeug
 ipython
-uvicorn
 fitz
 sqlalchemy
 psycopg2
 bcrypt==4.0.1
 python-jose[cryptography] 
 passlib[bcrypt]
-pymupdf
 python-multipart
 requests
 moviepy==1.0.3
 openai-whisper
 python-dotenv
 sentence-transformers>=2.2.2
-numpy==1.26.0
-python-multipart==0.0.6
+numpy==1.26.0 
+python-multipart authlib requests
+google-auth==2.40.0
+google-genai
+pydantic-settings
+aiosmtplib
+PyPDF2
+pymupdf

@@ -12,11 +12,8 @@ import fitz  # PyMuPDF
 from datetime import datetime
 from sqlalchemy.orm import Session
 from PIL import Image
-import pytesseract
-from utils.ollama_utils import generate_from_ollama
 from fastapi import UploadFile, HTTPException
 from PIL import Image
-import pytesseract
 
 # Load environment variables from .env file
 load_dotenv()
@@ -26,6 +23,47 @@ ALGORITHM = os.getenv("ALGORITHM")
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
+
+
+import re
+import json
+
+def extract_and_parse_questions(response):
+    """
+    Extracts and parses the 'Questions' JSON array from the model's response content.
+    Accepts either a raw string or full OpenRouter response object.
+    """
+    # Step 1: Handle full response object (dict)
+    if isinstance(response, dict):
+        try:
+            response = response["choices"][0]["message"]["content"]
+        except (KeyError, IndexError):
+            raise ValueError("Invalid model response format")
+
+    # Step 2: Ensure response is a string
+    if not isinstance(response, str):
+        raise TypeError("Expected response to be a string")
+
+    # Step 3: Try direct JSON load if response is pure JSON
+    try:
+        full_data = json.loads(response)
+        if isinstance(full_data, dict) and "Questions" in full_data:
+            return full_data["Questions"]
+    except json.JSONDecodeError:
+        pass  # Fallback to regex parsing
+
+    # Step 4: Use regex to extract just the array if needed
+    match = re.search(r'\[\s*{.*?}\s*]', response, re.DOTALL)
+    if not match:
+        raise ValueError("No JSON array found between square brackets")
+
+    json_str = match.group(0)
+
+    try:
+        return json.loads(json_str)
+    except json.JSONDecodeError as e:
+        raise ValueError(f"Invalid JSON format in extracted array: {e}")
+
 
 def parse_modules(module_text: str) -> List[Dict[str, str]]:
     modules = []
@@ -68,7 +106,6 @@ def parse_modules(module_text: str) -> List[Dict[str, str]]:
         # Add the last topic if exists
         if current_topic:
             module['topics'].append(current_topic)
-        
         modules.append(module)
     
     return modules
@@ -152,111 +189,4 @@ async def extract_pdf_text(file: UploadFile):
     return {
         "filename": file.filename,
         "extracted_text": text
-    }
-
-
-async def summarize_pdf(file: UploadFile):
-    text = await extract_pdf_text(file)
-
-    prompt = f"""
-    Here is a text from a PDF document:
-
-    ---
-    {text}
-    ---
-
-    Summarize the text above for revision purpose.
-    """
-
-    summary = generate_from_ollama(prompt)
-
-    return {
-        "filename": file.filename,
-        "summary": summary
-    }
-
-
-async def generate_mcqs_from_pdf(file: UploadFile):
-    text = await extract_pdf_text(file)
-
-    prompt = f"""
-    Based on the following text from a PDF document:
-    ---
-    {text}
-    ---
-
-    Create 10 multiple-choice questions (MCQs). Each question should have:
-    - 4 answer options labeled A, B, C, and D.
-    - Clearly indicate which option is correct (e.g., "Correct Answer: B").
-
-    Return the questions in a numbered list.
-    """
-
-    mcqs = generate_from_ollama(prompt)
-
-    return {
-        "filename": file.filename,
-        "mcqs": mcqs
-    }
-
-async def extract_text_from_image(file: UploadFile):
-    if not file.content_type.startswith("image/"):
-        raise HTTPException(status_code=400, detail="Only image files are allowed.")
-
-    contents = await file.read()
-
-    try:
-        image = Image.open(io.BytesIO(contents))
-        text = pytesseract.image_to_string(image)
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Image processing error: {str(e)}")
-
-    return {
-        "filename": file.filename,
-        "extracted_text": text.strip()
-    }
-
-async def summarize_image_text(file: UploadFile):
-    text = await extract_text_from_image(file)
-
-    prompt = f"""
-    Here is a text from a PDF document:
-
-    ---
-    {text}
-    ---
-
-    Summarize the text above for revision purpose.
-    """
-
-    summary = generate_from_ollama(prompt)
-
-    return {
-        "filename": file.filename,
-        "summary": summary
-    }
-
-
-async def generate_mcqs_from_image_text(file: UploadFile):
-    text = await extract_text_from_image(file)
-
-    prompt = f"""
-    Based on the following text from a PDF document:
-
-    ---
-    {text}
-    ---
-
-    Create 10 multiple-choice questions (MCQs). Each question should have:
-    - 4 answer options labeled A, B, C, and D.
-    - Clearly indicate which option is correct (e.g., "Correct Answer: B").
-
-    Return the questions in a numbered list.
-    """
-
-    mcqs = generate_from_ollama(prompt)
-
-    return {
-        "filename": file.filename,
-        "mcqs": mcqs
     }
