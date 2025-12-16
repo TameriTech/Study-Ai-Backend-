@@ -1,3 +1,78 @@
+# Python cache files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Virtual environments
 venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Temp files
+temp_files/
+uploads/
+*.tmp
+*.temp
+
+# Logs
+*.log
+logs/
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+
+# Environment variables
 .env
-media/test.py
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Coverage
+.coverage
+.coverage.*
+htmlcov/
+
+# PyCharm
+.idea/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# pyenv
+.python-version
+
+# celery
+celerybeat-schedule
+
+# dotenv
+.env
+.envrc
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
