@@ -1,5 +1,5 @@
 {
-    "registration_error": "L'inscription a échoué. Veuillez réessayer.",
+  "registration_error": "L'inscription a échoué. Veuillez réessayer.",
   "email_exists": "Un utilisateur avec cet e-mail existe déjà",
   "invalid_credentials": "Identifiants invalides",
   "user_not_found": "Utilisateur non trouvé",
@@ -9,6 +9,15 @@
   "google_auth_error": "Erreur d'authentification Google",
   "password_reset_initiated": "Réinitialisation du mot de passe initiée. Vérifiez votre email.",
   "password_updated": "Mot de passe mis à jour avec succès",
+
+  "content_extraction_failed": "L'extraction du contenu a échoué ou le contenu est trop court (moins de 50 caractères) pour générer un cours valide.",
+  "image_ocr_failed": "Aucun texte lisible trouvé dans l'image. Veuillez télécharger une image plus claire contenant du texte.",
+  "pdf_extraction_failed": "Impossible d'extraire le texte du PDF. Le fichier semble être une image numérisée ou vide.",
+  "video_transcription_failed": "La transcription vidéo n'a pas produit de texte exploitable. La vidéo peut être silencieuse ou ne contenir aucune parole.",
+  "file_too_large": "Le fichier est trop volumineux. La taille maximale autorisée est de 20 Mo.",
+  "invalid_file_type": "Type de fichier invalide.",
+  "audio_extraction_failed": "L'extraction audio a échoué.",
+  "transcription_error": "La transcription a échoué.",
 
   "quiz_already_exists": "Un ensemble de quiz existe déjà pour ce cours.",
   "quiz_generation_failed": "Échec de la génération de questions de quiz valides après plusieurs tentatives.",

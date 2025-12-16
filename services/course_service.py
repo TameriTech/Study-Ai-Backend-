@@ -20,6 +20,12 @@ def create_course(
         lang: str = "en"
     ) -> Course:
 
+    if not original_text or len(original_text.strip()) < 50:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, 
+            detail=translate("content_extraction_failed", lang)
+        )
+
     simplified_modules_prompt = f"""
     You must return a simplified structured course modules strictly as a JSON array of objects, each object with "topic" and "body" keys.
     Make sure to simplify in the language of the provided text.
@@ -85,14 +91,18 @@ def create_course(
 
     num_simplified_modules = len(simplified_modules)
     num_summary_modules = len(summary_modules)
-    estimated_completion_time = f"{max(num_simplified_modules, num_summary_modules) * 10} minutes"
+    
+    # Fallback to prevent "0 minutes" if modules are empty (though validation above helps prevent this)
+    max_modules = max(num_simplified_modules, num_summary_modules)
+    estimated_time_val = max_modules * 10 if max_modules > 0 else 10
+    estimated_completion_time = f"{estimated_time_val} minutes"
 
     simplified_module_pages = num_simplified_modules
     summary_module_pages = num_summary_modules
 
     course = Course(
         document_id=document_id,
-        course_name=course_name_generated,
+        course_name=course_name_generated if course_name_generated else course_name, # Fallback to original name if gen fails
         original_text=original_text,
         simplified_text="simplified_text",
         summary_text="summary_text",
@@ -110,7 +120,6 @@ def create_course(
     db.commit()
     db.refresh(course)
     return course
-
 
 def get_simplified_modules(db, document_id: int) -> Optional[List[Dict]]:
     course = db.query(Course).filter(Course.document_id == document_id).first()

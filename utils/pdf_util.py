@@ -7,11 +7,12 @@ from database.models import Document
 from services.course_service import create_course
 from services.segment_service import process_segments
 from utils.gemini_api import generate_gemini_response
+from utils.i18n import translate
 
 # Ensure the temp_files/pdf directory exists
 os.makedirs("temp_files/pdf", exist_ok=True)
 
-async def extract_and_save_pdf(db: Session, file: UploadFile, user_id: int, instruction: str) -> dict:
+async def extract_and_save_pdf(db: Session, file: UploadFile, user_id: int, instruction: str, lang: str = "en") -> dict:
     """
     Process PDF file: save to storage, extract text (limited to 5000 words),
     create database records, and generate text segments with embeddings.
@@ -58,6 +59,15 @@ async def extract_and_save_pdf(db: Session, file: UploadFile, user_id: int, inst
     # Clean up the text by removing extra spaces
     text = ' '.join(text.split())
 
+    if not text or len(text) < 50:
+        if os.path.exists(storage_path):
+            os.remove(storage_path)
+
+        raise HTTPException(
+            status_code=422, 
+            detail=translate("pdf_extraction_failed", lang) 
+        )
+
     # Prepare the status message
     if limit_exceeded:
         processing_message = f"PDF processed successfully with text limited to {word_limit} words (original contained more text)"
@@ -79,7 +89,7 @@ async def extract_and_save_pdf(db: Session, file: UploadFile, user_id: int, inst
     db.refresh(db_document)
 
     # Process text into segments with embeddings
-    course = create_course(db, db_document.id_document, file.filename, text, instruction)
+    course = create_course(db, db_document.id_document, file.filename, text, instruction, lang=lang)
     process_segments(db, db_document.id_document, text)
 
     return {
@@ -90,6 +100,6 @@ async def extract_and_save_pdf(db: Session, file: UploadFile, user_id: int, inst
         "storage_path": storage_path,
         "extracted_text": text[:100],
         "word_count": word_count,
-        "limit_exceeded": limit_exceeded,  # Added this flag to the response
+        "limit_exceeded": limit_exceeded,
         "message": processing_message
     }

@@ -10,6 +10,15 @@
   "password_reset_initiated": "Password reset initiated. Check your email.",
   "password_updated": "Password updated successfully",
 
+  "content_extraction_failed": "Content extraction failed or content is too short (under 50 chars) to generate a valid course.",
+  "image_ocr_failed": "No readable text found in image. Please upload a clearer image containing text.",
+  "pdf_extraction_failed": "Could not extract text from PDF. The file appears to be a scanned image or empty.",
+  "video_transcription_failed": "Video transcription failed to produce usable text. The video may be silent or contain no speech.",
+  "file_too_large": "File is too large. Maximum allowed size is 20MB.",
+  "invalid_file_type": "Invalid file type.",
+  "audio_extraction_failed": "Audio extraction failed.",
+  "transcription_error": "Transcription failed.",
+
   "quiz_already_exists": "A set of quizzes already exists for this course.",
   "quiz_generation_failed": "Failed to generate valid quiz questions after multiple attempts.",
   "no_valid_questions": "No valid questions found in input text.",

@@ -5,6 +5,7 @@ from fastapi import UploadFile, HTTPException
 from sqlalchemy.orm import Session
 from PIL import Image
 from database.models import Document
+from utils.i18n import translate
 from services.course_service import create_course
 from services.segment_service import process_segments
 from utils.gemini_api import generate_gemini_response, extract_text_from_image
@@ -30,7 +31,7 @@ def compress_image_if_needed(image_bytes: bytes) -> bytes:
         return compressed_io.read()
     return image_bytes
 
-async def extract_and_save_image(db: Session, file: UploadFile, user_id: int, instruction: str) -> dict:
+async def extract_and_save_image(db: Session, file: UploadFile, user_id: int, instruction: str, lang: str = "en") -> dict:
     ensure_directories()
 
     # Validate content type
@@ -49,8 +50,15 @@ async def extract_and_save_image(db: Session, file: UploadFile, user_id: int, in
     # OCR with Gemini
     extracted_text = extract_text_from_image(image)
 
-    if not extracted_text:
-        raise HTTPException(422, "No text could be extracted from the image")
+    if not extracted_text or not extracted_text.strip() or len(extracted_text.strip()) < 10:
+        # Cleanup
+        if os.path.exists(storage_path):
+            os.remove(storage_path)
+            
+        raise HTTPException(
+            status_code=422, 
+            detail=translate("image_ocr_failed", lang)
+        )
 
     # Save image locally
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
@@ -75,7 +83,7 @@ async def extract_and_save_image(db: Session, file: UploadFile, user_id: int, in
     db.refresh(db_document)
 
     # Create course and process segments
-    course = create_course(db, db_document.id_document, file.filename, extracted_text, instruction)
+    course = create_course(db, db_document.id_document, file.filename, extracted_text, instruction, lang=lang)
     process_segments(db, db_document.id_document, extracted_text)
 
     return {

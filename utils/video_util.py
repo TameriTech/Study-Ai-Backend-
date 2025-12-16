@@ -12,6 +12,7 @@ from services.segment_service import process_segments
 import tempfile
 from utils.gemini_api import generate_gemini_response
 from pydub import AudioSegment
+from utils.i18n import translate
 import whisper
 import logging
 from fastapi import HTTPException
@@ -25,7 +26,7 @@ os.makedirs("temp_files/videos/audios", exist_ok=True)
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-async def extract_and_save_video(db: Session, file: UploadFile, user_id: int, instructions: str) -> dict:
+async def extract_and_save_video(db: Session, file: UploadFile, user_id: int, instructions: str, lang: str = "en") -> dict:
     MAX_FILE_SIZE = 20 * 1024 * 1024  # 20MB in bytes
     
     # Check file size
@@ -34,7 +35,7 @@ async def extract_and_save_video(db: Session, file: UploadFile, user_id: int, in
     file.file.seek(0)
     
     if file_size > MAX_FILE_SIZE:
-        raise HTTPException(status_code=400, detail="File is too large. Maximum allowed size is 20MB.")
+        raise HTTPException(status_code=400, detail=translate("file_too_large", lang))
 
     with tempfile.TemporaryDirectory() as temp_dir:
         try:
@@ -62,6 +63,8 @@ async def extract_and_save_video(db: Session, file: UploadFile, user_id: int, in
                 logger.info(f"Audio extracted successfully to: {audio_path}")
             except Exception as e:
                 logger.error(f"Audio extraction failed: {str(e)}")
+                # Clean up video if audio fails
+                if os.path.exists(video_path): os.remove(video_path)
                 raise HTTPException(status_code=400, detail=f"Audio extraction failed: {str(e)}. Ensure FFmpeg is installed.")
 
             # Transcribe Audio to Text
@@ -71,9 +74,29 @@ async def extract_and_save_video(db: Session, file: UploadFile, user_id: int, in
                 logger.info("Starting transcription...")
                 transcription = whisper_model.transcribe(audio_path)
                 video_text = transcription["text"]
+                
+                # --- FIXED VALIDATION ---
+                # Check if transcription yielded meaningful text
+                if not video_text or len(video_text.strip()) < 50:
+                    # Clean up BOTH video and audio files
+                    if os.path.exists(video_path): os.remove(video_path)
+                    if os.path.exists(audio_path): os.remove(audio_path)
+                    
+                    raise HTTPException(
+                        status_code=422, 
+                        detail=translate("video_transcription_failed", lang) # <--- UPDATED
+                     )
+                # ------------------------
+
                 logger.info(f"Transcript extracted successfully! Length: {len(video_text)} chars")
+
+            except HTTPException:
+                raise
             except Exception as e:
                 logger.error(f"Whisper transcription failed: {str(e)}")
+                # Cleanup on unexpected whisper failure
+                if os.path.exists(video_path): os.remove(video_path)
+                if os.path.exists(audio_path): os.remove(audio_path)
                 raise HTTPException(status_code=500, detail=f"Transcription failed: {str(e)}")
 
             # Create document record
@@ -95,12 +118,14 @@ async def extract_and_save_video(db: Session, file: UploadFile, user_id: int, in
             except Exception as e:
                 logger.error(f"Database save failed: {str(e)}")
                 db.rollback()
+                if os.path.exists(video_path): os.remove(video_path)
+                if os.path.exists(audio_path): os.remove(audio_path)
                 raise HTTPException(status_code=500, detail=f"Database error: {str(e)}")
 
             # Process text into segments
             logger.info("Creating course and segments...")
             try:
-                course = create_course(db, db_document.id_document, file.filename, video_text, instructions)
+                course = create_course(db, db_document.id_document, file.filename, video_text, instructions, lang=lang)
                 process_segments(db, db_document.id_document, video_text)
                 logger.info("Course and segments processed successfully!")
             except Exception as e:
@@ -118,7 +143,7 @@ async def extract_and_save_video(db: Session, file: UploadFile, user_id: int, in
             }
 
         except HTTPException:
-            raise  # Re-raise HTTP exceptions
+            raise 
         except Exception as e:
             logger.error(f"Unexpected error: {str(e)}\n{traceback.format_exc()}")
             db.rollback()
