@@ -10,9 +10,9 @@ from tameri_chat.models import Base
 from tameri_chat.database import engine
 
 app = FastAPI()
-CREATE_TABLES =  create_tables()
+# CREATE_TABLES =  create_tables()
 Base.metadata.create_all(bind=engine)
-# DROP_TABLES =  drop_tables()
+DROP_TABLES =  drop_tables()
 
 app.add_middleware(
     CORSMiddleware,
